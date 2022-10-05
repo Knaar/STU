@@ -10,6 +10,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class USTUHeathComponent;
 class UTextRenderComponent;
+class ABaseWeapon;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
@@ -62,18 +63,25 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     void LookUp(float Amount);
     void TurnAround(float Amount);*/
 
-    //Падение
-    UPROPERTY(EditDefaultsOnly,Category="Movement")
-    FVector2D VectorDamageVelocity=FVector2D(900,1200);
+    //Падение и урон
+    UPROPERTY(EditDefaultsOnly,Category="Damage")
+    float LifeSpanOnDeath=5.0f;
+    
+    UPROPERTY(EditDefaultsOnly,Category="Damage")
+    FVector2D LandedDamageVelocity=FVector2D(900,1200);
 
-    UPROPERTY(EditDefaultsOnly,Category="Movement")
-    FVector2D VectorDamage=FVector2D(10.0f,100.0f);
+    UPROPERTY(EditDefaultsOnly,Category="Damage")
+    FVector2D LandedDamage=FVector2D(10.0f,100.0f);
     
     UFUNCTION()
     void OnGroundLanded(const FHitResult& Hit);
 
-    
-    
+    //Пушка
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Weapon")
+    TSubclassOf<ABaseWeapon> WeaponClass;
+
+    void SpawnWeapon();
 };
 
 
