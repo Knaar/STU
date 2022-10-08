@@ -11,21 +11,22 @@ class USpringArmComponent;
 class USTUHeathComponent;
 class UTextRenderComponent;
 class ABaseWeapon;
+class UWeaponComponent;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
 {
     GENERATED_BODY()
 
-  public:
+public:
     // Sets default values for this character's properties
-    
+
     ASTUBaseCharacter();
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaTime) override;
     virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
 
-  protected:
+protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Category")
     UCameraComponent *CameraComponent;
 
@@ -38,22 +39,21 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Category")
     UTextRenderComponent *TextRenderComponent;
 
-    UPROPERTY(EditDefaultsOnly,Category="Animation")
+    UPROPERTY(EditDefaultsOnly, Category="Animation")
     UAnimMontage *AnimMontage;
 
 
-    
     void OnHealthChanged(float Health);
     void OnPlayerDeath();
 
-    
+
     // Передвижение персонажа
     void MoveForward(float Amount);
     void MoveRight(float Amount);
 
     //Sprint
 
-    bool bWantsToRun=false;
+    bool bWantsToRun = false;
     void OnStartRunning();
     void OnStopRuning();
 
@@ -64,25 +64,27 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     void TurnAround(float Amount);*/
 
     //Падение и урон
-    UPROPERTY(EditDefaultsOnly,Category="Damage")
-    float LifeSpanOnDeath=5.0f;
-    
-    UPROPERTY(EditDefaultsOnly,Category="Damage")
-    FVector2D LandedDamageVelocity=FVector2D(900,1200);
+    UPROPERTY(EditDefaultsOnly, Category="Damage")
+    float LifeSpanOnDeath = 5.0f;
 
-    UPROPERTY(EditDefaultsOnly,Category="Damage")
-    FVector2D LandedDamage=FVector2D(10.0f,100.0f);
-    
+    UPROPERTY(EditDefaultsOnly, Category="Damage")
+    FVector2D LandedDamageVelocity = FVector2D(900, 1200);
+
+    UPROPERTY(EditDefaultsOnly, Category="Damage")
+    FVector2D LandedDamage = FVector2D(10.0f, 100.0f);
+
     UFUNCTION()
-    void OnGroundLanded(const FHitResult& Hit);
+    void OnGroundLanded(const FHitResult &Hit);
 
     //Пушка
 
+    /*
     UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Weapon")
     TSubclassOf<ABaseWeapon> WeaponClass;
+    */
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon")
+    UWeaponComponent* WeaponComponent;
 
-    void SpawnWeapon();
+    //void SpawnWeapon();
 };
-
-
-

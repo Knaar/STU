@@ -2,8 +2,10 @@
 
 #include "Player/STUBaseCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/STUHeathComponent.h"
 #include "Components/TextRenderComponent.h"
+#include "Components/WeaponComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -26,6 +28,8 @@ ASTUBaseCharacter::ASTUBaseCharacter()
     CameraComponent->SetupAttachment(SpringArm);
 
     HealthComponent=CreateDefaultSubobject<USTUHeathComponent>("HealthComponent");
+
+    WeaponComponent=CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
 
     TextRenderComponent=CreateDefaultSubobject<UTextRenderComponent>("TextRenderComponent");
     TextRenderComponent->SetupAttachment(GetRootComponent());
@@ -53,7 +57,7 @@ void ASTUBaseCharacter::BeginPlay()
     LandedDelegate.AddDynamic(this,&ASTUBaseCharacter::OnGroundLanded);
 
     //Спавню пушку
-    SpawnWeapon();
+    //SpawnWeapon();
 }
 
 void ASTUBaseCharacter::Tick(float DeltaTime)
@@ -74,6 +78,8 @@ void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent *PlayerInputCo
     PlayerInputComponent->BindAction("Jump",EInputEvent::IE_Pressed, this, &ASTUBaseCharacter::Jump);
     PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Pressed, this, &ASTUBaseCharacter::OnStartRunning);
     PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Released, this, &ASTUBaseCharacter::OnStopRuning);
+
+    PlayerInputComponent->BindAction("Fire",IE_Pressed,WeaponComponent,&UWeaponComponent::Fire);
 }
 
 void ASTUBaseCharacter::MoveForward(float Amount)
@@ -123,6 +129,7 @@ inline void ASTUBaseCharacter::OnPlayerDeath()
     GetCharacterMovement()->Deactivate();
     SetLifeSpan(LifeSpanOnDeath);
 
+    GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
     if(Controller)
     {
         Controller->ChangeState(NAME_Spectating);
@@ -140,7 +147,7 @@ void ASTUBaseCharacter::OnGroundLanded(const FHitResult& Hit)
     TakeDamage(TotalDamage,FDamageEvent{},nullptr,nullptr);
     UE_LOG(LogTemp,Warning,TEXT("Total Damade : %f"),TotalDamage);
 }
-
+/*
 void ASTUBaseCharacter::SpawnWeapon()
 {
     if (!GetWorld())return;
@@ -149,9 +156,11 @@ void ASTUBaseCharacter::SpawnWeapon()
 
     if (MyWeapon)
     {
+        ACharacter* Character=Cast<ACharacter>(GetOwner());
         FAttachmentTransformRules AttachmentTransformRules(EAttachmentRule::SnapToTarget,false);
 
         MyWeapon->AttachToComponent(GetMesh(),AttachmentTransformRules,"WeaponSocket");
         //GetMesh()->AttachToComponent(GetWorld(),AttachmentTransformRules,"WeaponSocket");
     }
 }
+*/

@@ -12,7 +12,20 @@ class SHOOTTHEMUP_API ABaseWeapon : public AActor
 public:
     ABaseWeapon();
     virtual void BeginPlay() override;
+    
+    virtual void Fire();
 
-    UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="SkeletalMesh")
-    USkeletalMeshComponent* SkeletalMesh;
+    void MakeShot();   
+
+    UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="My Settings")
+    USkeletalMeshComponent* WeaponMesh;
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="My Settings")
+    FName SocketName="MuzzleSocket";
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="My Settings")
+    float TraceLenght=5000.0f;
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="My Settings")
+    float BulletDamage=10.0f;
 };
