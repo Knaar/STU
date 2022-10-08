@@ -24,7 +24,7 @@ public:
     FName SocketName="WeaponSocket";
 
     void AttachWeapon();
-
-    UFUNCTION()
-    void Fire();
+    void StartFire();
+    void StopFire();
+    
 };

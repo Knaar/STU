@@ -31,9 +31,14 @@ void UWeaponComponent::AttachWeapon()
     CurrentWeapon->SetOwner(Character);
 }
 
-void UWeaponComponent::Fire()
+void UWeaponComponent::StartFire()
 {
-    UE_LOG(WeaponComponent,Warning,TEXT("WeaponComponent Fire"));
     if(!CurrentWeapon)return;
-    CurrentWeapon->Fire();
+    CurrentWeapon->StartFire();
+}
+
+void UWeaponComponent::StopFire()
+{
+    if(!CurrentWeapon)return;
+    CurrentWeapon->StopFire();
 }

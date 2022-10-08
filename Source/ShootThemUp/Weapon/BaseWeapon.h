@@ -13,9 +13,10 @@ public:
     ABaseWeapon();
     virtual void BeginPlay() override;
     
-    virtual void Fire();
+    virtual void StartFire();
+    virtual void StopFire();
 
-    void MakeShot();   
+    virtual void MakeShot();   
 
     UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="My Settings")
     USkeletalMeshComponent* WeaponMesh;
@@ -28,4 +29,16 @@ public:
 
     UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="My Settings")
     float BulletDamage=10.0f;
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="My Settings")
+    float FireRate=0.01f;
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="My Settings")
+    float FireAccuracy=1.5f;
+    
+    FTimerHandle ShootTimer;
+
+    APlayerController* GetPlayerController()const;
+
+    FVector GetMuzzleLocation()const;
 };
