@@ -3,6 +3,20 @@
 #include "GameFramework/Actor.h"
 #include "BaseWeapon.generated.h"
 
+USTRUCT(BlueprintType)
+struct FMyAmmo
+{
+    GENERATED_USTRUCT_BODY()
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Ammo")
+    int32 Bullets;
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Ammo",meta=(EditCondition="!bInfiniteWeapon"))
+    int32 Clips;
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Ammo")
+    bool bInfiniteWeapon;
+    
+};
 class USkeletalMeshComponent;
 UCLASS()
 class SHOOTTHEMUP_API ABaseWeapon : public AActor
@@ -41,4 +55,19 @@ public:
     APlayerController* GetPlayerController()const;
 
     FVector GetMuzzleLocation()const;
+
+    //Патрики
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="My Settings")
+    FMyAmmo DefaultAmmo{15,10,false};
+
+    FMyAmmo CurrentAmmo;
+
+    void DecreaseBullets();
+    void DecreaseClip();
+    bool IsNoAmmo();
+    bool IsClipEmpty();
+    void Logs();
+
+    
+    
 };

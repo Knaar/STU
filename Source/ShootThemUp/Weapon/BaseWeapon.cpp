@@ -16,6 +16,7 @@ void ABaseWeapon::BeginPlay()
 {
     Super::BeginPlay();
     check(GetWorld());
+    CurrentAmmo=DefaultAmmo;
 }
 
 void ABaseWeapon::StartFire()
@@ -42,4 +43,40 @@ APlayerController * ABaseWeapon::GetPlayerController() const
 FVector ABaseWeapon::GetMuzzleLocation() const
 {
     return  WeaponMesh->GetSocketLocation(SocketName);
+}
+
+void ABaseWeapon::DecreaseBullets()
+{
+    CurrentAmmo.Bullets--;
+    Logs();
+    if (IsClipEmpty()&&!IsNoAmmo())
+    {
+        DecreaseClip();
+    }
+}
+
+void ABaseWeapon::DecreaseClip()
+{
+    CurrentAmmo.Bullets=DefaultAmmo.Bullets;
+    if (!CurrentAmmo.bInfiniteWeapon)
+    {
+        CurrentAmmo.Clips--;
+    }
+}
+
+bool ABaseWeapon::IsNoAmmo()
+{
+    return !CurrentAmmo.bInfiniteWeapon&&IsClipEmpty()&&CurrentAmmo.Clips==0;
+}
+
+bool ABaseWeapon::IsClipEmpty()
+{
+    return CurrentAmmo.Bullets==0;
+}
+
+void ABaseWeapon::Logs()
+{
+    FString LogAmmo="Ammo: Bullets:"+FString::FromInt(CurrentAmmo.Bullets)+"Clips: ";
+    LogAmmo+=CurrentAmmo.bInfiniteWeapon?"Infinite":FString::FromInt(CurrentAmmo.Clips);
+    UE_LOG(BaseWeaponLog,Warning,TEXT("%s"),*LogAmmo);
 }

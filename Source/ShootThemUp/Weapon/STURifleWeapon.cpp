@@ -16,9 +16,8 @@ void ASTURifleWeapon::StopFire()
 
 void ASTURifleWeapon::MakeShot()
 {
-
-    if (!GetWorld())return;
-    
+    if (!GetWorld()||IsNoAmmo())return;
+    DecreaseBullets();
     const auto Controller=GetPlayerController();
 
     //Узнаём напрвление камеры для определения траектории стрельбы

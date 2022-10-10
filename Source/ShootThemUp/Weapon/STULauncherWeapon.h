@@ -15,7 +15,7 @@ class SHOOTTHEMUP_API ASTULauncherWeapon : public ABaseWeapon
     GENERATED_BODY()
 public:   
     UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="My Settings")
-    TSubclassOf<AActor> Projectile;
+    TSubclassOf<AActor> ProjectileClass;
 
     virtual void StartFire() override;
 

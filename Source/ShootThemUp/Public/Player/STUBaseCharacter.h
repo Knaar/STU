@@ -47,7 +47,7 @@ protected:
     void OnPlayerDeath();
 
 
-    // Передвижение персонажа
+    // ???????????? ?????????
     void MoveForward(float Amount);
     void MoveRight(float Amount);
 
@@ -58,12 +58,12 @@ protected:
     void OnStopRuning();
 
 
-    // Обзор мышью
+    // ????? ?????
     /*
     void LookUp(float Amount);
     void TurnAround(float Amount);*/
 
-    //Падение и урон
+    //??????? ? ????
     UPROPERTY(EditDefaultsOnly, Category="Damage")
     float LifeSpanOnDeath = 5.0f;
 
@@ -76,7 +76,7 @@ protected:
     UFUNCTION()
     void OnGroundLanded(const FHitResult &Hit);
 
-    //Пушка
+    //?????
 
     /*
     UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Weapon")
