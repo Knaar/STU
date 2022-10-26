@@ -16,7 +16,11 @@ void ASTURifleWeapon::StopFire()
 
 void ASTURifleWeapon::MakeShot()
 {
-    if (!GetWorld()||IsNoAmmo())return;
+    if (!GetWorld()||IsNoAmmo())
+    {
+        StopFire();
+        return;
+    }
     DecreaseBullets();
     const auto Controller=GetPlayerController();
 

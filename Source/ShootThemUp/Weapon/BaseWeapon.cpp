@@ -61,6 +61,7 @@ void ABaseWeapon::DecreaseClip()
     if (!CurrentAmmo.bInfiniteWeapon)
     {
         CurrentAmmo.Clips--;
+        UE_LOG(BaseWeaponLog,Warning,TEXT("Reloading"));
     }
 }
 

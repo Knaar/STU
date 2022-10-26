@@ -14,6 +14,9 @@ void ASTULauncherWeapon::StartFire()
 
 void ASTULauncherWeapon::MakeShot()
 {
+    if(IsNoAmmo())return;
+    DecreaseBullets();
+    
     const auto Controller=GetPlayerController();
 
     //Узнаём напрвление камеры для определения траектории стрельбы
