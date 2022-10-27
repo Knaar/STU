@@ -62,6 +62,7 @@ void ABaseWeapon::DecreaseClip()
     {
         CurrentAmmo.Clips--;
         UE_LOG(BaseWeaponLog,Warning,TEXT("Reloading"));
+        
     }
 }
 

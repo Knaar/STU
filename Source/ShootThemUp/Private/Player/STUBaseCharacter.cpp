@@ -41,30 +41,28 @@ void ASTUBaseCharacter::BeginPlay()
 {
     Super::BeginPlay();
 
-    //Блок проверки
+    //???? ????????
     check(HealthComponent);
     check(TextRenderComponent);
     check(AnimMontage);
     
-    //узнаём конкретно сейчас количество здоровья
+    //????? ????????? ?????? ?????????? ????????
     float Health=HealthComponent->GetHealth();
     OnHealthChanged(Health);
 
-    //Подпись делегатов
+    //??????? ?????????
     HealthComponent->OnPlayerDamaged.AddUObject(this, &ASTUBaseCharacter::OnHealthChanged);
     HealthComponent->OnPlayerDeath.AddUObject(this,&ThisClass::OnPlayerDeath);
 
     LandedDelegate.AddDynamic(this,&ASTUBaseCharacter::OnGroundLanded);
 
-    //Спавню пушку
+    //?????? ?????
     //SpawnWeapon();
 }
 
 void ASTUBaseCharacter::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    //Используем UE ф-ю. Где:(размер ущерба,Разновидность ущерба,Контроллер(если вражеская тима или наша),Кто виновник
-    //TakeDamage(0.1f,FDamageEvent{},Controller,this);
 }
 
 // Called to bind functionality to input
@@ -83,6 +81,7 @@ void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent *PlayerInputCo
     PlayerInputComponent->BindAction("Fire",IE_Released,WeaponComponent,&UWeaponComponent::StopFire);
     
     PlayerInputComponent->BindAction("Swap",IE_Released,WeaponComponent,&UWeaponComponent::NextWeapon);
+    PlayerInputComponent->BindAction("Reload",IE_Released,WeaponComponent,&UWeaponComponent::Reload);
 }
 
 void ASTUBaseCharacter::MoveForward(float Amount)
@@ -109,7 +108,7 @@ void ASTUBaseCharacter::OnStopRuning()
     GetCharacterMovement()->MaxWalkSpeed = 600;
 }
 
-/*тут должен быть поворот камеры мышью. Но, AddControllerPithInput и AddControllerYawInput можно забиндить напрямую
+/*??? ?????? ???? ??????? ?????? ?????. ??, AddControllerPithInput ? AddControllerYawInput ????? ????????? ????????
 void ASTUBaseCharacter::LookUp(float Amount)
 {
     AddControllerPitchInput(Amount);
@@ -121,13 +120,13 @@ void ASTUBaseCharacter::TurnAround(float Amount)
 }*/
 void ASTUBaseCharacter::OnHealthChanged(float Health)
 {
-    //задаём здоровье нашему ТектРендерКомпоненту
+    //????? ???????? ?????? ????????????????????
     TextRenderComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"),Health)));
 }
 
 inline void ASTUBaseCharacter::OnPlayerDeath()
 {
-    //Проигрываем смерть, отключаем инпут и удаляем персонажа
+    
     PlayAnimMontage(AnimMontage);
     GetCharacterMovement()->Deactivate();
     SetLifeSpan(LifeSpanOnDeath);

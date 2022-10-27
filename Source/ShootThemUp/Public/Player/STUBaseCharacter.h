@@ -47,7 +47,7 @@ protected:
     void OnPlayerDeath();
 
 
-    // ???????????? ?????????
+   
     void MoveForward(float Amount);
     void MoveRight(float Amount);
 
@@ -58,12 +58,12 @@ protected:
     void OnStopRuning();
 
 
-    // ????? ?????
+    
     /*
     void LookUp(float Amount);
     void TurnAround(float Amount);*/
 
-    //??????? ? ????
+   
     UPROPERTY(EditDefaultsOnly, Category="Damage")
     float LifeSpanOnDeath = 5.0f;
 
@@ -76,7 +76,7 @@ protected:
     UFUNCTION()
     void OnGroundLanded(const FHitResult &Hit);
 
-    //?????
+    
 
     /*
     UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Weapon")

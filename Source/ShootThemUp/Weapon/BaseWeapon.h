@@ -3,6 +3,8 @@
 #include "GameFramework/Actor.h"
 #include "BaseWeapon.generated.h"
 
+
+
 USTRUCT(BlueprintType)
 struct FMyAmmo
 {
@@ -17,7 +19,7 @@ struct FMyAmmo
     bool bInfiniteWeapon;
     
 };
-class USkeletalMeshComponent;
+
 UCLASS()
 class SHOOTTHEMUP_API ABaseWeapon : public AActor
 {

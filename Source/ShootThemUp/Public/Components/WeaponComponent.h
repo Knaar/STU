@@ -2,57 +2,84 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "GameFramework/Character.h"
 #include "WeaponComponent.generated.h"
+
 class ABaseWeapon;
+class UAnimMontage;
+
+USTRUCT(BlueprintType)
+struct FMyWeaponData
+{
+    GENERATED_BODY()
+    UPROPERTY(EditAnywhere)
+    TSubclassOf<ABaseWeapon> DataWeapon;
+
+    UPROPERTY(EditAnywhere)
+    UAnimMontage *DataAnimMontage;
+};
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class SHOOTTHEMUP_API UWeaponComponent : public UActorComponent
 {
     GENERATED_BODY()
-
 public:
     UWeaponComponent();
-    virtual void BeginPlay() override;
-    virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-
-    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Weapon")
-    TArray<TSubclassOf<ABaseWeapon>> WeaponClasses;
+    
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon")
+    TArray<FMyWeaponData> WeaponData;
 
     UPROPERTY(VisibleAnywhere)
     TArray<ABaseWeapon*> Weapons;
 
     UPROPERTY()
-    ABaseWeapon* CurrentWeapon=nullptr;
+    ABaseWeapon *CurrentWeapon = nullptr;
+    
+    UPROPERTY(EditDefaultsOnly, Category="Animation")
+    UAnimMontage *CurrentAnimEquipMontage=nullptr;
 
-    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Weapon")
-    FName EquippedWeaponSocket="EquippedWeaponSocket";
+    UPROPERTY(EditDefaultsOnly, Category="Animation")
+    UAnimMontage *CurrentReloadAnimMontage = nullptr;
+    
+    UPROPERTY(VisibleDefaultsOnly)
+    FName EquippedWeaponSocket = "EquippedWeaponSocket";
 
-    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Weapon")
-    FName InventoryWeaponSocket="InventoryWeaponSocket";
+    UPROPERTY(VisibleDefaultsOnly)
+    FName InventoryWeaponSocket = "InventoryWeaponSocket";
 
-    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Weapon")
-    UAnimMontage* AnimEquip;
+    int32 CurrentWeaponIndex = 0;
+    bool bChangeWeaponInProgress = false;
+    bool bReloadingInProgress=false;
 
-    int32 CurrentWeaponIndex=0;
-
-    bool bChangeWeaponInProgress=false;
-
+    virtual void BeginPlay() override;
+    virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+    
     void SpawnWeapon();
-    void AttachWeaponToMesh(ABaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName);
+    void AttachWeaponToMesh(ABaseWeapon *Weapon, USceneComponent *SceneComponent, const FName &SocketName);
     void EquipWeapon(int32 WeaponIndex);
     void NextWeapon();
-    
+
     void StartFire();
     void StopFire();
-    
-    void SwapWeaponAnimPlay(UAnimMontage* AnimMontage);
+
+    void PlayAnimation(UAnimMontage *AnimMontage);
     void InitAnimations();
-    void OnEquipFinished(USkeletalMeshComponent* SkeletalMesh);
+    
+    template<typename T>
+    T* FindAnimNotifies(UAnimSequenceBase*Animation);
+
+
+    //Call Back Function
+    void OnEquipFinished(USkeletalMeshComponent *SkeletalMesh);
+    void OnReloadFinished(USkeletalMeshComponent *SkeletalMesh);
 
     bool CanFire();
     bool CanChangeWeapon();
-};
+    bool CanReload();
 
+    
+    void Reload();
+};
 
 
 
