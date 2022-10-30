@@ -8,7 +8,6 @@
 
 void ASTULauncherWeapon::StartFire()
 {
-    
     MakeShot();
 }
 

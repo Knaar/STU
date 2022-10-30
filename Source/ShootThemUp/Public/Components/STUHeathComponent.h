@@ -16,8 +16,8 @@ class SHOOTTHEMUP_API USTUHeathComponent : public UActorComponent
     GENERATED_BODY()
 
 public:
-    // Sets default values for this component's properties
     USTUHeathComponent();
+    
     virtual void BeginPlay() override;
     virtual void TickComponent(float DeltaTime, ELevelTick TickType,
                                FActorComponentTickFunction *ThisTickFunction) override;
@@ -51,6 +51,9 @@ public:
     
     //Геттер на хп
     float GetHealth() const{return CurrentHealth;}
+
+    UFUNCTION(BlueprintCallable)
+    float GetHealthPercent() const{return CurrentHealth/MaxHealth;}
 
     void SetHealth(float Health);
 

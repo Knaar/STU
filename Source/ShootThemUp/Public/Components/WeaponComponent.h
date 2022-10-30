@@ -65,10 +65,6 @@ public:
     void PlayAnimation(UAnimMontage *AnimMontage);
     void InitAnimations();
     
-    template<typename T>
-    T* FindAnimNotifies(UAnimSequenceBase*Animation);
-
-
     //Call Back Function
     void OnEquipFinished(USkeletalMeshComponent *SkeletalMesh);
     void OnReloadFinished(USkeletalMeshComponent *SkeletalMesh);
@@ -77,8 +73,10 @@ public:
     bool CanChangeWeapon();
     bool CanReload();
 
-    
+    void ObReloadEmptyClip();
     void Reload();
+
+    void ChangeClip();
 };
 
 

@@ -3,7 +3,7 @@
 #include "GameFramework/Actor.h"
 #include "BaseWeapon.generated.h"
 
-
+DECLARE_MULTICAST_DELEGATE(FOnReloadEmptyClip)
 
 USTRUCT(BlueprintType)
 struct FMyAmmo
@@ -34,6 +34,8 @@ public:
 
     virtual void MakeShot();   
 
+    FOnReloadEmptyClip OnReloadEmptyClip;
+    
     UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="My Settings")
     USkeletalMeshComponent* WeaponMesh;
 
@@ -64,11 +66,13 @@ public:
 
     FMyAmmo CurrentAmmo;
 
+    bool bCanReload();
+    
     void DecreaseBullets();
-    void DecreaseClip();
+    void ChangeClip();
     bool IsNoAmmo();
     bool IsClipEmpty();
-    void Logs();
+    void LogAmmo();
 
     
     

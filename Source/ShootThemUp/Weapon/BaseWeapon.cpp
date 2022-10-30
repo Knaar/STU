@@ -15,8 +15,12 @@ ABaseWeapon::ABaseWeapon()
 void ABaseWeapon::BeginPlay()
 {
     Super::BeginPlay();
+
     check(GetWorld());
-    CurrentAmmo=DefaultAmmo;
+    checkf(DefaultAmmo.Bullets>0, TEXT("Bullets count couldn't be less or equeal zero"));
+    checkf(DefaultAmmo.Clips>0, TEXT("Clips count couldn't be less or equeal zero"));
+
+    CurrentAmmo = DefaultAmmo;
 }
 
 void ABaseWeapon::StartFire()
@@ -24,61 +28,78 @@ void ABaseWeapon::StartFire()
 }
 
 void ABaseWeapon::StopFire()
-{}
+{
+}
 
 void ABaseWeapon::MakeShot()
 {
 }
 
-APlayerController * ABaseWeapon::GetPlayerController() const
+APlayerController *ABaseWeapon::GetPlayerController() const
 {
-    const auto Player=Cast<ACharacter>(GetOwner());
-    if(!Player)return nullptr;
-    
-    const auto Controller=Player->GetController<APlayerController>();
-    if(!Controller)return nullptr;
+    const auto Player = Cast<ACharacter>(GetOwner());
+    if (!Player)
+        return nullptr;
+
+    const auto Controller = Player->GetController<APlayerController>();
+    if (!Controller)
+        return nullptr;
     return Controller;
 }
 
 FVector ABaseWeapon::GetMuzzleLocation() const
 {
-    return  WeaponMesh->GetSocketLocation(SocketName);
+    return WeaponMesh->GetSocketLocation(SocketName);
+}
+
+bool ABaseWeapon::bCanReload()
+{
+    return CurrentAmmo.Bullets < DefaultAmmo.Bullets && CurrentAmmo.Clips > 0;
 }
 
 void ABaseWeapon::DecreaseBullets()
 {
-    CurrentAmmo.Bullets--;
-    Logs();
-    if (IsClipEmpty()&&!IsNoAmmo())
+    if (CurrentAmmo.Bullets == 0)
     {
-        DecreaseClip();
+        UE_LOG(BaseWeaponLog, Warning, TEXT("No Bullets"));
+    }
+    CurrentAmmo.Bullets--;
+    LogAmmo();
+    if (IsClipEmpty() && !IsNoAmmo())
+    {
+        StopFire();
+        OnReloadEmptyClip.Broadcast();
     }
 }
 
-void ABaseWeapon::DecreaseClip()
+void ABaseWeapon::ChangeClip()
 {
-    CurrentAmmo.Bullets=DefaultAmmo.Bullets;
     if (!CurrentAmmo.bInfiniteWeapon)
     {
+        if (CurrentAmmo.Clips == 0)
+        {
+            UE_LOG(BaseWeaponLog, Warning, TEXT("No Ammo"));
+            return;
+        }
         CurrentAmmo.Clips--;
-        UE_LOG(BaseWeaponLog,Warning,TEXT("Reloading"));
-        
     }
+    UE_LOG(BaseWeaponLog, Warning, TEXT("Reloading"));
+    CurrentAmmo.Bullets = DefaultAmmo.Bullets;
 }
 
 bool ABaseWeapon::IsNoAmmo()
 {
-    return !CurrentAmmo.bInfiniteWeapon&&IsClipEmpty()&&CurrentAmmo.Clips==0;
+    return !CurrentAmmo.bInfiniteWeapon && IsClipEmpty() && CurrentAmmo.Clips == 0;
 }
 
 bool ABaseWeapon::IsClipEmpty()
 {
-    return CurrentAmmo.Bullets==0;
+    return CurrentAmmo.Bullets == 0;
 }
 
-void ABaseWeapon::Logs()
+void ABaseWeapon::LogAmmo()
 {
-    FString LogAmmo="Ammo: Bullets:"+FString::FromInt(CurrentAmmo.Bullets)+"Clips: ";
-    LogAmmo+=CurrentAmmo.bInfiniteWeapon?"Infinite":FString::FromInt(CurrentAmmo.Clips);
-    UE_LOG(BaseWeaponLog,Warning,TEXT("%s"),*LogAmmo);
+    FString LogAmmo = "Ammo: Bullets:" + FString::FromInt(CurrentAmmo.Bullets) + "Clips: ";
+    LogAmmo += CurrentAmmo.bInfiniteWeapon ? "Infinite" : FString::FromInt(CurrentAmmo.Clips);
+    UE_LOG(BaseWeaponLog, Warning, TEXT("%s"), *LogAmmo);
 }

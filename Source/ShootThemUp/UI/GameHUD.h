@@ -13,7 +13,14 @@ UCLASS()
 class SHOOTTHEMUP_API AGameHUD : public AHUD
 {
     GENERATED_BODY()
+    
+    virtual void BeginPlay() override;
+    
     virtual void DrawHUD() override;
 
     void DrawLineFunc();
+public:
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="UI")
+    TSubclassOf<UUserWidget>SelectedUserWidget;
+    
 };

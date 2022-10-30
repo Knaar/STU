@@ -5,7 +5,8 @@ DEFINE_LOG_CATEGORY_STATIC(RifleWeaponLog, All, All);
 void ASTURifleWeapon::StartFire()
 {
     Super::StartFire();
-    GetWorld()->GetTimerManager().SetTimer(ShootTimer, this, &ThisClass::MakeShot, FireRate, true);
+    GetWorld()->GetTimerManager().SetTimer(ShootTimer, this, &ThisClass::MakeShot, FireRate, true,0.0f);
+    //MakeShot();
 }
 
 void ASTURifleWeapon::StopFire()
