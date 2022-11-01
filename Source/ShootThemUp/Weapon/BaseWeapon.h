@@ -6,6 +6,18 @@
 DECLARE_MULTICAST_DELEGATE(FOnReloadEmptyClip)
 
 USTRUCT(BlueprintType)
+struct FMyWeaponImageData
+{
+    GENERATED_BODY()
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="UI")
+    UTexture2D* WeaponImage;
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="UI")
+    UTexture2D* AimImage;
+    
+};
+
+USTRUCT(BlueprintType)
 struct FMyAmmo
 {
     GENERATED_USTRUCT_BODY()
@@ -61,6 +73,7 @@ public:
     FVector GetMuzzleLocation()const;
 
     //Патрики
+    
     UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="My Settings")
     FMyAmmo DefaultAmmo{15,10,false};
 
@@ -74,6 +87,10 @@ public:
     bool IsClipEmpty();
     void LogAmmo();
 
+    //Иконки
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="UI")
+    FMyWeaponImageData MyWeaponImageData;
     
+    FMyWeaponImageData GetMyWeaponImageData() const    {return MyWeaponImageData;}
     
 };

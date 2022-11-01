@@ -5,6 +5,7 @@
 #include "GameFramework/Character.h"
 #include "WeaponComponent.generated.h"
 
+struct FMyWeaponImageData;
 class ABaseWeapon;
 class UAnimMontage;
 
@@ -77,6 +78,9 @@ public:
     void Reload();
 
     void ChangeClip();
+
+    //Иконки
+    bool GetMyWeaponImageData(FMyWeaponImageData& ImgData) const;
 };
 
 

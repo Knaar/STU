@@ -205,3 +205,13 @@ void UWeaponComponent::ChangeClip()
     CurrentWeapon->ChangeClip();
     PlayAnimation(CurrentReloadAnimMontage);
 }
+
+bool UWeaponComponent::GetMyWeaponImageData(FMyWeaponImageData& ImgData) const
+{
+    if(CurrentWeapon)
+    {
+        ImgData=CurrentWeapon->GetMyWeaponImageData();
+        return true;
+    }
+    return false;
+}

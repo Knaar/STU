@@ -19,7 +19,7 @@ void AGameHUD::BeginPlay()
 void AGameHUD::DrawHUD()
 {
     Super::DrawHUD();
-    DrawLineFunc();
+    //DrawLineFunc();
 }
 
 void AGameHUD::DrawLineFunc()

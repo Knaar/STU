@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "ShootThemUp/Weapon/BaseWeapon.h"
 #include "PlayerHudWidget.generated.h"
+
 
 UCLASS()
 class SHOOTTHEMUP_API UPlayerHudWidget : public UUserWidget
@@ -13,5 +15,7 @@ class SHOOTTHEMUP_API UPlayerHudWidget : public UUserWidget
 
     UFUNCTION(BlueprintCallable,Category="Ui")
     float GetHealth();
-	
+
+    UFUNCTION(BlueprintCallable,Category="Ui")
+    bool GetWeaponImage(FMyWeaponImageData& ImgData);
 };
