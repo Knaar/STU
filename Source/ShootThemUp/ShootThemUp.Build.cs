@@ -16,7 +16,8 @@ public class ShootThemUp : ModuleRules
 		{
 			"ShootThemUp/Dev",
 			"ShootThemUp/Player",
-			"ShootThemUp/Animations"
+			"ShootThemUp/Animations",
+			"ShootThemUp/PIckUpGifts",
 		});
 
 		// Uncomment if you are using Slate UI
