@@ -6,6 +6,7 @@
 #include "WeaponComponent.generated.h"
 
 struct FMyWeaponImageData;
+struct FMyAmmo;
 class ABaseWeapon;
 class UAnimMontage;
 
@@ -79,8 +80,10 @@ public:
 
     void ChangeClip();
 
-    //Иконки
+    //UI
     bool GetMyWeaponImageData(FMyWeaponImageData& ImgData) const;
+
+    bool GetMyWeaponAmmo(FMyAmmo& AmmoData)const;
 };
 
 

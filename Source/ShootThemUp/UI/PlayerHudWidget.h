@@ -6,7 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "ShootThemUp/Weapon/BaseWeapon.h"
 #include "PlayerHudWidget.generated.h"
-
+class UWeaponComponent;
 
 UCLASS()
 class SHOOTTHEMUP_API UPlayerHudWidget : public UUserWidget
@@ -18,4 +18,9 @@ class SHOOTTHEMUP_API UPlayerHudWidget : public UUserWidget
 
     UFUNCTION(BlueprintCallable,Category="Ui")
     bool GetWeaponImage(FMyWeaponImageData& ImgData);
+
+    UFUNCTION(BlueprintCallable,Category="Ui")
+    bool GetWeaponAmmoData(FMyAmmo& AmmoData);
+
+    UWeaponComponent* GetWeaponComponent() const;
 };

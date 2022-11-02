@@ -19,12 +19,23 @@ float UPlayerHudWidget::GetHealth()
 
 bool UPlayerHudWidget::GetWeaponImage(FMyWeaponImageData &ImgData)
 {
+    return GetWeaponComponent()->GetMyWeaponImageData(ImgData);
+}
+
+bool UPlayerHudWidget::GetWeaponAmmoData(FMyAmmo &AmmoData)
+{
+        
+    return GetWeaponComponent()->GetMyWeaponAmmo(AmmoData);
+}
+
+UWeaponComponent* UPlayerHudWidget::GetWeaponComponent() const
+{
     const auto Player=GetOwningPlayerPawn();
-    if(!Player)return false;
+    if(!Player)return nullptr;
 
     const auto Component=Player->GetComponentByClass(UWeaponComponent::StaticClass());
     const auto WeaponComponent=Cast<UWeaponComponent>(Component);
-    if(!WeaponComponent)return false;
+    if(!WeaponComponent)return nullptr;
 
-    return WeaponComponent->GetMyWeaponImageData(ImgData);
+    return WeaponComponent;
 }

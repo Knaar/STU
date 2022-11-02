@@ -87,10 +87,12 @@ public:
     bool IsClipEmpty();
     void LogAmmo();
 
-    //Иконки
+    //UI
     UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="UI")
     FMyWeaponImageData MyWeaponImageData;
     
     FMyWeaponImageData GetMyWeaponImageData() const    {return MyWeaponImageData;}
+    
+    FMyAmmo GetMyWeaponAmmoData() const    {return CurrentAmmo;}
     
 };

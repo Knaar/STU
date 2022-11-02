@@ -215,3 +215,13 @@ bool UWeaponComponent::GetMyWeaponImageData(FMyWeaponImageData& ImgData) const
     }
     return false;
 }
+
+bool UWeaponComponent::GetMyWeaponAmmo(FMyAmmo &AmmoData) const
+{
+    if(CurrentWeapon)
+    {
+        AmmoData=CurrentWeapon->GetMyWeaponAmmoData();
+        return true;
+    }
+    return false;
+}
