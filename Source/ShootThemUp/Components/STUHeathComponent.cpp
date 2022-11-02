@@ -1,4 +1,4 @@
-#include "Components/STUHeathComponent.h"
+#include "STUHeathComponent.h"
 
 #include "ShootThemUp/Dev/ColdDamageType.h"
 #include "ShootThemUp/Dev/FireDamageType.h"

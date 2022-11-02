@@ -1,4 +1,4 @@
-#include "Components/WeaponComponent.h"
+#include "WeaponComponent.h"
 
 #include "AnimUtils.h"
 #include "STUEquipAnimNotify.h"

@@ -1,16 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Player/STUBaseCharacter.h"
+#include "STUBaseCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "Components/STUHeathComponent.h"
 #include "Components/TextRenderComponent.h"
-#include "Components/WeaponComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "ShootThemUp/Weapon/BaseWeapon.h"
-
+#include "ShootThemUp/Components/STUHeathComponent.h"
+#include "ShootThemUp/Components/WeaponComponent.h"
 
 
 // Sets default values
@@ -31,9 +29,11 @@ ASTUBaseCharacter::ASTUBaseCharacter()
 
     WeaponComponent=CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
 
+    /*
     TextRenderComponent=CreateDefaultSubobject<UTextRenderComponent>("TextRenderComponent");
     TextRenderComponent->SetupAttachment(GetRootComponent());
     TextRenderComponent->SetOwnerNoSee(true);
+    */
 }
 
 // Called when the game starts or when spawned
@@ -43,7 +43,7 @@ void ASTUBaseCharacter::BeginPlay()
 
     //???? ????????
     check(HealthComponent);
-    check(TextRenderComponent);
+    //check(TextRenderComponent);
     check(AnimMontage);
     
     //????? ????????? ?????? ?????????? ????????
@@ -121,7 +121,7 @@ void ASTUBaseCharacter::TurnAround(float Amount)
 void ASTUBaseCharacter::OnHealthChanged(float Health)
 {
     //????? ???????? ?????? ????????????????????
-    TextRenderComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"),Health)));
+    //TextRenderComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"),Health)));
 }
 
 inline void ASTUBaseCharacter::OnPlayerDeath()

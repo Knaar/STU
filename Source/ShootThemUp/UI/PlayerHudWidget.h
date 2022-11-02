@@ -6,7 +6,9 @@
 #include "Blueprint/UserWidget.h"
 #include "ShootThemUp/Weapon/BaseWeapon.h"
 #include "PlayerHudWidget.generated.h"
+
 class UWeaponComponent;
+class USTUHeathComponent;
 
 UCLASS()
 class SHOOTTHEMUP_API UPlayerHudWidget : public UUserWidget
@@ -23,4 +25,12 @@ class SHOOTTHEMUP_API UPlayerHudWidget : public UUserWidget
     bool GetWeaponAmmoData(FMyAmmo& AmmoData);
 
     UWeaponComponent* GetWeaponComponent() const;
+
+    USTUHeathComponent* GetHealthComponent()const;
+
+    UFUNCTION(BlueprintCallable,Category="Ui")
+    bool IsPlayerAlive();
+
+    UFUNCTION(BlueprintCallable,Category="Ui")
+    bool IsPlayerSpectator();
 };

@@ -2,30 +2,29 @@
 
 
 #include "PlayerHudWidget.h"
-#include "Components/STUHeathComponent.h"
-#include "Components/WeaponComponent.h"
+
+#include "ShootThemUp/Components/STUHeathComponent.h"
+#include "ShootThemUp/Components/WeaponComponent.h"
 
 float UPlayerHudWidget::GetHealth()
 {
-    const auto Player=GetOwningPlayerPawn();
-    if(!Player)return 0.0f;
-
-    const auto Component=Player->GetComponentByClass(USTUHeathComponent::StaticClass());
-    const auto HealthComponent=Cast<USTUHeathComponent>(Component);
-    if(!HealthComponent)return 0.0f;
-
+    const auto HealthComponent=GetHealthComponent();
+    if(!HealthComponent) return 0.0f;
     return HealthComponent->GetHealthPercent();
 }
 
 bool UPlayerHudWidget::GetWeaponImage(FMyWeaponImageData &ImgData)
 {
-    return GetWeaponComponent()->GetMyWeaponImageData(ImgData);
+    const auto WeaponComponent=GetWeaponComponent();
+    if(!WeaponComponent) return false;
+    return WeaponComponent->GetMyWeaponImageData(ImgData);
 }
 
 bool UPlayerHudWidget::GetWeaponAmmoData(FMyAmmo &AmmoData)
 {
-        
-    return GetWeaponComponent()->GetMyWeaponAmmo(AmmoData);
+    const auto WeaponComponent=GetWeaponComponent();
+    if(!WeaponComponent) return false;
+    return WeaponComponent->GetMyWeaponAmmo(AmmoData);
 }
 
 UWeaponComponent* UPlayerHudWidget::GetWeaponComponent() const
@@ -38,4 +37,28 @@ UWeaponComponent* UPlayerHudWidget::GetWeaponComponent() const
     if(!WeaponComponent)return nullptr;
 
     return WeaponComponent;
+}
+
+USTUHeathComponent * UPlayerHudWidget::GetHealthComponent() const
+{
+    const auto Player=GetOwningPlayerPawn();
+    if(!Player)return nullptr;
+
+    const auto Component=Player->GetComponentByClass(USTUHeathComponent::StaticClass());
+    const auto HealthComponent=Cast<USTUHeathComponent>(Component);
+    if(!HealthComponent)return nullptr;
+
+    return HealthComponent;
+}
+
+bool UPlayerHudWidget::IsPlayerAlive()
+{
+    const auto HealthComponent=GetHealthComponent();
+    return HealthComponent&&!HealthComponent->IsDead();
+}
+
+bool UPlayerHudWidget::IsPlayerSpectator()
+{
+    const auto Controller=GetOwningPlayer();
+    return Controller&&Controller->GetStateName()==NAME_Spectating;
 }

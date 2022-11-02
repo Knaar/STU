@@ -36,9 +36,10 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Category")
     USTUHeathComponent *HealthComponent;
 
+    /*
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Category")
     UTextRenderComponent *TextRenderComponent;
-
+*/
     UPROPERTY(EditDefaultsOnly, Category="Animation")
     UAnimMontage *AnimMontage;
 
