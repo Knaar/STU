@@ -186,9 +186,23 @@ bool UWeaponComponent::CanReload()
     return CurrentWeapon && !bChangeWeaponInProgress && !bReloadingInProgress&&CurrentWeapon->bCanReload();
 }
 
-void UWeaponComponent::ObReloadEmptyClip()
+void UWeaponComponent::ObReloadEmptyClip(ABaseWeapon* AmmoEmptyWeapon)
 {
-    ChangeClip();
+    if(CurrentWeapon==AmmoEmptyWeapon)
+    {
+        ChangeClip();  
+    }
+    else
+    {
+        for(auto WeaponsRunner:Weapons)
+        {
+            if(WeaponsRunner==AmmoEmptyWeapon)
+            {
+                WeaponsRunner->ChangeClip();
+            }
+        }
+    }
+    
 }
 
 
@@ -222,6 +236,21 @@ bool UWeaponComponent::GetMyWeaponAmmo(FMyAmmo &AmmoData) const
     {
         AmmoData=CurrentWeapon->GetMyWeaponAmmoData();
         return true;
+    }
+    return false;
+}
+
+bool UWeaponComponent::TryToAddBullets(int32 AddedAmmo, TSubclassOf<ABaseWeapon>Weapon)
+{
+    UE_LOG(WeaponComponentLog,Warning,TEXT("Try to add bullets in weaponComponent"))
+    //if(!CurrentWeapon)return false;
+    for(auto WeaponRunner:Weapons)
+    {
+        if(WeaponRunner&&WeaponRunner->IsA(Weapon))
+        {
+            WeaponRunner->TryToAddAmmo(AddedAmmo);
+            return true;
+        }
     }
     return false;
 }

@@ -68,7 +68,7 @@ void ABaseWeapon::DecreaseBullets()
     if (IsClipEmpty() && !IsNoAmmo())
     {
         StopFire();
-        OnReloadEmptyClip.Broadcast();
+        OnReloadEmptyClip.Broadcast(this);
     }
 }
 
@@ -102,4 +102,42 @@ void ABaseWeapon::LogAmmo()
     FString LogAmmo = "Ammo: Bullets:" + FString::FromInt(CurrentAmmo.Bullets) + "Clips: ";
     LogAmmo += CurrentAmmo.bInfiniteWeapon ? "Infinite" : FString::FromInt(CurrentAmmo.Clips);
     UE_LOG(BaseWeaponLog, Warning, TEXT("%s"), *LogAmmo);
+}
+
+bool ABaseWeapon::IsAmmoFull()
+{
+    return CurrentAmmo.Clips == DefaultAmmo.Clips && CurrentAmmo.Bullets == DefaultAmmo.Bullets;
+
+}
+
+bool ABaseWeapon::TryToAddAmmo(int32 AmmoToAdd)
+{
+    if (IsAmmoFull()||CurrentAmmo.bInfiniteWeapon||AmmoToAdd <= 0)
+        return false;
+
+    if (IsNoAmmo())
+    {
+        CurrentAmmo.Clips = FMath::Clamp(AmmoToAdd, 0, DefaultAmmo.Clips+1);
+        OnReloadEmptyClip.Broadcast(this);
+       
+    }
+    else if(CurrentAmmo.Clips<DefaultAmmo.Clips)
+    {
+        const auto NextClipsAmount=CurrentAmmo.Clips+AmmoToAdd;
+        if(DefaultAmmo.Clips-NextClipsAmount>=0)
+        {
+            CurrentAmmo.Clips=NextClipsAmount;
+        }
+        else
+        {
+            CurrentAmmo.Clips=DefaultAmmo.Clips;
+            CurrentAmmo.Bullets=DefaultAmmo.Bullets;
+        }
+    }
+    else
+    {
+        CurrentAmmo.Bullets=DefaultAmmo.Bullets;
+    }
+
+    return true;
 }

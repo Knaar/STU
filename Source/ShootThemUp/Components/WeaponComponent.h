@@ -75,7 +75,7 @@ public:
     bool CanChangeWeapon();
     bool CanReload();
 
-    void ObReloadEmptyClip();
+    void ObReloadEmptyClip(ABaseWeapon* AmmoEmptyWeapon);
     void Reload();
 
     void ChangeClip();
@@ -84,6 +84,10 @@ public:
     bool GetMyWeaponImageData(FMyWeaponImageData& ImgData) const;
 
     bool GetMyWeaponAmmo(FMyAmmo& AmmoData)const;
+
+    //Add Bullets
+    
+    bool TryToAddBullets(int32 AddedAmmo, TSubclassOf<ABaseWeapon>Weapon);
 };
 
 

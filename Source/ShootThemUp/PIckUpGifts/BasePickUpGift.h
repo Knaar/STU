@@ -26,10 +26,11 @@ public:
 
     virtual void NotifyActorBeginOverlap(AActor *OtherActor) override;
 
+    virtual bool IsGiftPickedUp(AActor *Actor);
+    
+    void PickupGift();
+    void RestoreGift();
+
 };
 
-inline void ABasePickUpGift::NotifyActorBeginOverlap(AActor *OtherActor)
-{
-    Super::NotifyActorBeginOverlap(OtherActor);
-    Destroy();
-}
+

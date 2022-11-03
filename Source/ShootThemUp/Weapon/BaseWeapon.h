@@ -3,7 +3,7 @@
 #include "GameFramework/Actor.h"
 #include "BaseWeapon.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnReloadEmptyClip)
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnReloadEmptyClip,ABaseWeapon*)
 
 USTRUCT(BlueprintType)
 struct FMyWeaponImageData
@@ -94,5 +94,8 @@ public:
     FMyWeaponImageData GetMyWeaponImageData() const    {return MyWeaponImageData;}
     
     FMyAmmo GetMyWeaponAmmoData() const    {return CurrentAmmo;}
-    
+
+    //Gift Add Ammo
+    bool IsAmmoFull();
+    bool TryToAddAmmo(int32 AmmoToAdd);
 };
