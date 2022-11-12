@@ -1,7 +1,7 @@
 #include "HealthPickUpGift.h"
 
 #include "ShootThemUp/Components/STUHeathComponent.h"
-#include "ShootThemUp/Components/WeaponComponent.h"
+
 
 DEFINE_LOG_CATEGORY_STATIC(GiftHealth, All, All);
 
@@ -11,14 +11,13 @@ bool AHealthPickUpGift::IsGiftPickedUp(AActor *Actor)
     if(!Player)return false;
 
     const auto ComponentH=Player->GetComponentByClass(USTUHeathComponent::StaticClass());
-    const auto ComponentW=Actor->GetComponentByClass(UWeaponComponent::StaticClass());
-
+    
     const auto HealthComponent=Cast<USTUHeathComponent>(ComponentH);
-    const auto WeaponComponent=Cast<UWeaponComponent>(ComponentW);
+    
+    if(!HealthComponent||HealthComponent->IsHealthFull()||HealthComponent->IsDead())return false;
 
-    if(!HealthComponent||HealthComponent->IsDead())return false;
-
-    HealthComponent->SetHealth(SetHealthAmount);
+    HealthComponent->TryToAddHealth(HealthAmount);
+    
     UE_LOG(GiftHealth,Warning,TEXT("Gift Health PickedUp"));
     return true;
 }

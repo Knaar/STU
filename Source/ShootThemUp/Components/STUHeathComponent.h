@@ -64,5 +64,9 @@ public:
     UFUNCTION(BlueprintCallable)
     bool IsDead() {return FMath::IsNearlyZero(CurrentHealth); }
 
-    
+    //Получение здоровья
+
+    bool IsHealthFull();
+
+    bool TryToAddHealth(float Health);
 };

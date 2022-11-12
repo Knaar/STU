@@ -16,7 +16,7 @@ class SHOOTTHEMUP_API AHealthPickUpGift : public ABasePickUpGift
     
 public:
     UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="HeathSettings",meta=(ClampMin=0,ClampMax=200))
-    float SetHealthAmount=100.0f;
+    float HealthAmount=100.0f;
     
     virtual bool IsGiftPickedUp(AActor *Actor) override;
 };

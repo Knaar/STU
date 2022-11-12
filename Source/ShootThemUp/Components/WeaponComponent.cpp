@@ -254,3 +254,8 @@ bool UWeaponComponent::TryToAddBullets(int32 AddedAmmo, TSubclassOf<ABaseWeapon>
     }
     return false;
 }
+
+bool UWeaponComponent::IsAmmoFull()
+{
+    return CurrentWeapon->IsAmmoFull();
+}

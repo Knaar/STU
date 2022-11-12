@@ -18,11 +18,13 @@ ABasePickUpGift::ABasePickUpGift()
 void ABasePickUpGift::BeginPlay()
 {
     Super::BeginPlay();
+    MakeRandRotation();
 }
 
 void ABasePickUpGift::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+    AddActorLocalRotation(FRotator(0.0f,RotationValue,0.0f));
 }
 
 void ABasePickUpGift::NotifyActorBeginOverlap(AActor *OtherActor)
@@ -51,6 +53,15 @@ void ABasePickUpGift::PickupGift()
 
 void ABasePickUpGift::RestoreGift()
 {
+    MakeRandRotation();
     SphereComponent->SetCollisionResponseToAllChannels(ECR_Overlap);
     SphereComponent->SetVisibility(true,true);
+}
+
+void ABasePickUpGift::MakeRandRotation()
+{
+    bool Rand=FMath::RandBool();
+    int32 NewInt=Rand? 1:-1;
+
+    RotationValue=FMath::RandRange(0.1f,2.0f)*NewInt;
 }

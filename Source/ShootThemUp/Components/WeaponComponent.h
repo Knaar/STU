@@ -88,6 +88,8 @@ public:
     //Add Bullets
     
     bool TryToAddBullets(int32 AddedAmmo, TSubclassOf<ABaseWeapon>Weapon);
+
+    bool IsAmmoFull();
 };
 
 

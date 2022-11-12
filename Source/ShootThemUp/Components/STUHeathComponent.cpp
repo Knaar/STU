@@ -22,9 +22,6 @@ void USTUHeathComponent::BeginPlay()
     {
         ActorPTr->OnTakeAnyDamage.AddDynamic(this,&ThisClass::OnTakeAnyDamage);
     }
-    
-    /*получаем нынешнее здоровье, равное максимально допустимому
-    *CurrentHealth = MaxHealth;*/
 
     //задаём количество ХП
     SetHealth(MaxHealth);
@@ -39,7 +36,7 @@ void USTUHeathComponent::AutoHeal()
 {
     SetHealth(CurrentHealth+HealModifier);
     
-    if (FMath::IsNearlyEqual(CurrentHealth,MaxHealth)&&GetWorld())
+    if (IsHealthFull()&&GetWorld())
     {
         GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
     }
@@ -71,9 +68,24 @@ void USTUHeathComponent::OnTakeAnyDamage(AActor *DamagedActor, float Damage, con
     {
         GetWorld()->GetTimerManager().SetTimer(TimerHandle,this,&USTUHeathComponent::AutoHeal,HealUpdateTime,true,FirstHealDelay);
     }
-    
+}
 
-    /*Блок кода, для проверки на тип урона
+bool USTUHeathComponent::IsHealthFull()
+{
+    return FMath::IsNearlyEqual(CurrentHealth,MaxHealth);
+}
+
+bool USTUHeathComponent::TryToAddHealth(float Health)
+{
+    if(!IsHealthFull()&&!IsDead()&&Health>0)
+    {
+        SetHealth(CurrentHealth+Health);
+        return true;
+    }
+    return false;
+}
+
+/*Блок кода, для проверки на тип урона
     if (DamageType)
     {
         if (DamageType->IsA<UFireDamageType>())
@@ -85,5 +97,3 @@ void USTUHeathComponent::OnTakeAnyDamage(AActor *DamagedActor, float Damage, con
             UE_LOG(LogTemp,Warning,TEXT("So Cold"));
         }
     }*/
-    
-}

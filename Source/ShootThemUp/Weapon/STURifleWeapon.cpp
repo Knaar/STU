@@ -1,6 +1,18 @@
 #include "STURifleWeapon.h"
+#include "STUWeaponFXComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(RifleWeaponLog, All, All);
+
+ASTURifleWeapon::ASTURifleWeapon()
+{
+    WeaponFXComponent=CreateDefaultSubobject<USTUWeaponFXComponent>("WeaponFXComponent");
+}
+
+void ASTURifleWeapon::BeginPlay()
+{
+    Super::BeginPlay();
+    check(WeaponFXComponent);
+}
 
 void ASTURifleWeapon::StartFire()
 {
@@ -48,6 +60,9 @@ void ASTURifleWeapon::MakeShot()
 
     if (HitResult.bBlockingHit)
     {
+        WeaponFXComponent->PlayUNiagaraSystemReleased(HitResult);
+       
+        
         DrawDebugLine(GetWorld(), SocketTransform.GetLocation(), HitResult.ImpactPoint, FColor::Red, false, 0.2f, 0, 3.0f);
         DrawDebugSphere(GetWorld(),HitResult.Location,10,10,FColor::Orange,false,0.5f,0,3.0f);
         UE_LOG(RifleWeaponLog, Warning, TEXT("Bone: %s"),*HitResult.BoneName.ToString());

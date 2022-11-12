@@ -2,6 +2,7 @@
 
 #include "ShootThemUp/Components/STUHeathComponent.h"
 #include "ShootThemUp/Components/WeaponComponent.h"
+#include "ShootThemUp/Weapon/BaseWeapon.h"
 
 DEFINE_LOG_CATEGORY_STATIC(GiftRockets, All, All);
 
@@ -17,7 +18,7 @@ bool ARocketsPickUpGift::IsGiftPickedUp(AActor *Actor)
     if(!HealthComponent||HealthComponent->IsDead())return false;
     
     const auto WeaponComponent=Cast<UWeaponComponent>(ComponentW);
-    if(!WeaponComponent)return false;
+    if(!WeaponComponent||WeaponComponent->CurrentWeapon->IsAmmoFull())return false;
 
     WeaponComponent->TryToAddBullets(GiftAmmo,BaseWeaponToAddAmmo);
     

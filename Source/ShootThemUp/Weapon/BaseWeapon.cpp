@@ -106,7 +106,7 @@ void ABaseWeapon::LogAmmo()
 
 bool ABaseWeapon::IsAmmoFull()
 {
-    return CurrentAmmo.Clips == DefaultAmmo.Clips && CurrentAmmo.Bullets == DefaultAmmo.Bullets;
+    return CurrentAmmo.bInfiniteWeapon||CurrentAmmo.Clips == DefaultAmmo.Clips;
 
 }
 

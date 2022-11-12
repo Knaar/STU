@@ -9,11 +9,11 @@ class UStaticMeshComponent;
 UCLASS()
 class SHOOTTHEMUP_API ABasePickUpGift : public AActor
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 	
 public:	
 	
-	ABasePickUpGift();
+    ABasePickUpGift();
 
     UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Settings")
     USphereComponent* SphereComponent;
@@ -31,6 +31,11 @@ public:
     void PickupGift();
     void RestoreGift();
 
-};
+    //Карусель Пикапа
 
+    float RotationValue=0;
+
+    void MakeRandRotation();
+};
+    
 
