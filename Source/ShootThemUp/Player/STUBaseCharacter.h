@@ -44,7 +44,7 @@ protected:
     UAnimMontage *AnimMontage;
 
 
-    void OnHealthChanged(float Health);
+    void OnHealthChanged(float Health,float DeltaHealth);
     void OnPlayerDeath();
 
 

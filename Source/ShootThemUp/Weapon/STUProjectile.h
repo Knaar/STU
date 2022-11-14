@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "STUWeaponFXComponent.h"
 #include "GameFramework/Actor.h"
 #include "STUProjectile.generated.h"
 
@@ -43,4 +44,8 @@ public:
     void ComponentHit( UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
     AController *GetController();
+
+    //Ниагара
+    UPROPERTY(EditDefaultsOnly,Category="VFX")
+    USTUWeaponFXComponent* WeaponFXComponent;
 };

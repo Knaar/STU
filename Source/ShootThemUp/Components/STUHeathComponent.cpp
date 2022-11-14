@@ -40,13 +40,26 @@ void USTUHeathComponent::AutoHeal()
     {
         GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
     }
-    
+}
+
+void USTUHeathComponent::ShakeTheCameraOnDamage()
+{
+    if(!CameraShake||IsDead())return;
+    const auto Player=Cast<APawn>(GetOwner());
+    if(!Player)return;
+
+    const auto Controller=Player->GetController<APlayerController>();
+    if(!Controller||!Controller->PlayerCameraManager)return;
+
+    Controller->PlayerCameraManager->StartCameraShake(CameraShake);
 }
 
 void USTUHeathComponent::SetHealth(float Health)
 {
-    CurrentHealth=FMath::Clamp(Health,0.0f,MaxHealth);
-    OnPlayerDamaged.Broadcast(CurrentHealth);
+    auto TempHP=FMath::Clamp(Health,0.0f,MaxHealth);
+    auto DeltaHP=TempHP-CurrentHealth;
+    CurrentHealth=TempHP;
+    OnPlayerDamaged.Broadcast(CurrentHealth,DeltaHP);
 }
 
 void USTUHeathComponent::OnTakeAnyDamage(AActor *DamagedActor, float Damage, const UDamageType *DamageType,
@@ -58,7 +71,7 @@ void USTUHeathComponent::OnTakeAnyDamage(AActor *DamagedActor, float Damage, con
     GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 
     SetHealth(CurrentHealth-Damage);
-            
+    ShakeTheCameraOnDamage();
     if (IsDead())
     {
         OnPlayerDeath.Broadcast();

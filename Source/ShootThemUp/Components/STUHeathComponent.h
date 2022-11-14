@@ -7,7 +7,7 @@
 #include "STUHeathComponent.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnPllayerDeathSignature);
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerDamagedSignature, float);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnPlayerDamagedSignature, float,float);
 
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -23,6 +23,7 @@ public:
                                FActorComponentTickFunction *ThisTickFunction) override;
     //Делегаты на Death и получение урона
     FOnPllayerDeathSignature OnPlayerDeath;
+    
     FOnPlayerDamagedSignature OnPlayerDamaged;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Health", meta=(ClampMin="0", ClampMax=100))
@@ -48,8 +49,18 @@ public:
     void AutoHeal();
 
     FTimerHandle TimerHandle;
+
+    //Камера Шейкер
+    
+public:
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="CameraShaker")
+    TSubclassOf<UCameraShakeBase> CameraShake;
+private:
+    void ShakeTheCameraOnDamage();
     
     //Геттер на хп
+
+public:
     float GetHealth() const{return CurrentHealth;}
 
     UFUNCTION(BlueprintCallable)

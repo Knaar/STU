@@ -101,7 +101,7 @@ void ABaseWeapon::LogAmmo()
 {
     FString LogAmmo = "Ammo: Bullets:" + FString::FromInt(CurrentAmmo.Bullets) + "Clips: ";
     LogAmmo += CurrentAmmo.bInfiniteWeapon ? "Infinite" : FString::FromInt(CurrentAmmo.Clips);
-    UE_LOG(BaseWeaponLog, Warning, TEXT("%s"), *LogAmmo);
+    //UE_LOG(BaseWeaponLog, Warning, TEXT("%s"), *LogAmmo);
 }
 
 bool ABaseWeapon::IsAmmoFull()

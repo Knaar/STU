@@ -3,7 +3,7 @@
 #include "GameFramework/Actor.h"
 #include "BaseWeapon.generated.h"
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnReloadEmptyClip,ABaseWeapon*)
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnReloadEmptyClip,ABaseWeapon*);
 
 USTRUCT(BlueprintType)
 struct FMyWeaponImageData

@@ -18,7 +18,7 @@ void ASTURifleWeapon::StartFire()
 {
     Super::StartFire();
     GetWorld()->GetTimerManager().SetTimer(ShootTimer, this, &ThisClass::MakeShot, FireRate, true,0.0f);
-    //MakeShot();
+    
 }
 
 void ASTURifleWeapon::StopFire()
@@ -54,6 +54,7 @@ void ASTURifleWeapon::MakeShot()
     //Задаём нараметры коллизии
     FCollisionQueryParams CollisionParams;
     CollisionParams.AddIgnoredActor(GetOwner());
+    CollisionParams.bReturnPhysicalMaterial=true;
 
     FHitResult HitResult;
     GetWorld()->LineTraceSingleByChannel(HitResult,StartTrace,TraceEnd,ECollisionChannel::ECC_Visibility,CollisionParams);
@@ -63,9 +64,9 @@ void ASTURifleWeapon::MakeShot()
         WeaponFXComponent->PlayUNiagaraSystemReleased(HitResult);
        
         
-        DrawDebugLine(GetWorld(), SocketTransform.GetLocation(), HitResult.ImpactPoint, FColor::Red, false, 0.2f, 0, 3.0f);
-        DrawDebugSphere(GetWorld(),HitResult.Location,10,10,FColor::Orange,false,0.5f,0,3.0f);
-        UE_LOG(RifleWeaponLog, Warning, TEXT("Bone: %s"),*HitResult.BoneName.ToString());
+        //DrawDebugLine(GetWorld(), SocketTransform.GetLocation(), HitResult.ImpactPoint, FColor::Red, false, 0.2f, 0, 3.0f);
+        //DrawDebugSphere(GetWorld(),HitResult.Location,10,10,FColor::Orange,false,0.5f,0,3.0f);
+        //UE_LOG(RifleWeaponLog, Warning, TEXT("Bone: %s"),*HitResult.BoneName.ToString());
         
         const auto Target= HitResult.GetActor();
         if(!Target)return;

@@ -28,36 +28,29 @@ ASTUBaseCharacter::ASTUBaseCharacter()
     HealthComponent=CreateDefaultSubobject<USTUHeathComponent>("HealthComponent");
 
     WeaponComponent=CreateDefaultSubobject<UWeaponComponent>("WeaponComponent");
-
-    /*
-    TextRenderComponent=CreateDefaultSubobject<UTextRenderComponent>("TextRenderComponent");
-    TextRenderComponent->SetupAttachment(GetRootComponent());
-    TextRenderComponent->SetOwnerNoSee(true);
-    */
+    
 }
 
-// Called when the game starts or when spawned
+
 void ASTUBaseCharacter::BeginPlay()
 {
     Super::BeginPlay();
-
-    //???? ????????
-    check(HealthComponent);
-    //check(TextRenderComponent);
-    check(AnimMontage);
     
-    //????? ????????? ?????? ?????????? ????????
+    check(HealthComponent);
+    check(AnimMontage);
+    check(GetMesh());
+    
+    
     float Health=HealthComponent->GetHealth();
-    OnHealthChanged(Health);
+    OnHealthChanged(Health,0.0f);
 
-    //??????? ?????????
+    
     HealthComponent->OnPlayerDamaged.AddUObject(this, &ASTUBaseCharacter::OnHealthChanged);
     HealthComponent->OnPlayerDeath.AddUObject(this,&ThisClass::OnPlayerDeath);
 
     LandedDelegate.AddDynamic(this,&ASTUBaseCharacter::OnGroundLanded);
 
-    //?????? ?????
-    //SpawnWeapon();
+    
 }
 
 void ASTUBaseCharacter::Tick(float DeltaTime)
@@ -108,26 +101,15 @@ void ASTUBaseCharacter::OnStopRuning()
     GetCharacterMovement()->MaxWalkSpeed = 600;
 }
 
-/*??? ?????? ???? ??????? ?????? ?????. ??, AddControllerPithInput ? AddControllerYawInput ????? ????????? ????????
-void ASTUBaseCharacter::LookUp(float Amount)
+void ASTUBaseCharacter::OnHealthChanged(float Health,float DeltaHealth)
 {
-    AddControllerPitchInput(Amount);
-}
-
-void ASTUBaseCharacter::TurnAround(float Amount)
-{
-    AddControllerYawInput(Amount);
-}*/
-void ASTUBaseCharacter::OnHealthChanged(float Health)
-{
-    //????? ???????? ?????? ????????????????????
-    //TextRenderComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"),Health)));
+    
 }
 
 inline void ASTUBaseCharacter::OnPlayerDeath()
 {
     
-    PlayAnimMontage(AnimMontage);
+    //PlayAnimMontage(AnimMontage);
     GetCharacterMovement()->Deactivate();
     SetLifeSpan(LifeSpanOnDeath);
 
@@ -137,6 +119,8 @@ inline void ASTUBaseCharacter::OnPlayerDeath()
         Controller->ChangeState(NAME_Spectating);
     }
     WeaponComponent->StopFire();
+    GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+    GetMesh()->SetSimulatePhysics(true);
 }
 
 void ASTUBaseCharacter::OnGroundLanded(const FHitResult& Hit)

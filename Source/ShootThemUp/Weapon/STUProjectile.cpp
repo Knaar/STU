@@ -13,10 +13,13 @@ ASTUProjectile::ASTUProjectile()
     SphereCollision->IgnoreActorWhenMoving(GetOwner(),true);
     SphereCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
     SphereCollision->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
+    SphereCollision->bReturnMaterialOnMove=true;
 
     MovementComponent=CreateDefaultSubobject<UProjectileMovementComponent>("MovementComponent");
     MovementComponent->InitialSpeed=2000.0f;
     MovementComponent->ProjectileGravityScale=0.0f;
+
+    WeaponFXComponent=CreateDefaultSubobject<USTUWeaponFXComponent>("WeaponFXComponent");
 }
 
 void ASTUProjectile::BeginPlay()
@@ -31,8 +34,9 @@ void ASTUProjectile::ComponentHit(UPrimitiveComponent* HitComponent, AActor* Oth
 {
     if (!GetWorld())return;
     MovementComponent->StopMovementImmediately();
-    
-    DrawDebugSphere(GetWorld(),GetActorLocation(),BlowSphereRadius,20,FColor::Blue,false,1.0f,0.0,3.0);
+
+    WeaponFXComponent->PlayUNiagaraSystemReleased(Hit);
+    //DrawDebugSphere(GetWorld(),GetActorLocation(),BlowSphereRadius,20,FColor::Blue,false,1.0f,0.0,3.0);
 
     
     UGameplayStatics::ApplyRadialDamage(GetWorld(),BlowSphereDamage,GetActorLocation(),BlowSphereRadius,UDamageType::StaticClass(),{GetOwner()},this,GetController(),bDoFullDamage);

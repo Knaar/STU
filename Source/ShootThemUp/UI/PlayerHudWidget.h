@@ -13,24 +13,34 @@ class USTUHeathComponent;
 UCLASS()
 class SHOOTTHEMUP_API UPlayerHudWidget : public UUserWidget
 {
-	GENERATED_BODY()
-
-    UFUNCTION(BlueprintCallable,Category="Ui")
+    GENERATED_BODY()
+public:
+    UFUNCTION(BlueprintCallable, Category="Ui")
     float GetHealth();
 
-    UFUNCTION(BlueprintCallable,Category="Ui")
-    bool GetWeaponImage(FMyWeaponImageData& ImgData);
+    UFUNCTION(BlueprintCallable, Category="Ui")
+    bool GetWeaponImage(FMyWeaponImageData &ImgData);
 
-    UFUNCTION(BlueprintCallable,Category="Ui")
-    bool GetWeaponAmmoData(FMyAmmo& AmmoData);
+    UFUNCTION(BlueprintCallable, Category="Ui")
+    bool GetWeaponAmmoData(FMyAmmo &AmmoData);
 
-    UWeaponComponent* GetWeaponComponent() const;
+    UWeaponComponent *GetWeaponComponent() const;
 
-    USTUHeathComponent* GetHealthComponent()const;
+    USTUHeathComponent *GetHealthComponent() const;
 
-    UFUNCTION(BlueprintCallable,Category="Ui")
+    UFUNCTION(BlueprintCallable, Category="Ui")
     bool IsPlayerAlive();
 
-    UFUNCTION(BlueprintCallable,Category="Ui")
+    UFUNCTION(BlueprintCallable, Category="Ui")
     bool IsPlayerSpectator();
+
+    //Рамка получения урона
+    
+    virtual bool Initialize() override;
+
+    void OnHealthChanged(float Health,float DeltaHealth);
+
+
+    UFUNCTION(BlueprintImplementableEvent, Category="UI")
+    void OnTakeDamage();
 };

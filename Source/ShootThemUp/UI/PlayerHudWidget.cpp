@@ -62,3 +62,23 @@ bool UPlayerHudWidget::IsPlayerSpectator()
     const auto Controller=GetOwningPlayer();
     return Controller&&Controller->GetStateName()==NAME_Spectating;
 }
+
+bool UPlayerHudWidget::Initialize()
+{
+    auto HealthComponent=GetHealthComponent();
+    if(HealthComponent)
+    {
+        HealthComponent->OnPlayerDamaged.AddUObject(this,&UPlayerHudWidget::OnHealthChanged);
+    }
+    
+    return Super::Initialize();
+}
+
+void UPlayerHudWidget::OnHealthChanged(float Health,float DeltaHealth)
+{
+    if(DeltaHealth<0)
+    {
+        OnTakeDamage();
+    }
+    
+}

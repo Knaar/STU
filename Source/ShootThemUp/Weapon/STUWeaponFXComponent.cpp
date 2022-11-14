@@ -1,5 +1,7 @@
 #include "STUWeaponFXComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Components/DecalComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 USTUWeaponFXComponent::USTUWeaponFXComponent()
 {
@@ -21,8 +23,27 @@ void USTUWeaponFXComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 }
 
-void USTUWeaponFXComponent::PlayUNiagaraSystemReleased(FHitResult &HitResult)
+void USTUWeaponFXComponent::PlayUNiagaraSystemReleased(const FHitResult & HitResult)
 {
-    UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(),NiagaraEmitter,HitResult.ImpactPoint,HitResult.ImpactNormal.Rotation());
-   
+    auto ImpactData=DefaultImpactData;
+    if(HitResult.PhysMaterial.IsValid())
+    {
+        auto Mat=HitResult.PhysMaterial.Get();
+        if(ImpactDataMap.Contains(Mat))
+        {
+            ImpactData=ImpactDataMap[Mat];
+        }
+    }
+    UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(),ImpactData.NiagaraEffect,HitResult.ImpactPoint,HitResult.ImpactNormal.Rotation());
+
+    auto DecalComponent=UGameplayStatics::SpawnDecalAtLocation(GetWorld(),
+        ImpactData.DecalData.Material,
+        ImpactData.DecalData.Size,
+        HitResult.ImpactPoint,
+        HitResult.ImpactNormal.Rotation());
+
+    if(DecalComponent)
+    {
+        DecalComponent->SetFadeOut(ImpactData.DecalData.LifeTime,ImpactData.DecalData.FadeOutTime);
+    }
 }
