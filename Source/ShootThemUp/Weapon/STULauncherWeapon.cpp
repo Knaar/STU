@@ -14,6 +14,7 @@ void ASTULauncherWeapon::StartFire()
 void ASTULauncherWeapon::MakeShot()
 {
     if(IsNoAmmo())return;
+    SpawnMuzzleVFX();
     DecreaseBullets();
     
     const auto Controller=GetPlayerController();

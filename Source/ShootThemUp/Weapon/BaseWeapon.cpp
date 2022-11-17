@@ -1,4 +1,7 @@
 #include "BaseWeapon.h"
+
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
 #include "GameFramework/Character.h"
 
 
@@ -140,4 +143,16 @@ bool ABaseWeapon::TryToAddAmmo(int32 AmmoToAdd)
     }
 
     return true;
+}
+
+UNiagaraComponent * ABaseWeapon::SpawnMuzzleVFX()
+{
+    return UNiagaraFunctionLibrary::SpawnSystemAttached(
+        MuzzleVFX,
+        WeaponMesh,
+        SocketName,
+        FVector::ZeroVector,
+        FRotator::ZeroRotator,
+        EAttachLocation::SnapToTarget,
+        true);
 }

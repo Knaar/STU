@@ -3,7 +3,11 @@
 #include "GameFramework/Actor.h"
 #include "BaseWeapon.generated.h"
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnReloadEmptyClip,ABaseWeapon*);
+class UNiagaraComponent;
+class UNiagaraSystem;
+class UNiagaraFunctionLibrary;
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnReloadEmptyClip, ABaseWeapon*);
 
 USTRUCT(BlueprintType)
 struct FMyWeaponImageData
@@ -98,4 +102,11 @@ public:
     //Gift Add Ammo
     bool IsAmmoFull();
     bool TryToAddAmmo(int32 AmmoToAdd);
+
+    //Niagara VFX
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="VFX")
+    UNiagaraSystem* MuzzleVFX;
+
+    UNiagaraComponent* SpawnMuzzleVFX();
 };

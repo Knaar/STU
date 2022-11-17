@@ -1,4 +1,6 @@
 #include "STURifleWeapon.h"
+
+#include "NiagaraComponent.h"
 #include "STUWeaponFXComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(RifleWeaponLog, All, All);
@@ -17,6 +19,7 @@ void ASTURifleWeapon::BeginPlay()
 void ASTURifleWeapon::StartFire()
 {
     Super::StartFire();
+    InitMuzzleComponent();
     GetWorld()->GetTimerManager().SetTimer(ShootTimer, this, &ThisClass::MakeShot, FireRate, true,0.0f);
     
 }
@@ -24,6 +27,7 @@ void ASTURifleWeapon::StartFire()
 void ASTURifleWeapon::StopFire()
 {
     Super::StopFire();
+    SetVFXVisibility(false);
     GetWorld()->GetTimerManager().ClearTimer(ShootTimer);
 }
 
@@ -76,4 +80,22 @@ void ASTURifleWeapon::MakeShot()
     {
         DrawDebugLine(GetWorld(), SocketTransform.GetLocation(), TraceEnd, FColor::Red, false, 0.5f, 0, 3.0f);
     }Super::MakeShot();
+}
+
+void ASTURifleWeapon::InitMuzzleComponent()
+{
+    if(!MuzzleVFXComponent)
+    {
+        MuzzleVFXComponent=SpawnMuzzleVFX();
+    }
+    SetVFXVisibility(true);
+}
+
+void ASTURifleWeapon::SetVFXVisibility(bool Visibility)
+{
+    if(MuzzleVFXComponent)
+    {
+        MuzzleVFXComponent->SetPaused(!Visibility);
+        MuzzleVFXComponent->SetVisibility(Visibility);
+    }
 }
