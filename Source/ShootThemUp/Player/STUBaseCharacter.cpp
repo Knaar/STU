@@ -50,6 +50,7 @@ void ASTUBaseCharacter::BeginPlay()
 
     LandedDelegate.AddDynamic(this,&ASTUBaseCharacter::OnGroundLanded);
 
+    OnButtonPressed.Broadcast();
     
 }
 

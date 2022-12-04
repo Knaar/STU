@@ -2,9 +2,12 @@
 
 #pragma once
 
+
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "STUBaseCharacter.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnButtonPressed);
 
 class UCameraComponent;
 class USpringArmComponent;
@@ -19,7 +22,8 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     GENERATED_BODY()
 
 public:
-    // Sets default values for this character's properties
+    UPROPERTY(BlueprintAssignable,Category="Settings")
+    FOnButtonPressed OnButtonPressed;
 
     ASTUBaseCharacter();
     virtual void BeginPlay() override;

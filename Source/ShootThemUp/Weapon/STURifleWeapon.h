@@ -21,19 +21,27 @@ public:
     virtual void StartFire() override;
     virtual void StopFire() override;
 
+    UFUNCTION()
     virtual void MakeShot() override;
 
     UPROPERTY(EditDefaultsOnly, Category="Settings")
     USTUWeaponFXComponent *WeaponFXComponent;
     
     //Muzzle VFX
-
-
     UPROPERTY()
     UNiagaraComponent* MuzzleVFXComponent;
 
     void InitMuzzleComponent();
 
-    void SetVFXVisibility(bool Visibility);   
-    
+    void SetVFXVisibility(bool Visibility);
+
+    //Trace VFX
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="TraceVFX")
+    UNiagaraSystem* TraceVFX;
+
+    UPROPERTY(VisibleDefaultsOnly,Category="TraceVFX")
+    FString TraceTargetName="TraceTarget";
+
+    void SpawnTraceVFX(const FVector& StartTrace, const FVector& EndTrace);
 };

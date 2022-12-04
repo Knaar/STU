@@ -1,6 +1,7 @@
 #include "STURifleWeapon.h"
 
 #include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
 #include "STUWeaponFXComponent.h"
 
 DEFINE_LOG_CATEGORY_STATIC(RifleWeaponLog, All, All);
@@ -63,10 +64,12 @@ void ASTURifleWeapon::MakeShot()
     FHitResult HitResult;
     GetWorld()->LineTraceSingleByChannel(HitResult,StartTrace,TraceEnd,ECollisionChannel::ECC_Visibility,CollisionParams);
 
+    FVector EndTraceVfx=TraceEnd;
     if (HitResult.bBlockingHit)
     {
         WeaponFXComponent->PlayUNiagaraSystemReleased(HitResult);
-       
+
+        EndTraceVfx=HitResult.ImpactPoint;
         
         //DrawDebugLine(GetWorld(), SocketTransform.GetLocation(), HitResult.ImpactPoint, FColor::Red, false, 0.2f, 0, 3.0f);
         //DrawDebugSphere(GetWorld(),HitResult.Location,10,10,FColor::Orange,false,0.5f,0,3.0f);
@@ -76,10 +79,16 @@ void ASTURifleWeapon::MakeShot()
         if(!Target)return;
         Target->TakeDamage(BulletDamage,FDamageEvent{},Controller,this);
     }
+
+    SpawnTraceVFX(SocketTransform.GetLocation(),EndTraceVfx);
+    
+    /*
     else
     {
         DrawDebugLine(GetWorld(), SocketTransform.GetLocation(), TraceEnd, FColor::Red, false, 0.5f, 0, 3.0f);
-    }Super::MakeShot();
+    }
+    Super::MakeShot();
+    */
 }
 
 void ASTURifleWeapon::InitMuzzleComponent()
@@ -97,5 +106,14 @@ void ASTURifleWeapon::SetVFXVisibility(bool Visibility)
     {
         MuzzleVFXComponent->SetPaused(!Visibility);
         MuzzleVFXComponent->SetVisibility(Visibility);
+    }
+}
+
+void ASTURifleWeapon::SpawnTraceVFX(const FVector &StartTrace, const FVector &EndTrace)
+{
+    const auto TraceVFXComponent=UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(),TraceVFX,StartTrace);
+    if(TraceVFXComponent)
+    {
+        TraceVFXComponent->SetNiagaraVariableVec3(TraceTargetName,EndTrace);
     }
 }
