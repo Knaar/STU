@@ -22,5 +22,11 @@ public:
     UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Settings")
     FBlackboardKeySelector AimLocationKey;
 
+    UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Settings")
+    bool SelfCenter=true;
+
+    UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="Settings",meta=(EditCondition="!SelfCenter"))
+    FBlackboardKeySelector CenterActorKey;
+    
     virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory) override;
 };

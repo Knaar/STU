@@ -3,6 +3,7 @@
 
 #include "STUAIController.h"
 #include "AIBaseCharacter.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "ShootThemUp/Components/STUAIPerceptionComponent.h"
 
 
@@ -17,7 +18,7 @@ ASTUAIController::ASTUAIController()
 void ASTUAIController::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
-    const auto AimActor=STUAIPerceptionComponent->GetClosestEnemy();
+    const auto AimActor=GetFocusOnActor();
     SetFocus(AimActor);
 }
 
@@ -31,5 +32,14 @@ void ASTUAIController::OnPossess(APawn *InPawn)
     {
         RunBehaviorTree(STUCharacter->BehaviorTree);
     }
+    
+}
+
+AActor * ASTUAIController::GetFocusOnActor() const
+{
+    if(!GetBlackboardComponent())return nullptr;
+    const auto Actor=Cast<AActor>(GetBlackboardComponent()->GetValueAsObject(FocusOnKeyName));
+    //UE_LOG(LogTemp,Warning,TEXT("Actor Found"));
+    return Actor;
     
 }
