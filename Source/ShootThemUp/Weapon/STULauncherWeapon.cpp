@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ // Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "STULauncherWeapon.h"
@@ -31,7 +31,7 @@ void ASTULauncherWeapon::MakeShot()
     
     
     //Блок стрельбы лучом, для определения, куда полетит ракета
-    const FTransform SocketTransform = WeaponMesh->GetSocketTransform(SocketName);
+    const FTransform SocketTransform = WeaponMesh->GetSocketTransform(MuzzleSocketName);
     
     const FVector StartTrace = CameraLocation;//SocketTransform.GetLocation();
     const FVector TraceDirection =CameraRotation.Vector();

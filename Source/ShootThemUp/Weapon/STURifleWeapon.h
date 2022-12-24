@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BaseWeapon.h"
+#include "STUBaseWeapon.h"
 #include "STUWeaponFXComponent.h"
 #include "STURifleWeapon.generated.h"
 
@@ -21,6 +21,7 @@ public:
     virtual void StartFire() override;
     virtual void StopFire() override;
 
+   
     UFUNCTION()
     virtual void MakeShot() override;
 

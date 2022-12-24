@@ -2,7 +2,7 @@
 
 #include "ShootThemUp/Components/STUHeathComponent.h"
 #include "ShootThemUp/Components/WeaponComponent.h"
-#include "ShootThemUp/Weapon/BaseWeapon.h"
+#include "ShootThemUp/Weapon/STUBaseWeapon.h"
 
 DEFINE_LOG_CATEGORY_STATIC(GiftRockets, All, All);
 

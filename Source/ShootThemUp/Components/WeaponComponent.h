@@ -59,9 +59,9 @@ public:
     void SpawnWeapon();
     void AttachWeaponToMesh(ABaseWeapon *Weapon, USceneComponent *SceneComponent, const FName &SocketName);
     void EquipWeapon(int32 WeaponIndex);
-    void NextWeapon();
+    virtual void NextWeapon();
 
-    void StartFire();
+    virtual void StartFire();
     void StopFire();
 
     void PlayAnimation(UAnimMontage *AnimMontage);

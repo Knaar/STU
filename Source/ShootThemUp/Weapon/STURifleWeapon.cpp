@@ -3,6 +3,7 @@
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "STUWeaponFXComponent.h"
+#include "GameFramework/Character.h"
 
 DEFINE_LOG_CATEGORY_STATIC(RifleWeaponLog, All, All);
 
@@ -32,6 +33,8 @@ void ASTURifleWeapon::StopFire()
     GetWorld()->GetTimerManager().ClearTimer(ShootTimer);
 }
 
+
+
 void ASTURifleWeapon::MakeShot()
 {
     if (!GetWorld()||IsNoAmmo())
@@ -40,18 +43,35 @@ void ASTURifleWeapon::MakeShot()
         return;
     }
     DecreaseBullets();
-    const auto Controller=GetPlayerController();
+    
 
     //Узнаём напрвление камеры для определения траектории стрельбы
     FVector CameraLocation;
     FRotator CameraRotation;
-    Controller->GetPlayerViewPoint(CameraLocation,CameraRotation);
+
+    const auto STUCharacter=Cast<ACharacter>(GetOwner());
+    if(!STUCharacter) return;
+
+    const auto Controller=GetPlayerController();
+    
+    if(STUCharacter->IsPlayerControlled())
+    {
+        
+        if(!Controller) return;
+        Controller->GetPlayerViewPoint(CameraLocation,CameraRotation);
+    }
+    else
+    {
+        CameraLocation=GetMuzzleLocation();
+        CameraRotation=WeaponMesh->GetSocketRotation(MuzzleSocketName);
+    }
+    
 
     //Создаём радианы для разброса пуль
     const auto HalfRad=FMath::DegreesToRadians(FireAccuracy);
     
     //Задаем переменные Положения соккета,Начальной точки, конечной, и направления
-    const FTransform SocketTransform = WeaponMesh->GetSocketTransform(SocketName);
+    const FTransform SocketTransform = WeaponMesh->GetSocketTransform(MuzzleSocketName);
     const FVector StartTrace = CameraLocation;//SocketTransform.GetLocation();
     const FVector TraceDirection = FMath::VRandCone(CameraRotation.Vector(),HalfRad);//SocketTransform.GetRotation().GetForwardVector();
     const FVector TraceEnd = StartTrace + TraceDirection * TraceLenght;

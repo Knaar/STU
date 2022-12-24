@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "ShootThemUp/Weapon/BaseWeapon.h"
+#include "ShootThemUp/Weapon/STUBaseWeapon.h"
 #include "PlayerHudWidget.generated.h"
 
 class UWeaponComponent;

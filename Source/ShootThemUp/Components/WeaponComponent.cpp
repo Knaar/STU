@@ -2,7 +2,7 @@
 
 #include "AnimUtils.h"
 #include "STUEquipAnimNotify.h"
-#include "ShootThemUp/Weapon/BaseWeapon.h"
+#include "ShootThemUp/Weapon/STUBaseWeapon.h"
 
 DEFINE_LOG_CATEGORY_STATIC(WeaponComponentLog, All, All);
 
