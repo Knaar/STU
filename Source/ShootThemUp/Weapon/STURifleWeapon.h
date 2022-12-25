@@ -10,7 +10,7 @@
 class UNiagaraComponent;
 
 UCLASS()
-class SHOOTTHEMUP_API ASTURifleWeapon : public ABaseWeapon
+class SHOOTTHEMUP_API ASTURifleWeapon : public ASTUBaseWeapon
 {
     
     GENERATED_BODY()

@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "BasePickUpGift.h"
 #include "RocketsPickUpGift.generated.h"
-class ABaseWeapon;
+class ASTUBaseWeapon;
 
 
 UCLASS()
@@ -15,7 +15,7 @@ public:
     int32 GiftAmmo;
 
     UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="GiftAmmo")
-    TSubclassOf<ABaseWeapon> BaseWeaponToAddAmmo;
+    TSubclassOf<ASTUBaseWeapon> BaseWeaponToAddAmmo;
         
     virtual bool IsGiftPickedUp(AActor *Actor) override;
 };

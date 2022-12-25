@@ -7,7 +7,7 @@ class UNiagaraComponent;
 class UNiagaraSystem;
 class UNiagaraFunctionLibrary;
 
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnReloadEmptyClip, ABaseWeapon*);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnReloadEmptyClip, ASTUBaseWeapon*);
 
 USTRUCT(BlueprintType)
 struct FMyWeaponImageData
@@ -37,7 +37,7 @@ struct FMyAmmo
 };
 
 UCLASS()
-class SHOOTTHEMUP_API ABaseWeapon : public AActor
+class SHOOTTHEMUP_API ASTUBaseWeapon : public AActor
 {
     GENERATED_BODY()
 
@@ -62,7 +62,7 @@ public:
     float FireAccuracy=1.5f;
 
     //Shooting
-    ABaseWeapon();
+    ASTUBaseWeapon();
     virtual void BeginPlay() override;
     
     virtual void StartFire(){};

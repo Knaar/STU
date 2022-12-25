@@ -47,7 +47,7 @@ void ABasePickUpGift::PickupGift()
     SphereComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
     SphereComponent->SetVisibility(false,true);
 
-    FTimerHandle TimerToRestore;
+    
     GetWorldTimerManager().SetTimer(TimerToRestore,this,&ABasePickUpGift::RestoreGift,5.0f);
 }
 
@@ -64,4 +64,9 @@ void ABasePickUpGift::MakeRandRotation()
     int32 NewInt=Rand? 1:-1;
 
     RotationValue=FMath::RandRange(0.1f,2.0f)*NewInt;
+}
+
+bool ABasePickUpGift::CouldBeTaken()const
+{
+    return !GetWorldTimerManager().IsTimerActive(TimerToRestore);
 }

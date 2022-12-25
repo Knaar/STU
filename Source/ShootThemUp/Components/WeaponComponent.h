@@ -7,7 +7,7 @@
 
 struct FMyWeaponImageData;
 struct FMyAmmo;
-class ABaseWeapon;
+class ASTUBaseWeapon;
 class UAnimMontage;
 
 USTRUCT(BlueprintType)
@@ -15,7 +15,7 @@ struct FMyWeaponData
 {
     GENERATED_BODY()
     UPROPERTY(EditAnywhere)
-    TSubclassOf<ABaseWeapon> DataWeapon;
+    TSubclassOf<ASTUBaseWeapon> DataWeapon;
 
     UPROPERTY(EditAnywhere)
     UAnimMontage *DataAnimMontage;
@@ -32,10 +32,10 @@ public:
     TArray<FMyWeaponData> WeaponData;
 
     UPROPERTY()
-    ABaseWeapon *CurrentWeapon = nullptr;
+    ASTUBaseWeapon *CurrentWeapon = nullptr;
     
     UPROPERTY(VisibleAnywhere)
-    TArray<ABaseWeapon*> Weapons;
+    TArray<ASTUBaseWeapon*> Weapons;
     
     UPROPERTY(EditDefaultsOnly, Category="Animation")
     UAnimMontage *CurrentAnimEquipMontage=nullptr;
@@ -57,7 +57,7 @@ public:
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
     
     void SpawnWeapon();
-    void AttachWeaponToMesh(ABaseWeapon *Weapon, USceneComponent *SceneComponent, const FName &SocketName);
+    void AttachWeaponToMesh(ASTUBaseWeapon *Weapon, USceneComponent *SceneComponent, const FName &SocketName);
     void EquipWeapon(int32 WeaponIndex);
     virtual void NextWeapon();
 
@@ -75,7 +75,7 @@ public:
     bool CanChangeWeapon();
     bool CanReload();
 
-    void ObReloadEmptyClip(ABaseWeapon* AmmoEmptyWeapon);
+    void ObReloadEmptyClip(ASTUBaseWeapon* AmmoEmptyWeapon);
     void Reload();
 
     void ChangeClip();
@@ -87,7 +87,8 @@ public:
 
     //Add Bullets
     
-    bool TryToAddBullets(int32 AddedAmmo, TSubclassOf<ABaseWeapon>Weapon);
+    bool TryToAddBullets(int32 AddedAmmo, TSubclassOf<ASTUBaseWeapon>Weapon);
+    bool NeedAmmo( TSubclassOf<ASTUBaseWeapon>Weapon);
 
     bool IsAmmoFull();
 };

@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class SHOOTTHEMUP_API ASTULauncherWeapon : public ABaseWeapon
+class SHOOTTHEMUP_API ASTULauncherWeapon : public ASTUBaseWeapon
 {
     GENERATED_BODY()
 public:   

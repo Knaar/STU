@@ -47,7 +47,7 @@ void UWeaponComponent::SpawnWeapon()
 
     for (auto OnWeaponData : WeaponData)
     {
-        auto Weapon = GetWorld()->SpawnActor<ABaseWeapon>(OnWeaponData.DataWeapon);
+        auto Weapon = GetWorld()->SpawnActor<ASTUBaseWeapon>(OnWeaponData.DataWeapon);
         if (!Weapon)
             continue;
 
@@ -59,7 +59,7 @@ void UWeaponComponent::SpawnWeapon()
     }
 }
 
-void UWeaponComponent::AttachWeaponToMesh(ABaseWeapon *Weapon, USceneComponent *SceneComponent, const FName &SocketName)
+void UWeaponComponent::AttachWeaponToMesh(ASTUBaseWeapon *Weapon, USceneComponent *SceneComponent, const FName &SocketName)
 {
     const FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, false);
     Weapon->AttachToComponent(SceneComponent, AttachmentRules, SocketName);
@@ -194,7 +194,7 @@ bool UWeaponComponent::CanReload()
     return CurrentWeapon && !bChangeWeaponInProgress && !bReloadingInProgress&&CurrentWeapon->bCanReload();
 }
 
-void UWeaponComponent::ObReloadEmptyClip(ABaseWeapon* AmmoEmptyWeapon)
+void UWeaponComponent::ObReloadEmptyClip(ASTUBaseWeapon* AmmoEmptyWeapon)
 {
     if(CurrentWeapon==AmmoEmptyWeapon)
     {
@@ -248,7 +248,7 @@ bool UWeaponComponent::GetMyWeaponAmmo(FMyAmmo &AmmoData) const
     return false;
 }
 
-bool UWeaponComponent::TryToAddBullets(int32 AddedAmmo, TSubclassOf<ABaseWeapon>Weapon)
+bool UWeaponComponent::TryToAddBullets(int32 AddedAmmo, TSubclassOf<ASTUBaseWeapon>Weapon)
 {
     UE_LOG(WeaponComponentLog,Warning,TEXT("Try to add bullets in weaponComponent"))
     //if(!CurrentWeapon)return false;
@@ -258,6 +258,18 @@ bool UWeaponComponent::TryToAddBullets(int32 AddedAmmo, TSubclassOf<ABaseWeapon>
         {
             WeaponRunner->TryToAddAmmo(AddedAmmo);
             return true;
+        }
+    }
+    return false;
+}
+
+bool UWeaponComponent::NeedAmmo(TSubclassOf<ASTUBaseWeapon> Weapon)
+{
+    for(auto WeaponRunner:Weapons)
+    {
+        if(WeaponRunner&&WeaponRunner->IsA(Weapon))
+        {
+            return !WeaponRunner->IsAmmoFull();
         }
     }
     return false;

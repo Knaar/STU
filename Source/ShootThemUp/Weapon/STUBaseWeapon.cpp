@@ -7,14 +7,14 @@
 
 DEFINE_LOG_CATEGORY_STATIC(BaseWeaponLog, All, All);
 
-ABaseWeapon::ABaseWeapon()
+ASTUBaseWeapon::ASTUBaseWeapon()
 {
     PrimaryActorTick.bCanEverTick = false; 
     WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon  mesh");
     SetRootComponent(WeaponMesh);
 }
 
-void ABaseWeapon::BeginPlay()
+void ASTUBaseWeapon::BeginPlay()
 {
     Super::BeginPlay();
     check(GetWorld());
@@ -23,7 +23,7 @@ void ABaseWeapon::BeginPlay()
     CurrentAmmo = DefaultAmmo;
 }
 
-APlayerController *ABaseWeapon::GetPlayerController() const
+APlayerController *ASTUBaseWeapon::GetPlayerController() const
 {
     const auto Player = Cast<ACharacter>(GetOwner());
     if (!Player) return nullptr;
@@ -33,17 +33,17 @@ APlayerController *ABaseWeapon::GetPlayerController() const
     return Controller;
 }
 
-FVector ABaseWeapon::GetMuzzleLocation() const
+FVector ASTUBaseWeapon::GetMuzzleLocation() const
 {
     return WeaponMesh->GetSocketLocation(MuzzleSocketName);
 }
 
-bool ABaseWeapon::bCanReload()
+bool ASTUBaseWeapon::bCanReload()
 {
     return CurrentAmmo.Bullets < DefaultAmmo.Bullets && CurrentAmmo.Clips > 0;
 }
 
-void ABaseWeapon::DecreaseAmmo()
+void ASTUBaseWeapon::DecreaseAmmo()
 {
     if (CurrentAmmo.Bullets == 0)
     {
@@ -58,7 +58,7 @@ void ABaseWeapon::DecreaseAmmo()
     }
 }
 
-void ABaseWeapon::ChangeClip()
+void ASTUBaseWeapon::ChangeClip()
 {
     if (!CurrentAmmo.bInfiniteWeapon)
     {
@@ -73,30 +73,30 @@ void ABaseWeapon::ChangeClip()
     CurrentAmmo.Bullets = DefaultAmmo.Bullets;
 }
 
-bool ABaseWeapon::IsAmmoEmpty()
+bool ASTUBaseWeapon::IsAmmoEmpty()
 {
     return !CurrentAmmo.bInfiniteWeapon && IsClipEmpty() && CurrentAmmo.Clips == 0;
 }
 
-bool ABaseWeapon::IsClipEmpty()
+bool ASTUBaseWeapon::IsClipEmpty()
 {
     return CurrentAmmo.Bullets == 0;
 }
 
-void ABaseWeapon::LogAmmo()
+void ASTUBaseWeapon::LogAmmo()
 {
     FString LogAmmo = "Ammo: Bullets:" + FString::FromInt(CurrentAmmo.Bullets) + "Clips: ";
     LogAmmo += CurrentAmmo.bInfiniteWeapon ? "Infinite" : FString::FromInt(CurrentAmmo.Clips);
     //UE_LOG(BaseWeaponLog, Warning, TEXT("%s"), *LogAmmo);
 }
 
-bool ABaseWeapon::IsAmmoFull()
+bool ASTUBaseWeapon::IsAmmoFull()
 {
     return CurrentAmmo.bInfiniteWeapon||CurrentAmmo.Clips == DefaultAmmo.Clips;
 
 }
 
-bool ABaseWeapon::TryToAddAmmo(int32 AmmoToAdd)
+bool ASTUBaseWeapon::TryToAddAmmo(int32 AmmoToAdd)
 {
     if (IsAmmoFull()||CurrentAmmo.bInfiniteWeapon||AmmoToAdd <= 0)
         return false;
@@ -128,7 +128,7 @@ bool ABaseWeapon::TryToAddAmmo(int32 AmmoToAdd)
     return true;
 }
 
-UNiagaraComponent * ABaseWeapon::SpawnMuzzleVFX()
+UNiagaraComponent * ASTUBaseWeapon::SpawnMuzzleVFX()
 {
     return UNiagaraFunctionLibrary::SpawnSystemAttached(
         MuzzleVFX,
@@ -140,7 +140,7 @@ UNiagaraComponent * ABaseWeapon::SpawnMuzzleVFX()
         true);
 }
 
-bool ABaseWeapon::GetPlayerViewPoint(FVector &ViewLocation, FRotator &ViewRotation) const
+bool ASTUBaseWeapon::GetPlayerViewPoint(FVector &ViewLocation, FRotator &ViewRotation) const
 {
     const auto STUCharacter=Cast<ACharacter>(GetOwner());
     if(!STUCharacter)return false;

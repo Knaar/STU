@@ -27,7 +27,9 @@ public:
     virtual void NotifyActorBeginOverlap(AActor *OtherActor) override;
 
     virtual bool IsGiftPickedUp(AActor *Actor);
-    
+
+    FTimerHandle TimerToRestore;
+        
     void PickupGift();
     void RestoreGift();
 
@@ -36,6 +38,8 @@ public:
     float RotationValue=0;
 
     void MakeRandRotation();
+
+    bool CouldBeTaken() const;
 };
     
 
