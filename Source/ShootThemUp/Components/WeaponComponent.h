@@ -31,11 +31,11 @@ public:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon")
     TArray<FMyWeaponData> WeaponData;
 
-    UPROPERTY(VisibleAnywhere)
-    TArray<ABaseWeapon*> Weapons;
-
     UPROPERTY()
     ABaseWeapon *CurrentWeapon = nullptr;
+    
+    UPROPERTY(VisibleAnywhere)
+    TArray<ABaseWeapon*> Weapons;
     
     UPROPERTY(EditDefaultsOnly, Category="Animation")
     UAnimMontage *CurrentAnimEquipMontage=nullptr;

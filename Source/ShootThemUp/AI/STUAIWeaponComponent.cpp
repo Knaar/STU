@@ -9,7 +9,7 @@ void USTUAIWeaponComponent::StartFire()
 {
     if (!CanFire()) return;
 
-    if (CurrentWeapon->IsNoAmmo())
+    if (CurrentWeapon->IsAmmoEmpty())
     {
         NextWeapon();
     }
@@ -21,5 +21,19 @@ void USTUAIWeaponComponent::StartFire()
 
 void USTUAIWeaponComponent::NextWeapon()
 {
+    if(!CanFire())return;
+
+    int32 NextIndex=(CurrentWeaponIndex++)%Weapons.Num();
+    while (NextIndex!=CurrentWeaponIndex)
+    {
+        if(!Weapons[NextIndex]->IsAmmoEmpty())break;
+        NextIndex=(NextIndex++)%Weapons.Num();
+    }
     Super::NextWeapon();
+
+    if(CurrentWeaponIndex!=NextIndex)
+    {
+        CurrentWeaponIndex=NextIndex;
+        EquipWeapon(CurrentWeaponIndex);
+    }
 }

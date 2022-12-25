@@ -100,9 +100,17 @@ void UWeaponComponent::NextWeapon()
 
 void UWeaponComponent::StartFire()
 {
-    if (!CanFire())
-        return;
-    CurrentWeapon->StartFire();
+    if (!CanFire()) return;
+
+    if(CurrentWeapon->IsAmmoEmpty())
+    {
+        NextWeapon();
+    }
+    else
+    {
+        CurrentWeapon->StartFire();
+    }
+    
 }
 
 void UWeaponComponent::StopFire()

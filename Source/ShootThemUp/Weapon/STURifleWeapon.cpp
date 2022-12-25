@@ -37,12 +37,12 @@ void ASTURifleWeapon::StopFire()
 
 void ASTURifleWeapon::MakeShot()
 {
-    if (!GetWorld()||IsNoAmmo())
+    if (!GetWorld()||IsAmmoEmpty())
     {
         StopFire();
         return;
     }
-    DecreaseBullets();
+    DecreaseAmmo();
     
 
     //Узнаём напрвление камеры для определения траектории стрельбы

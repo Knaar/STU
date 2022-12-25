@@ -19,25 +19,18 @@ void USTUFireService::TickNode(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMem
     const auto BlackBoard=OwnerComp.GetBlackboardComponent();
 
     const auto Pawn=Controller->GetCharacter();
-    if (Pawn)
-    {
-        UE_LOG(LogTemp,Warning,TEXT("Pawn valid"));
-    }
-     else
-     {
-         UE_LOG(LogTemp,Warning,TEXT("Pawn not valid"));
-     }
+    if (!Pawn) return;
+    
     const auto HasAim=BlackBoard && BlackBoard->GetValueAsObject(EnemyActorKey.SelectedKeyName);
 
     if(Controller)
     {
         const auto Component=Pawn->GetComponentByClass(UWeaponComponent::StaticClass());
         const auto WeaponComponent=Cast<UWeaponComponent>(Component);
-        UE_LOG(LogTemp,Warning,TEXT("Searching WeaponComponent"));
+       
         if(WeaponComponent)
         {
             HasAim? WeaponComponent->StartFire():WeaponComponent->StopFire();
-            UE_LOG(LogTemp,Warning,TEXT("Try to shoot"));
         }
         else
         {

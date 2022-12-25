@@ -25,7 +25,7 @@ public:
     UPROPERTY(BlueprintAssignable,Category="Settings")
     FOnButtonPressed OnButtonPressed;
 
-    ASTUBaseCharacter();
+    ASTUBaseCharacter(const FObjectInitializer& ObjInit);
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaTime) override;
     virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
@@ -49,7 +49,7 @@ protected:
 
 
     void OnHealthChanged(float Health,float DeltaHealth);
-    void OnPlayerDeath();
+    virtual void OnPlayerDeath();
 
 
    

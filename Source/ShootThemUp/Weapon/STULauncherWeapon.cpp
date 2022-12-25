@@ -4,6 +4,7 @@
 #include "STULauncherWeapon.h"
 
 #include "STUProjectile.h"
+#include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 
 void ASTULauncherWeapon::StartFire()
@@ -13,17 +14,37 @@ void ASTULauncherWeapon::StartFire()
 
 void ASTULauncherWeapon::MakeShot()
 {
-    if(IsNoAmmo())return;
+    if (!GetWorld()||IsAmmoEmpty())
+    {
+        StopFire();
+        return;
+    }
+    DecreaseAmmo();
     SpawnMuzzleVFX();
-    DecreaseBullets();
     
-    const auto Controller=GetPlayerController();
 
     //Узнаём напрвление камеры для определения траектории стрельбы
     FVector CameraLocation;
     FRotator CameraRotation;
-    Controller->GetPlayerViewPoint(CameraLocation,CameraRotation);
+   
+    const auto STUCharacter=Cast<ACharacter>(GetOwner());
+    if(!STUCharacter) return;
 
+    const auto Controller=GetPlayerController();
+    
+    if(STUCharacter->IsPlayerControlled())
+    {
+        
+        if(!Controller) return;
+        Controller->GetPlayerViewPoint(CameraLocation,CameraRotation);
+    }
+    else
+    {
+        CameraLocation=GetMuzzleLocation();
+        CameraRotation=WeaponMesh->GetSocketRotation(MuzzleSocketName);
+    }
+
+    
     FHitResult HitResult;
     //Задаём нараметры коллизии
     FCollisionQueryParams CollisionParams;

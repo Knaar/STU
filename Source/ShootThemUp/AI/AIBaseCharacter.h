@@ -17,7 +17,9 @@ class SHOOTTHEMUP_API AAIBaseCharacter : public ASTUBaseCharacter
 public:
     AAIBaseCharacter(const FObjectInitializer& ObjInit);
 
-    virtual void BeginPlay() override;
+    
     UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Behavior Tree")
     UBehaviorTree* BehaviorTree;
+
+    virtual void OnPlayerDeath() override;
 };

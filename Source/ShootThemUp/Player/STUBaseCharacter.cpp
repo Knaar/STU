@@ -12,9 +12,11 @@
 
 
 // Sets default values
-ASTUBaseCharacter::ASTUBaseCharacter()
+ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjInit)
+   // :Super(ObjInit.SetDefaultSubobjectClass<USTUC>())
 {
 
+   
     PrimaryActorTick.bCanEverTick = true;
 
     SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));

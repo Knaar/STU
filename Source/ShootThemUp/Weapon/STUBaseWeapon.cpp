@@ -43,7 +43,7 @@ bool ABaseWeapon::bCanReload()
     return CurrentAmmo.Bullets < DefaultAmmo.Bullets && CurrentAmmo.Clips > 0;
 }
 
-void ABaseWeapon::DecreaseBullets()
+void ABaseWeapon::DecreaseAmmo()
 {
     if (CurrentAmmo.Bullets == 0)
     {
@@ -51,7 +51,7 @@ void ABaseWeapon::DecreaseBullets()
     }
     CurrentAmmo.Bullets--;
     LogAmmo();
-    if (IsClipEmpty() && !IsNoAmmo())
+    if (IsClipEmpty() && !IsAmmoEmpty())
     {
         StopFire();
         OnReloadEmptyClip.Broadcast(this);
@@ -73,7 +73,7 @@ void ABaseWeapon::ChangeClip()
     CurrentAmmo.Bullets = DefaultAmmo.Bullets;
 }
 
-bool ABaseWeapon::IsNoAmmo()
+bool ABaseWeapon::IsAmmoEmpty()
 {
     return !CurrentAmmo.bInfiniteWeapon && IsClipEmpty() && CurrentAmmo.Clips == 0;
 }
@@ -101,7 +101,7 @@ bool ABaseWeapon::TryToAddAmmo(int32 AmmoToAdd)
     if (IsAmmoFull()||CurrentAmmo.bInfiniteWeapon||AmmoToAdd <= 0)
         return false;
 
-    if (IsNoAmmo())
+    if (IsAmmoEmpty())
     {
         CurrentAmmo.Clips = FMath::Clamp(AmmoToAdd, 0, DefaultAmmo.Clips+1);
         OnReloadEmptyClip.Broadcast(this);

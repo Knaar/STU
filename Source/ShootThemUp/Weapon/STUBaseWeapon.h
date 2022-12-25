@@ -88,9 +88,9 @@ public:
 
     bool bCanReload();
     
-    void DecreaseBullets();
+    void DecreaseAmmo();
     void ChangeClip();
-    bool IsNoAmmo();
+    bool IsAmmoEmpty();
     bool IsClipEmpty();
     void LogAmmo();
 
