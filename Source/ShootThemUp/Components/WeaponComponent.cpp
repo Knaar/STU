@@ -161,7 +161,7 @@ void UWeaponComponent::OnEquipFinished(USkeletalMeshComponent *SkeletalMesh)
 {
     const ACharacter *Character = Cast<ACharacter>(GetOwner());
     if (!Character) return;
-    UE_LOG(WeaponComponentLog,Warning,TEXT("Equipped"))
+    //UE_LOG(WeaponComponentLog,Warning,TEXT("Equipped"))
     if (Character->GetMesh() == SkeletalMesh)
     {
         bChangeWeaponInProgress = false;
@@ -250,7 +250,7 @@ bool UWeaponComponent::GetMyWeaponAmmo(FMyAmmo &AmmoData) const
 
 bool UWeaponComponent::TryToAddBullets(int32 AddedAmmo, TSubclassOf<ASTUBaseWeapon>Weapon)
 {
-    UE_LOG(WeaponComponentLog,Warning,TEXT("Try to add bullets in weaponComponent"))
+    //UE_LOG(WeaponComponentLog,Warning,TEXT("Try to add bullets in weaponComponent"))
     //if(!CurrentWeapon)return false;
     for(auto WeaponRunner:Weapons)
     {
