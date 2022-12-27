@@ -43,6 +43,13 @@ public:
     void MakeRandRotation();
 
     bool CouldBeTaken() const;
+
+    //Геттеры Компонентов
+    UFUNCTION()
+    USTUHeathComponent* GetHealthComponent(const APawn* Pawn) const;
+    
+    UFUNCTION()
+    UWeaponComponent* GetWeaponComponent(const APawn* Pawn) const;
 };
     
 

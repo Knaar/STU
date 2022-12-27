@@ -6,47 +6,11 @@
 
 DEFINE_LOG_CATEGORY_STATIC(GiftRockets, All, All);
 
-USTUHeathComponent* ARocketsPickUpGift::GetHealthComponent(APawn *Pawn)
-{
-    const auto Player=Pawn;
-    if(!Player)return nullptr;
-
-    const auto ComponentH=Player->GetComponentByClass(USTUHeathComponent::StaticClass());
-    const auto HealthComponent=Cast<USTUHeathComponent>(ComponentH);
-    if(!HealthComponent||HealthComponent->IsDead())return nullptr;
-    return HealthComponent;
-}
-
-UWeaponComponent*  ARocketsPickUpGift::GetWeaponComponent(APawn *Pawn)
-{
-    const auto Player=Pawn;
-    //if(!Player)return nullptr;
-
-    const auto ComponentW=Player->GetComponentByClass(UWeaponComponent::StaticClass());
-    const auto WeaponComponent=Cast<UWeaponComponent>(ComponentW);
-    //if(!WeaponComponent) return nullptr;
-  
-    return WeaponComponent;
-}
-
 bool ARocketsPickUpGift::GivePickUpTo(APawn *Pawn)
 {
-    /*
-    const auto Player=Pawn;
-    if(!Player)return false;
-
-    const auto ComponentH=Player->GetComponentByClass(USTUHeathComponent::StaticClass());
-    const auto ComponentW=Player->GetComponentByClass(UWeaponComponent::StaticClass());
-    
-    const auto HealthComponent=Cast<USTUHeathComponent>(ComponentH);
-    if(!HealthComponent||HealthComponent->IsDead())return false;
-    
-    const auto WeaponComponent=Cast<UWeaponComponent>(ComponentW);
-    
-    if(!WeaponComponent) return false; //||WeaponComponent->CurrentWeapon->IsAmmoFull())return false;
-    */
     const auto WeaponComponent=GetWeaponComponent(Pawn);
-    if(IsNeedToPickUp(Pawn))
+    const auto HealthComponent=GetHealthComponent(Pawn);
+    if(IsNeedToPickUp(Pawn)&&!HealthComponent->IsDead())
     {
         WeaponComponent->TryToAddBullets(ClipsAmount,BaseWeaponToAddAmmo);
         UE_LOG(GiftRockets,Warning,TEXT("Gift Rocket PickedUp"));
@@ -58,7 +22,7 @@ bool ARocketsPickUpGift::GivePickUpTo(APawn *Pawn)
     }
 }
 
-bool ARocketsPickUpGift::IsNeedToPickUp(APawn *Pawn) 
+bool ARocketsPickUpGift::IsNeedToPickUp(const APawn *Pawn) const
 {
     const auto Player=Pawn;
     if(!Player)return false;

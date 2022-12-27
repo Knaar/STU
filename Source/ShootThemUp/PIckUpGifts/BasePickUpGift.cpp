@@ -1,5 +1,7 @@
 #include "BasePickUpGift.h"
 #include "Components/SphereComponent.h"
+#include "ShootThemUp/Components/STUHeathComponent.h"
+#include "ShootThemUp/Components/WeaponComponent.h"
 
 ABasePickUpGift::ABasePickUpGift()
 {
@@ -73,4 +75,27 @@ void ABasePickUpGift::MakeRandRotation()
 bool ABasePickUpGift::CouldBeTaken()const
 {
     return !GetWorldTimerManager().IsTimerActive(TimerToRestore);
+}
+
+USTUHeathComponent * ABasePickUpGift::GetHealthComponent(const APawn *Pawn) const
+{
+    const auto Player=Pawn;
+    if(!Player)return nullptr;
+
+    const auto ComponentH=Player->GetComponentByClass(USTUHeathComponent::StaticClass());
+    const auto HealthComponent=Cast<USTUHeathComponent>(ComponentH);
+    if(!HealthComponent||HealthComponent->IsDead())return nullptr;
+    return HealthComponent;
+}
+
+UWeaponComponent * ABasePickUpGift::GetWeaponComponent(const APawn *Pawn) const
+{
+    const auto Player=Pawn;
+    if(!Player)return nullptr;
+
+    const auto ComponentW=Player->GetComponentByClass(UWeaponComponent::StaticClass());
+    const auto WeaponComponent=Cast<UWeaponComponent>(ComponentW);
+    if(!WeaponComponent) return nullptr;
+  
+    return WeaponComponent;
 }
