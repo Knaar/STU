@@ -5,9 +5,9 @@
 
 DEFINE_LOG_CATEGORY_STATIC(GiftHealth, All, All);
 
-bool AHealthPickUpGift::IsGiftPickedUp(AActor *Actor)
+bool AHealthPickUpGift::GivePickUpTo(APawn *Pawn)
 {
-    const auto Player=Actor;
+    const auto Player=Pawn;
     if(!Player)return false;
 
     const auto ComponentH=Player->GetComponentByClass(USTUHeathComponent::StaticClass());

@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "BasePickUpGift.h"
 #include "RocketsPickUpGift.generated.h"
+class USTUHeathComponent;
 class ASTUBaseWeapon;
 
 
@@ -11,11 +12,17 @@ class SHOOTTHEMUP_API ARocketsPickUpGift : public ABasePickUpGift
 {
 	GENERATED_BODY()
 public:
-    UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="GiftAmmo",meta=(ClampMin=0,ClampMax=10))
-    int32 GiftAmmo;
+    UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="PickUp",meta=(ClampMin="1.0",ClampMax="10.0"))
+    int32 ClipsAmount;
 
-    UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="GiftAmmo")
+    UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="PickUp")
     TSubclassOf<ASTUBaseWeapon> BaseWeaponToAddAmmo;
-        
-    virtual bool IsGiftPickedUp(AActor *Actor) override;
+
+    USTUHeathComponent* GetHealthComponent(APawn* Pawn);
+    
+    virtual bool GivePickUpTo(APawn *Pawn) override;
+
+    bool IsNeedToPickUp(APawn* Pawn);
+
+    
 };

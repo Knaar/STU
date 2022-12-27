@@ -4,13 +4,13 @@
 ABasePickUpGift::ABasePickUpGift()
 {
     PrimaryActorTick.bCanEverTick = true;
+    
     SphereComponent = CreateDefaultSubobject<USphereComponent>("SphereComponent");
-    SetRootComponent(SphereComponent);
     SphereComponent->InitSphereRadius(50.0f);
-    SphereComponent->IgnoreActorWhenMoving(GetOwner(), true);
     SphereComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-    SphereComponent->SetCollisionResponseToAllChannels(ECR_Overlap);
-
+    SphereComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+    SetRootComponent(SphereComponent);
+    
     StaticMesh=CreateDefaultSubobject<UStaticMeshComponent>("StaticMesh");
     StaticMesh->SetupAttachment(SphereComponent);
 }
@@ -30,32 +30,36 @@ void ABasePickUpGift::Tick(float DeltaTime)
 void ABasePickUpGift::NotifyActorBeginOverlap(AActor *OtherActor)
 {
     Super::NotifyActorBeginOverlap(OtherActor);
-    if (IsGiftPickedUp(OtherActor))
+    
+    const auto Pawn= Cast<APawn>(OtherActor);
+    if (GivePickUpTo(Pawn))
     {
-        PickupGift();
+        PickupWasTaken();
     }
+    
 }
 
-bool ABasePickUpGift::IsGiftPickedUp(AActor *Actor)
+bool ABasePickUpGift::GivePickUpTo(APawn *Pawn)
 {
-    RestoreGift();
     return false;
 }
 
-void ABasePickUpGift::PickupGift()
+void ABasePickUpGift::PickupWasTaken()
 {
     SphereComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
-    SphereComponent->SetVisibility(false,true);
+    GetRootComponent()->SetVisibility(false,true);
+    //SphereComponent->SetVisibility(false,true);
 
     
-    GetWorldTimerManager().SetTimer(TimerToRestore,this,&ABasePickUpGift::RestoreGift,5.0f);
+    GetWorldTimerManager().SetTimer(TimerToRestore,this,&ABasePickUpGift::Respawn,RespawnTime);
 }
 
-void ABasePickUpGift::RestoreGift()
+void ABasePickUpGift::Respawn()
 {
     MakeRandRotation();
     SphereComponent->SetCollisionResponseToAllChannels(ECR_Overlap);
-    SphereComponent->SetVisibility(true,true);
+    GetRootComponent()->SetVisibility(true,true);
+    //SphereComponent->SetVisibility(true,true);
 }
 
 void ABasePickUpGift::MakeRandRotation()

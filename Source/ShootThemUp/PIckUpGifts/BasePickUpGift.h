@@ -15,23 +15,26 @@ public:
 	
     ABasePickUpGift();
 
-    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Settings")
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="PickUp")
     USphereComponent* SphereComponent;
 
-    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Settings")
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="PickUp")
     UStaticMeshComponent* StaticMesh;
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="PickUp")
+    float RespawnTime = 5.0f;
     
     virtual void BeginPlay() override;	
     virtual void Tick(float DeltaTime) override;
 
     virtual void NotifyActorBeginOverlap(AActor *OtherActor) override;
 
-    virtual bool IsGiftPickedUp(AActor *Actor);
+    virtual bool GivePickUpTo(APawn *Pawn);
 
     FTimerHandle TimerToRestore;
         
-    void PickupGift();
-    void RestoreGift();
+    void PickupWasTaken();//PickupGift();
+    void Respawn();//RestoreGift();
 
     //Карусель Пикапа
 

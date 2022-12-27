@@ -6,9 +6,19 @@
 
 DEFINE_LOG_CATEGORY_STATIC(GiftRockets, All, All);
 
-bool ARocketsPickUpGift::IsGiftPickedUp(AActor *Actor)
+USTUHeathComponent* ARocketsPickUpGift::GetHealthComponent(APawn *Pawn)
 {
-    const auto Player=Actor;
+    const auto Player=Pawn;
+    if(!Player)return nullptr;
+
+    const auto ComponentH=Player->GetComponentByClass(USTUHeathComponent::StaticClass());
+    const auto HealthComponent=Cast<USTUHeathComponent>(ComponentH);
+    return HealthComponent;
+}
+
+bool ARocketsPickUpGift::GivePickUpTo(APawn *Pawn)
+{
+    const auto Player=Pawn;
     if(!Player)return false;
 
     const auto ComponentH=Player->GetComponentByClass(USTUHeathComponent::StaticClass());
@@ -18,10 +28,41 @@ bool ARocketsPickUpGift::IsGiftPickedUp(AActor *Actor)
     if(!HealthComponent||HealthComponent->IsDead())return false;
     
     const auto WeaponComponent=Cast<UWeaponComponent>(ComponentW);
-    if(!WeaponComponent||WeaponComponent->CurrentWeapon->IsAmmoFull())return false;
-
-    WeaponComponent->TryToAddBullets(GiftAmmo,BaseWeaponToAddAmmo);
     
-    UE_LOG(GiftRockets,Warning,TEXT("Gift Rocket PickedUp"));
-    return true;
+    if(!WeaponComponent) return false; //||WeaponComponent->CurrentWeapon->IsAmmoFull())return false;
+
+    if(IsNeedToPickUp(Pawn))
+    {
+        WeaponComponent->TryToAddBullets(ClipsAmount,BaseWeaponToAddAmmo);
+        UE_LOG(GiftRockets,Warning,TEXT("Gift Rocket PickedUp"));
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool ARocketsPickUpGift::IsNeedToPickUp(APawn *Pawn) 
+{
+    const auto Player=Pawn;
+    if(!Player)return false;
+
+    const auto ComponentH=Player->GetComponentByClass(USTUHeathComponent::StaticClass());
+    const auto ComponentW=Player->GetComponentByClass(UWeaponComponent::StaticClass());
+    
+    const auto HealthComponent=Cast<USTUHeathComponent>(ComponentH);
+    if(!HealthComponent||HealthComponent->IsDead())return false;
+    
+    const auto WeaponComponent=Cast<UWeaponComponent>(ComponentW);
+
+    for (const auto WeaponsRunner:WeaponComponent->Weapons)
+    {
+        const auto bIsAmmoFull= WeaponsRunner->IsAmmoFull();
+        if(!bIsAmmoFull)
+        {
+            return true;
+        }
+    }
+    return false;
 }
