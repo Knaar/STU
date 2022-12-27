@@ -18,7 +18,11 @@ public:
     UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="PickUp")
     TSubclassOf<ASTUBaseWeapon> BaseWeaponToAddAmmo;
 
+    UFUNCTION()
     USTUHeathComponent* GetHealthComponent(APawn* Pawn);
+    
+    UFUNCTION()
+    UWeaponComponent* GetWeaponComponent(APawn* Pawn);
     
     virtual bool GivePickUpTo(APawn *Pawn) override;
 

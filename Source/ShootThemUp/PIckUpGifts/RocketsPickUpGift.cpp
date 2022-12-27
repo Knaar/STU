@@ -13,11 +13,25 @@ USTUHeathComponent* ARocketsPickUpGift::GetHealthComponent(APawn *Pawn)
 
     const auto ComponentH=Player->GetComponentByClass(USTUHeathComponent::StaticClass());
     const auto HealthComponent=Cast<USTUHeathComponent>(ComponentH);
+    if(!HealthComponent||HealthComponent->IsDead())return nullptr;
     return HealthComponent;
+}
+
+UWeaponComponent*  ARocketsPickUpGift::GetWeaponComponent(APawn *Pawn)
+{
+    const auto Player=Pawn;
+    //if(!Player)return nullptr;
+
+    const auto ComponentW=Player->GetComponentByClass(UWeaponComponent::StaticClass());
+    const auto WeaponComponent=Cast<UWeaponComponent>(ComponentW);
+    //if(!WeaponComponent) return nullptr;
+  
+    return WeaponComponent;
 }
 
 bool ARocketsPickUpGift::GivePickUpTo(APawn *Pawn)
 {
+    /*
     const auto Player=Pawn;
     if(!Player)return false;
 
@@ -30,7 +44,8 @@ bool ARocketsPickUpGift::GivePickUpTo(APawn *Pawn)
     const auto WeaponComponent=Cast<UWeaponComponent>(ComponentW);
     
     if(!WeaponComponent) return false; //||WeaponComponent->CurrentWeapon->IsAmmoFull())return false;
-
+    */
+    const auto WeaponComponent=GetWeaponComponent(Pawn);
     if(IsNeedToPickUp(Pawn))
     {
         WeaponComponent->TryToAddBullets(ClipsAmount,BaseWeaponToAddAmmo);
