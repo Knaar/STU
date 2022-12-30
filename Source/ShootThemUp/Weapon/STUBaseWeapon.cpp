@@ -23,15 +23,6 @@ void ASTUBaseWeapon::BeginPlay()
     CurrentAmmo = DefaultAmmo;
 }
 
-APlayerController *ASTUBaseWeapon::GetPlayerController() const
-{
-    const auto Player = Cast<ACharacter>(GetOwner());
-    if (!Player) return nullptr;
-
-    const auto Controller = Player->GetController<APlayerController>();
-    if (!Controller) return nullptr;
-    return Controller;
-}
 
 FVector ASTUBaseWeapon::GetMuzzleLocation() const
 {
@@ -73,7 +64,7 @@ void ASTUBaseWeapon::ChangeClip()
     CurrentAmmo.Bullets = DefaultAmmo.Bullets;
 }
 
-bool ASTUBaseWeapon::IsAmmoEmpty()
+bool ASTUBaseWeapon:: IsAmmoEmpty()
 {
     return !CurrentAmmo.bInfiniteWeapon && IsClipEmpty() && CurrentAmmo.Clips == 0;
 }
@@ -147,7 +138,7 @@ bool ASTUBaseWeapon::GetPlayerViewPoint(FVector &ViewLocation, FRotator &ViewRot
 
     if(STUCharacter->IsPlayerControlled())
     {
-        const auto Controller = GetPlayerController();
+        const auto Controller = GetController();
         if(!Controller) return false;
         Controller->GetPlayerViewPoint(ViewLocation,ViewRotation);
     }
@@ -157,4 +148,10 @@ bool ASTUBaseWeapon::GetPlayerViewPoint(FVector &ViewLocation, FRotator &ViewRot
         ViewRotation=WeaponMesh->GetSocketRotation(MuzzleSocketName);
     }
     return  true;
+}
+
+AController * ASTUBaseWeapon::GetController() const
+{
+    const auto Pawn=Cast<APawn>(GetOwner());
+    return Pawn ? Pawn->GetController() : nullptr;
 }

@@ -43,7 +43,7 @@ public:
     UFUNCTION()
     void ComponentHit( UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
-    AController *GetController();
+    AController *GetController() const;
 
     //Ниагара
     UPROPERTY(EditDefaultsOnly,Category="VFX")

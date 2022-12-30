@@ -3,6 +3,8 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
+DEFINE_LOG_CATEGORY_STATIC(STUProjectileLog, All, All);
+
 ASTUProjectile::ASTUProjectile()
 {
     PrimaryActorTick.bCanEverTick = false;
@@ -30,7 +32,8 @@ void ASTUProjectile::BeginPlay()
     SphereCollision->OnComponentHit.AddDynamic(this,&ASTUProjectile::ComponentHit);
 }
 
-void ASTUProjectile::ComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+void ASTUProjectile::ComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+    FVector NormalImpulse, const FHitResult& Hit)
 {
     if (!GetWorld())return;
     MovementComponent->StopMovementImmediately();
@@ -38,13 +41,20 @@ void ASTUProjectile::ComponentHit(UPrimitiveComponent* HitComponent, AActor* Oth
     WeaponFXComponent->PlayUNiagaraSystemReleased(Hit);
     //DrawDebugSphere(GetWorld(),GetActorLocation(),BlowSphereRadius,20,FColor::Blue,false,1.0f,0.0,3.0);
 
+   
     
-    UGameplayStatics::ApplyRadialDamage(GetWorld(),BlowSphereDamage,GetActorLocation(),BlowSphereRadius,UDamageType::StaticClass(),{GetOwner()},this,GetController(),bDoFullDamage);
+    UGameplayStatics::ApplyRadialDamage(GetWorld(),BlowSphereDamage,GetActorLocation(),BlowSphereRadius,
+      UDamageType::StaticClass(),{GetOwner()},this,GetController(),bDoFullDamage);
+
+   
+   
     Destroy();
 }
 
-AController *ASTUProjectile::GetController()
+AController *ASTUProjectile::GetController() const
 {
     const auto Player=Cast<APawn>(GetOwner());
-    return Player ? Player->GetController():nullptr;
+
+    return Player? Player->Controller:nullptr;
+    
 }

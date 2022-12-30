@@ -20,4 +20,6 @@ public:
     virtual void StartFire() override;
 
     virtual void MakeShot() override;
+
+    //AController* GetController() const;
 };

@@ -30,7 +30,7 @@ void ASTULauncherWeapon::MakeShot()
     const auto STUCharacter=Cast<ACharacter>(GetOwner());
     if(!STUCharacter) return;
 
-    const auto Controller=GetPlayerController();
+    const auto Controller=GetController();
     
     if(STUCharacter->IsPlayerControlled())
     {
@@ -68,6 +68,7 @@ void ASTULauncherWeapon::MakeShot()
     ASTUProjectile* Projectile=GetWorld()->SpawnActorDeferred<ASTUProjectile>(ProjectileClass,MuzzleTransformLocation);
     if (Projectile)
     {
+        Projectile->SetOwner(GetOwner());
         Projectile->SetShootDirection(Direction);
         Projectile->FinishSpawning(MuzzleTransformLocation);
     }
@@ -75,3 +76,11 @@ void ASTULauncherWeapon::MakeShot()
 
     
 }
+/*
+ AController * ASTULauncherWeapon::GetController() const
+ {
+    const auto Pawn=Cast<APawn>(GetOwner());
+    return Pawn ? Pawn->GetController() : nullptr;
+ }
+*/
+ 

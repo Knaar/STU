@@ -45,4 +45,7 @@ public:
     FString TraceTargetName="TraceTarget";
 
     void SpawnTraceVFX(const FVector& StartTrace, const FVector& EndTrace);
+
+    //геттер на контроллер
+    //AController* GetController()const;
 };

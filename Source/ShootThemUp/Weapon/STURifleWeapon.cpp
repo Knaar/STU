@@ -33,8 +33,6 @@ void ASTURifleWeapon::StopFire()
     GetWorld()->GetTimerManager().ClearTimer(ShootTimer);
 }
 
-
-
 void ASTURifleWeapon::MakeShot()
 {
     if (!GetWorld()||IsAmmoEmpty())
@@ -52,7 +50,7 @@ void ASTURifleWeapon::MakeShot()
     const auto STUCharacter=Cast<ACharacter>(GetOwner());
     if(!STUCharacter) return;
 
-    const auto Controller=GetPlayerController();
+    const auto Controller=GetController();
     
     if(STUCharacter->IsPlayerControlled())
     {
@@ -97,7 +95,7 @@ void ASTURifleWeapon::MakeShot()
         
         const auto Target= HitResult.GetActor();
         if(!Target)return;
-        Target->TakeDamage(BulletDamage,FDamageEvent{},Controller,this);
+        Target->TakeDamage(BulletDamage,FDamageEvent{},GetController(),this);
     }
 
     SpawnTraceVFX(SocketTransform.GetLocation(),EndTraceVfx);
@@ -137,3 +135,10 @@ void ASTURifleWeapon::SpawnTraceVFX(const FVector &StartTrace, const FVector &En
         TraceVFXComponent->SetNiagaraVariableVec3(TraceTargetName,EndTrace);
     }
 }
+/*
+AController * ASTURifleWeapon::GetController() const
+{
+    const auto Pawn=Cast<APawn>(GetOwner());
+    return Pawn ? Pawn->GetController() : nullptr;
+}
+*/

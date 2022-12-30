@@ -7,6 +7,7 @@
 #include "AIController.h"
 #include "STUHeathComponent.h"
 #include "Perception/AISense_Sight.h"
+#include "ShootThemUp/STUUtils.h"
 
 AActor * USTUAIPerceptionComponent::GetClosestEnemy() const
 {
@@ -32,7 +33,11 @@ AActor * USTUAIPerceptionComponent::GetClosestEnemy() const
     {
         const auto Component=PercieveActor->GetComponentByClass(USTUHeathComponent::StaticClass());
         const auto HealthComponent=Cast<USTUHeathComponent>(Component);
-        if(HealthComponent&&!HealthComponent->IsDead())
+
+        const auto PercievePawn=Cast<APawn>(PercieveActor);
+        const auto AreEnemies=PercievePawn && STUUtils::AreEnemies(Controller,PercievePawn->Controller);
+        
+        if(HealthComponent&&!HealthComponent->IsDead() && AreEnemies)
         {
             const auto Difference=PercieveActor->GetActorLocation() - Pawn->GetActorLocation();
             const auto CurrentDistance=Difference.Size();

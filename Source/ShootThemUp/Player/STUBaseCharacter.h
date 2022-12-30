@@ -92,4 +92,13 @@ protected:
     UWeaponComponent* WeaponComponent;
 
     //void SpawnWeapon();
+    
+public:
+    //функция, задаёт цвет игроку
+    void SetPlayerColor(const FLinearColor& Color);
+
+private:
+    UPROPERTY(EditDefaultsOnly, Category="Material")
+    FName MaterialColorName = "Paint Color";
+    
 };

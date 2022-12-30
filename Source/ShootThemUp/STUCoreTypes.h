@@ -13,4 +13,15 @@ struct FGameData
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Game", meta = (ClampMin= "3", ClampMax= "300"))
     int32 RoundTime = 3;//in seconds
+
+    //дефолтный цвет, который будет, если забудем в блюпринтах указать 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    FLinearColor DefaultTeamColor = FLinearColor::Red;
+
+    //Массив цветов, которые будут переключаться в зависимости от TeamID
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+    TArray<FLinearColor> TeamColors;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Game", meta = (ClampMin= "3", ClampMax= "20"))
+    int32 RespawnTime = 5;//in seconds
 };

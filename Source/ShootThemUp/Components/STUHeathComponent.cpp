@@ -1,5 +1,6 @@
 #include "STUHeathComponent.h"
 
+#include "ShootThemUp/STUGameModeBase.h"
 #include "ShootThemUp/Dev/ColdDamageType.h"
 #include "ShootThemUp/Dev/FireDamageType.h"
 
@@ -74,6 +75,7 @@ void USTUHeathComponent::OnTakeAnyDamage(AActor *DamagedActor, float Damage, con
     ShakeTheCameraOnDamage();
     if (IsDead())
     {
+        Killed(InstigatedBy);
         OnPlayerDeath.Broadcast();
         bAutoHealEnabled=false;
     }
@@ -81,6 +83,7 @@ void USTUHeathComponent::OnTakeAnyDamage(AActor *DamagedActor, float Damage, con
     {
         GetWorld()->GetTimerManager().SetTimer(TimerHandle,this,&USTUHeathComponent::AutoHeal,HealUpdateTime,true,FirstHealDelay);
     }
+    ShakeTheCameraOnDamage();
 }
 
 bool USTUHeathComponent::IsHealthFull()
@@ -96,6 +99,19 @@ bool USTUHeathComponent::TryToAddHealth(float Health)
         return true;
     }
     return false;
+}
+
+void USTUHeathComponent::Killed(AController *KillerController)
+{
+    if(!GetWorld()) return;
+    
+    const auto GameMode = Cast<ASTUGameModeBase>(GetWorld()->GetAuthGameMode());
+    if(!GameMode) return;
+
+    const auto Player= Cast<APawn>(GetOwner());
+    const auto VictimController=Player? Player->Controller : nullptr;
+
+    GameMode->Killed(KillerController,VictimController);
 }
 
 /*Блок кода, для проверки на тип урона

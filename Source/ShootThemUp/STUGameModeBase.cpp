@@ -1,25 +1,34 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "STUGameModeBase.h"
-
 #include "AIController.h"
+#include "STUPlayerState.h"
+#include "Components/STURespawnComponentComponent.h"
 #include "Player/STUBaseCharacter.h"
 #include "Player/STUPlayerController.h"
 #include "ShootThemUp/UI/GameHUD.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogSTUGameModBase, All, All)
 
+//переменная минимального значения остатка времени для респавна
+constexpr static int32 MinRoundTimeForRespawn = 10;
+
 ASTUGameModeBase::ASTUGameModeBase()
 {
     DefaultPawnClass = ASTUBaseCharacter::StaticClass();
     PlayerControllerClass = ASTUPlayerController::StaticClass();
     HUDClass = AGameHUD::StaticClass();
+    //Оказывается, прямо здесь можно задать базовый PlayerState
+    PlayerStateClass = ASTUPlayerState::StaticClass();
 }
 
 void ASTUGameModeBase::StartPlay()
 {
     Super::StartPlay();
     SpawnBots();
+
+    //Ботов создали, теперь распределяем по командам
+    CreateTeamsInfo();
 
     CurrentRound = 1;
     StartRound();
@@ -45,7 +54,8 @@ void ASTUGameModeBase::StartRound()
 
 void ASTUGameModeBase::GameTimerUpdate()
 {
-    UE_LOG(LogSTUGameModBase, Display, TEXT("Time: %i / Round: %i /%i"), RoundCountDown,CurrentRound, GameData.RoundsNum)
+    UE_LOG(LogSTUGameModBase, Display, TEXT("Time: %i / Round: %i /%i"), RoundCountDown, CurrentRound,
+           GameData.RoundsNum)
     //Каждую секунду будет снижать RoundCountDown
     if (--RoundCountDown == 0)
     {
@@ -57,12 +67,14 @@ void ASTUGameModeBase::GameTimerUpdate()
         {
             //если до, то увеличивает счетчик раундов и запускает таймер заново
             ++CurrentRound;
+            ResetPlayers();
             StartRound();
         }
         else
         {
             //тут логика окончания игры
             UE_LOG(LogSTUGameModBase, Display, TEXT("=====GAME OVER====="))
+            LogPlayerInfo();
         }
     }
 
@@ -93,3 +105,143 @@ void ASTUGameModeBase::SpawnBots()
 
     }
 }
+
+void ASTUGameModeBase::ResetPlayers()
+{
+    //Нам потребуется указатель на UWorld. поэтому проверяем GetWorld()
+    if (!GetWorld())
+        return;
+
+    //Информацию о всех контроллерах в мире можно получить через специальный итератор. Мы создадим цикл обхода всех контроллеров
+    for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
+    {
+        //Теперь каждого индивидуально ресетим. Причем, контроллер мы получаем, просто  нажав Get()
+        ResetOnePlayer(It->Get());
+    }
+}
+
+void ASTUGameModeBase::ResetOnePlayer(AController *Controller)
+{
+    if (Controller && Controller->GetPawn())
+    {
+        //Родной функционал, способный ресетнуть Контроллер и, вместе с ним, павна. Не работает без PlayerState 
+        Controller->GetPawn()->Reset();
+    }
+    //Тут уже вызываем функцию гейммода RestartPlayer(), и передаём указатель на контроллер
+    RestartPlayer(Controller);
+    SetPlayerColor(Controller);
+}
+
+void ASTUGameModeBase::CreateTeamsInfo()
+{
+    if (!GetWorld())
+        return;
+
+    int32 TeamId = 1;
+    for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
+    {
+        //"сырой" указатель на контроллер
+        const auto Controller = It->Get();
+        if (!Controller)
+            continue;
+
+        const auto PlayerState = Cast<ASTUPlayerState>(Controller->PlayerState);
+        if (!PlayerState)
+            continue;
+
+        PlayerState->SetTeamID(TeamId);
+        PlayerState->SetTeamColor(DetermineColorByTeamId(TeamId));
+        SetPlayerColor(Controller);
+
+        TeamId = TeamId == 1? 2 : 1;
+    }
+}
+
+FLinearColor ASTUGameModeBase::DetermineColorByTeamId(int32 TeamId) const
+{
+    if(TeamId-1<GameData.TeamColors.Num())
+    {
+        return GameData.TeamColors[TeamId-1];
+    }
+    UE_LOG(LogSTUGameModBase,Warning,TEXT("No color for team: %i, set to default: %s"), TeamId, *GameData.DefaultTeamColor.ToString());
+    return GameData.DefaultTeamColor;
+}
+
+void ASTUGameModeBase::SetPlayerColor(AController *Controller)
+{
+    if(!Controller) return;
+
+    const auto Character= Cast<ASTUBaseCharacter>(Controller->GetCharacter());
+    if(!Character) return;
+
+    const auto PlayerState=Cast<ASTUPlayerState>(Controller->PlayerState);
+    if(!PlayerState) return;
+
+    Character->SetPlayerColor(PlayerState->GetTeamColor());
+}
+
+void ASTUGameModeBase::Killed(AController *KillerController, AController *VictimController)
+{
+    const auto KillerPlayerState = KillerController? Cast<ASTUPlayerState>(KillerController->PlayerState) : nullptr;
+    const auto VictimPlayerState = VictimController? Cast<ASTUPlayerState>(VictimController->PlayerState) : nullptr;
+
+    if(KillerPlayerState)
+    {
+        KillerPlayerState->AddKill();
+    }
+
+    if(VictimPlayerState)
+    {
+        VictimPlayerState->AddDeath();
+    }
+    StartRespawn(VictimController);
+}
+
+void ASTUGameModeBase::LogPlayerInfo()
+{
+    if (!GetWorld())
+        return;
+
+    
+    for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
+    {
+        //"сырой" указатель на контроллер
+        const auto Controller = It->Get();
+        if (!Controller)
+            continue;
+
+        const auto PlayerState = Cast<ASTUPlayerState>(Controller->PlayerState);
+        if (!PlayerState)
+            continue;
+
+        PlayerState->LogInfo();
+    }
+}
+
+void ASTUGameModeBase::StartRespawn(AController *Controller)
+{
+    //Булевая, котора будет проверять, возможен ли рескпавн
+    const auto RespawnAvailable = RoundCountDown > MinRoundTimeForRespawn + GameData.RespawnTime;
+    if(!RespawnAvailable)return;
+    
+    const auto Component=Controller->GetComponentByClass(USTURespawnComponentComponent::StaticClass());
+    if(!Component)
+    {
+        UE_LOG(LogSTUGameModBase, Display, TEXT("RespawnRequest No Component"));
+        return;
+    }
+    const auto RespawnComponent=Cast<USTURespawnComponentComponent>(Component);
+    if(!RespawnComponent)
+    {
+        UE_LOG(LogSTUGameModBase, Display, TEXT("RespawnRequest No RespawnComponent"));
+        return;
+    }
+    RespawnComponent->Respawn(GameData.RespawnTime);
+}
+
+void ASTUGameModeBase::RespawnRequest(AController *Controller)
+{
+    ResetOnePlayer(Controller);
+}
+
+

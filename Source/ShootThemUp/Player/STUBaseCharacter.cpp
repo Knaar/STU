@@ -137,6 +137,17 @@ void ASTUBaseCharacter::OnGroundLanded(const FHitResult& Hit)
     TakeDamage(TotalDamage,FDamageEvent{},nullptr,nullptr);
     UE_LOG(LogTemp,Warning,TEXT("Total Damade : %f"),TotalDamage);
 }
+
+void ASTUBaseCharacter::SetPlayerColor(const FLinearColor &Color)
+{
+    //нужно создать динамический материал из материала, который находится на меше
+    const auto MaterialInst=GetMesh()->CreateAndSetMaterialInstanceDynamic(0);
+    if(!MaterialInst)return;
+
+    MaterialInst->SetVectorParameterValue(MaterialColorName, Color);
+    
+}
+
 /*
 void ASTUBaseCharacter::SpawnWeapon()
 {

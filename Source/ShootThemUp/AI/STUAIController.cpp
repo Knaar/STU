@@ -5,14 +5,19 @@
 #include "AIBaseCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "ShootThemUp/Components/STUAIPerceptionComponent.h"
+#include "ShootThemUp/Components/STURespawnComponentComponent.h"
 
 
 ASTUAIController::ASTUAIController()
 {
     STUAIPerceptionComponent=CreateDefaultSubobject<USTUAIPerceptionComponent>("PerceptionComponent");
+    STURespawnComponentComponent=CreateDefaultSubobject<USTURespawnComponentComponent>("RespawnComponent");
     
     //Нам нужно вызвать ф-я Ai контроллера, которая называется
     SetPerceptionComponent(*STUAIPerceptionComponent);
+
+    //булевая переменная, которая декларирует, нужен ли PlayerState
+    bWantsPlayerState=true;
 }
 
 void ASTUAIController::Tick(float DeltaSeconds)

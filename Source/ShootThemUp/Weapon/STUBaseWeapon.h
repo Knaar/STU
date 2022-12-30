@@ -71,11 +71,10 @@ public:
     virtual void MakeShot(){};   
 
     FOnReloadEmptyClip OnReloadEmptyClip;
-    
+
+    APlayerController GetPlayerController() const;
     
     FTimerHandle ShootTimer;
-
-    APlayerController* GetPlayerController()const;
 
     FVector GetMuzzleLocation()const;
 
@@ -115,5 +114,7 @@ public:
 
     //AI
     bool GetPlayerViewPoint(FVector &ViewLocation, FRotator &) const;
-    
+
+
+    AController *GetController() const;
 };

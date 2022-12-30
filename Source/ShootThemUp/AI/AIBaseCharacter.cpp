@@ -10,7 +10,7 @@
 AAIBaseCharacter::AAIBaseCharacter(const FObjectInitializer& ObjInit)
     :Super(ObjInit.SetDefaultSubobjectClass<USTUAIWeaponComponent>("WeaponComp"))
 {
-    AutoPossessAI=EAutoPossessAI::PlacedInWorldOrSpawned;
+    AutoPossessAI=EAutoPossessAI::Disabled;
     AIControllerClass=ASTUAIController::StaticClass();
 
     bUseControllerRotationYaw=false;

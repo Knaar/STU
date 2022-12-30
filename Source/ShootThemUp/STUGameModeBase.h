@@ -62,4 +62,45 @@ private:
     
     //Основная функция спауна ботов
     void SpawnBots();
+
+    //теперь нужно обновить ботов. Будет вызываться при перезапуске раунда
+    void ResetPlayers();
+
+    //та функция, котора будет ресетить каждый павн через контроллер
+    void ResetOnePlayer(AController* Controller);
+
+    //Вызывается один раз, распределяет игроков по командам
+    void CreateTeamsInfo();
+
+    //Возвращает цвет, в зависимости от TeamID
+    FLinearColor DetermineColorByTeamId (int32 TeamId) const;
+
+    //передаёт классу чарактера его цвет. Имеет один параметр-указатель на контроллер.
+    void SetPlayerColor(AController* Controller);
+
+    //Подсчет статистики убийств
+public:
+    void Killed(AController* KillerController, AController* VictimController);
+
+private:
+    //дополнительная функция, которая будет печатать информацию по всем PlayerState
+    void LogPlayerInfo();
+
+    //Геттеры для виджета
+public:
+    UFUNCTION(BlueprintCallable)
+    int32 GetCurrentRound()const {return CurrentRound;}
+
+    UFUNCTION(BlueprintCallable)
+    int32 GetRoundCountDown()const{return RoundCountDown;}
+
+    UFUNCTION(BlueprintCallable)
+    int32 GetRoundsNum()const{return GameData.RoundsNum;}
+    
+   //Блок респавна
+    private:
+    void StartRespawn(AController* Controller);
+public:
+    void RespawnRequest(AController* Controller);
+
 };

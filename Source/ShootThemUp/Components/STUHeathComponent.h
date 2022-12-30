@@ -80,4 +80,7 @@ public:
     bool IsHealthFull();
 
     bool TryToAddHealth(float Health);
+
+    //Смерть
+    void Killed(AController* KillerController);
 };
