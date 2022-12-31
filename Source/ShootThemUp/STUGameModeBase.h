@@ -44,7 +44,6 @@ protected:
     FGameData GameData;
 
 private:
-    
     //переменная, которая хранит номер текущего раунда
     int32 CurrentRound = 1;
 
@@ -59,7 +58,7 @@ private:
 
     //Функция обновления таймера
     void GameTimerUpdate();
-    
+
     //Основная функция спауна ботов
     void SpawnBots();
 
@@ -67,20 +66,20 @@ private:
     void ResetPlayers();
 
     //та функция, котора будет ресетить каждый павн через контроллер
-    void ResetOnePlayer(AController* Controller);
+    void ResetOnePlayer(AController *Controller);
 
     //Вызывается один раз, распределяет игроков по командам
     void CreateTeamsInfo();
 
     //Возвращает цвет, в зависимости от TeamID
-    FLinearColor DetermineColorByTeamId (int32 TeamId) const;
+    FLinearColor DetermineColorByTeamId(int32 TeamId) const;
 
     //передаёт классу чарактера его цвет. Имеет один параметр-указатель на контроллер.
-    void SetPlayerColor(AController* Controller);
+    void SetPlayerColor(AController *Controller);
 
     //Подсчет статистики убийств
 public:
-    void Killed(AController* KillerController, AController* VictimController);
+    void Killed(AController *KillerController, AController *VictimController);
 
 private:
     //дополнительная функция, которая будет печатать информацию по всем PlayerState
@@ -89,18 +88,32 @@ private:
     //Геттеры для виджета
 public:
     UFUNCTION(BlueprintCallable)
-    int32 GetCurrentRound()const {return CurrentRound;}
+    int32 GetCurrentRound() const
+    {
+        return CurrentRound;
+    }
 
     UFUNCTION(BlueprintCallable)
-    int32 GetRoundCountDown()const{return RoundCountDown;}
+    int32 GetRoundCountDown() const
+    {
+        return RoundCountDown;
+    }
 
     UFUNCTION(BlueprintCallable)
-    int32 GetRoundsNum()const{return GameData.RoundsNum;}
-    
-   //Блок респавна
-    private:
-    void StartRespawn(AController* Controller);
+    int32 GetRoundsNum() const
+    {
+        return GameData.RoundsNum;
+    }
+
+    //Блок респавна
+private:
+    void StartRespawn(AController *Controller);
+
 public:
-    void RespawnRequest(AController* Controller);
+    void RespawnRequest(AController *Controller);
 
+
+    //Блок GameOver
+private:
+    void GameOver();
 };

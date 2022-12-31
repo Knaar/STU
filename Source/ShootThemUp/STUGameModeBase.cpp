@@ -2,6 +2,7 @@
 
 #include "STUGameModeBase.h"
 #include "AIController.h"
+#include "EngineUtils.h"
 #include "STUPlayerState.h"
 #include "Components/STURespawnComponentComponent.h"
 #include "Player/STUBaseCharacter.h"
@@ -73,8 +74,8 @@ void ASTUGameModeBase::GameTimerUpdate()
         else
         {
             //тут логика окончания игры
-            UE_LOG(LogSTUGameModBase, Display, TEXT("=====GAME OVER====="))
-            LogPlayerInfo();
+            GameOver();
+            
         }
     }
 
@@ -242,6 +243,20 @@ void ASTUGameModeBase::StartRespawn(AController *Controller)
 void ASTUGameModeBase::RespawnRequest(AController *Controller)
 {
     ResetOnePlayer(Controller);
+}
+
+void ASTUGameModeBase::GameOver()
+{
+    UE_LOG(LogSTUGameModBase, Display, TEXT("=====GAME OVER====="))
+    LogPlayerInfo();
+    for(auto Pawn:TActorRange<APawn>(GetWorld()))
+    {
+        if(Pawn)
+        {
+            Pawn->TurnOff();
+            Pawn->DisableInput(nullptr);
+        }
+    }
 }
 
 

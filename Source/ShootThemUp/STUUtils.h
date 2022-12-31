@@ -5,20 +5,23 @@
 #include "CoreMinimal.h"
 #include "STUPlayerState.h"
 #include "UObject/Object.h"
-#include "STUUtils.generated.h"
 
 
-UCLASS()
-class SHOOTTHEMUP_API USTUUtils : public UObject
-{
-    GENERATED_BODY()
 
-
-};
 
 class STUUtils
 {
 public:
+    template <typename T>
+    static T* GetSTUPlayerComponent(AActor* PlayerPawn)
+    {
+        if (!PlayerPawn) return nullptr;
+
+        // Get Player health component:
+        const auto Component = PlayerPawn->GetComponentByClass(T::StaticClass());
+        return Cast<T>(Component);
+    }
+    
     bool static AreEnemies(AController *Controller1, AController *Controller2)
     {
         if (!Controller1 || !Controller2 || Controller1 == Controller2)

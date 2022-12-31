@@ -65,16 +65,32 @@ bool UPlayerHudWidget::IsPlayerSpectator()
 
 bool UPlayerHudWidget::Initialize()
 {
-    auto HealthComponent=GetHealthComponent();
-    if(HealthComponent)
+    if(GetOwningPlayer())
     {
-        HealthComponent->OnPlayerDamaged.AddUObject(this,&UPlayerHudWidget::OnHealthChanged);
+        GetOwningPlayer()->GetOnNewPawnNotifier().AddUObject(this, &ThisClass::OnNewPawn);
+        OnNewPawn(GetOwningPlayerPawn());
     }
     
     return Super::Initialize();
 }
 
-void UPlayerHudWidget::OnHealthChanged(float Health,float DeltaHealth)
+ void UPlayerHudWidget::OnNewPawn(APawn *NewPawn)
+ {
+    if(!NewPawn)return;
+    
+    const auto Component=NewPawn->GetComponentByClass(USTUHeathComponent::StaticClass());
+    if(!Component)return;
+    
+    const auto HealthComponent=Cast<USTUHeathComponent>(Component);
+    
+    if(HealthComponent && !HealthComponent->OnPlayerDamaged.IsBoundToObject(this))
+    {
+        HealthComponent->OnPlayerDamaged.AddUObject(this,&UPlayerHudWidget::OnHealthChanged);
+    }
+    
+ }
+
+ void UPlayerHudWidget::OnHealthChanged(float Health,float DeltaHealth)
 {
     if(DeltaHealth<0)
     {

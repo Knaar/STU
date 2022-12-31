@@ -38,6 +38,8 @@ public:
     
     virtual bool Initialize() override;
 
+    void OnNewPawn(APawn* NewPawn);
+
     void OnHealthChanged(float Health,float DeltaHealth);
 
 

@@ -16,4 +16,6 @@ class SHOOTTHEMUP_API ASTUPlayerController : public APlayerController
 public:
     UPROPERTY(VisibleAnywhere,BlueprintReadWrite,Category="Components")
     USTURespawnComponentComponent* STURespawnComponentComponent;
+
+    virtual void OnPossess(APawn *InPawn) override;
 };

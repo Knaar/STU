@@ -22,4 +22,9 @@ protected:
     int32 RespawnCountDown = 0;
 
     void RespawnTimerUpdate();
+
+    //геттеры
+public:
+    int32 GetRespawnCountDown()const{return RespawnCountDown;}
+    bool IsRespawnInProgress()const;
 };
