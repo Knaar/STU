@@ -4,6 +4,7 @@
 #include "STUPlayerCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "ShootThemUp/Components/WeaponComponent.h"
@@ -18,6 +19,21 @@ ASTUPlayerCharacter::ASTUPlayerCharacter(const FObjectInitializer &ObjInit) : Su
 
     CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
     CameraComponent->SetupAttachment(SpringArm);
+
+    CameraCollisionComponent=CreateDefaultSubobject<USphereComponent>("CameraCollisionComponent");
+    CameraCollisionComponent->SetupAttachment(CameraComponent);
+    CameraCollisionComponent->SetSphereRadius(10.0f);
+    CameraCollisionComponent->SetCollisionResponseToAllChannels(ECR_Overlap);
+}
+
+void ASTUPlayerCharacter::BeginPlay()
+{
+    Super::BeginPlay();
+    check(CameraCollisionComponent);
+
+    CameraCollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ASTUPlayerCharacter::OnCameraCollisionBeginOverlap);
+    CameraCollisionComponent->OnComponentEndOverlap.AddDynamic(this, &ASTUPlayerCharacter::OnCameraCollisionEndOverlap);
+    
 }
 
 void ASTUPlayerCharacter::OnPlayerDeath()
@@ -58,3 +74,34 @@ void ASTUPlayerCharacter::OnStopRunning()
     bWantsToRun=false;
     GetCharacterMovement()->MaxWalkSpeed = 600;
 }
+
+void ASTUPlayerCharacter::OnCameraCollisionBeginOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor,
+    UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
+{
+    CheckCameraOverlap();
+}
+
+void ASTUPlayerCharacter::OnCameraCollisionEndOverlap(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor,
+    UPrimitiveComponent *OtherComp, int32 OtherBodyIndex)
+{
+    CheckCameraOverlap();
+}
+
+void ASTUPlayerCharacter::CheckCameraOverlap()
+{
+    const auto bHideMesh=CameraCollisionComponent->IsOverlappingComponent(GetCapsuleComponent());
+    GetMesh()->SetOwnerNoSee(bHideMesh);
+
+    TArray<USceneComponent*>MeshChildren;
+    GetMesh()->GetChildrenComponents(true,MeshChildren);
+
+    for(auto MeshChild:MeshChildren)
+    {
+        const auto MeshChildGeometry=Cast<UPrimitiveComponent>(MeshChild);
+        if(MeshChildGeometry)
+        {
+            MeshChildGeometry->SetOwnerNoSee(bHideMesh);
+        }
+    }
+}
+
