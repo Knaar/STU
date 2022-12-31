@@ -3,6 +3,7 @@
 
 #include "STUPlayerCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "ShootThemUp/Components/WeaponComponent.h"
@@ -22,6 +23,10 @@ ASTUPlayerCharacter::ASTUPlayerCharacter(const FObjectInitializer &ObjInit) : Su
 void ASTUPlayerCharacter::OnPlayerDeath()
 {
     Super::OnPlayerDeath();
+    if(Controller)
+    {
+        Controller->ChangeState(NAME_Spectating); 
+    }
 }
 
 void ASTUPlayerCharacter::SetupPlayerInputComponent(UInputComponent *PlayerInputComponent)
@@ -33,7 +38,7 @@ void ASTUPlayerCharacter::SetupPlayerInputComponent(UInputComponent *PlayerInput
         PlayerInputComponent->BindAxis("TurnAround", this, &ASTUPlayerCharacter::AddControllerYawInput);
         PlayerInputComponent->BindAction("Jump",EInputEvent::IE_Pressed, this, &ASTUPlayerCharacter::Jump);
         PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Pressed, this, &ASTUPlayerCharacter::OnStartRunning);
-        PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Released, this, &ASTUPlayerCharacter::OnStopRuning);
+        PlayerInputComponent->BindAction("Sprint", EInputEvent::IE_Released, this, &ASTUPlayerCharacter::OnStopRunning);
     
         PlayerInputComponent->BindAction("Fire",IE_Pressed,WeaponComponent,&UWeaponComponent::StartFire);
         PlayerInputComponent->BindAction("Fire",IE_Released,WeaponComponent,&UWeaponComponent::StopFire);
@@ -48,7 +53,7 @@ void ASTUPlayerCharacter::OnStartRunning()
     GetCharacterMovement()->MaxWalkSpeed = 800;
 }
 
-void ASTUPlayerCharacter::OnStopRuning()
+void ASTUPlayerCharacter::OnStopRunning()
 {
     bWantsToRun=false;
     GetCharacterMovement()->MaxWalkSpeed = 600;

@@ -9,7 +9,6 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnButtonPressed);
 
 class USTUHeathComponent;
-class UTextRenderComponent;
 class ABaseWeapon;
 class UWeaponComponent;
 
@@ -49,12 +48,13 @@ public:
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaTime) override;
     
-protected: 
+protected:
+    virtual void OnHealthChange(float Health, float HealthDelta);
     virtual void OnPlayerDeath();
     void MoveForward(float Amount);
     void MoveRight(float Amount);
     UFUNCTION()
     void OnGroundLanded(const FHitResult &Hit);
 public:
-    void SetPlayerColor(const FLinearColor& Color);
+    void SetPlayerColor(const FLinearColor& Color) const;
 };

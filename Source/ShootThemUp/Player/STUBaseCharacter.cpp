@@ -32,9 +32,7 @@ void ASTUBaseCharacter::BeginPlay()
     float Health=HealthComponent->GetHealth();
     
     HealthComponent->OnPlayerDeath.AddUObject(this,&ThisClass::OnPlayerDeath);
-
     LandedDelegate.AddDynamic(this,&ASTUBaseCharacter::OnGroundLanded);
-
     OnButtonPressed.Broadcast();
     
 }
@@ -42,6 +40,21 @@ void ASTUBaseCharacter::BeginPlay()
 void ASTUBaseCharacter::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+}
+
+void ASTUBaseCharacter::OnHealthChange(float Health, float HealthDelta)
+{
+}
+void ASTUBaseCharacter::OnPlayerDeath()
+{
+    //PlayAnimMontage(AnimMontage);
+    GetCharacterMovement()->Deactivate();
+    SetLifeSpan(LifeSpanOnDeath);
+
+    GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
+    WeaponComponent->StopFire();
+    GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+    GetMesh()->SetSimulatePhysics(true);
 }
 
 void ASTUBaseCharacter::MoveForward(float Amount)
@@ -53,23 +66,6 @@ void ASTUBaseCharacter::MoveForward(float Amount)
 void ASTUBaseCharacter::MoveRight(float Amount)
 {
     AddMovementInput(GetActorRightVector(),Amount);
-}
-
-inline void ASTUBaseCharacter::OnPlayerDeath()
-{
-    
-    //PlayAnimMontage(AnimMontage);
-    GetCharacterMovement()->Deactivate();
-    SetLifeSpan(LifeSpanOnDeath);
-
-    GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
-    if(Controller)
-    {
-        Controller->ChangeState(NAME_Spectating); 
-    }
-    WeaponComponent->StopFire();
-    GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-    GetMesh()->SetSimulatePhysics(true);
 }
 
 void ASTUBaseCharacter::OnGroundLanded(const FHitResult& Hit)
@@ -84,7 +80,7 @@ void ASTUBaseCharacter::OnGroundLanded(const FHitResult& Hit)
     UE_LOG(LogTemp,Warning,TEXT("Total Damade : %f"),TotalDamage);
 }
 
-void ASTUBaseCharacter::SetPlayerColor(const FLinearColor &Color)
+void ASTUBaseCharacter::SetPlayerColor(const FLinearColor &Color) const
 {
     //нужно создать динамический материал из материала, который находится на меше
     const auto MaterialInst=GetMesh()->CreateAndSetMaterialInstanceDynamic(0);

@@ -25,11 +25,10 @@ protected:
     USpringArmComponent *SpringArm;
 
     virtual void OnPlayerDeath() override;
-
 public:
     virtual void SetupPlayerInputComponent(class UInputComponent *PlayerInputComponent) override;
 
     bool bWantsToRun = false;
     void OnStartRunning();
-    void OnStopRuning();
+    void OnStopRunning();
 };
