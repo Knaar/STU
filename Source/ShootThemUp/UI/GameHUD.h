@@ -4,11 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
+#include "ShootThemUp/STUCoreTypes.h"
 #include "GameHUD.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class SHOOTTHEMUP_API AGameHUD : public AHUD
 {
@@ -19,6 +18,19 @@ class SHOOTTHEMUP_API AGameHUD : public AHUD
 
 public:
     UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="UI")
-    TSubclassOf<UUserWidget>SelectedUserWidget;
-    
+    TSubclassOf<UUserWidget>PlayerHUDWidgetClass;
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="UI")
+    TSubclassOf<UUserWidget> PauseWidgetClass;
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="UI")
+    TSubclassOf<UUserWidget> GameOverWidgetClass;
+private:
+    UPROPERTY()
+    TMap<ESTUMatchState, UUserWidget*> GameWidgets;
+
+    UPROPERTY()
+    UUserWidget* CurrentWidget = nullptr;
+    //Callback Функция
+    void OnMatchStateChanged(ESTUMatchState State);
 };

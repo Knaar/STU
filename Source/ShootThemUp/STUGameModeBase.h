@@ -21,6 +21,16 @@ class SHOOTTHEMUP_API ASTUGameModeBase : public AGameModeBase
 public:
     ASTUGameModeBase();
 
+    //Делегат Состояния матча
+    
+public:
+    FOnMatchStateChangedSignature OnMatchStateChanged;
+private:
+    ESTUMatchState MatchState = ESTUMatchState::WaitingToStart;
+
+    void SetMatchState(ESTUMatchState State);
+    
+public:
     //Родная функция ГеймМода, которая вызывает бегинплей
     virtual void StartPlay() override;
 
@@ -105,7 +115,10 @@ public:
         return GameData.RoundsNum;
     }
 
-    //Блок респавна
+    /*
+     *Блок респавна
+     */
+    
 private:
     void StartRespawn(AController *Controller);
 
@@ -113,7 +126,19 @@ public:
     void RespawnRequest(AController *Controller);
 
 
-    //Блок GameOver
+    /*
+     *Блок GameOver
+     */
 private:
     void GameOver();
+
+    /*
+     *Блок паузы
+     */
+public:
+    //Переопределяем родной SetPause чтобы изменить State нашего матча
+    virtual bool SetPause(APlayerController *PC, FCanUnpause CanUnpauseDelegate) override;
+
+    virtual bool ClearPause() override;
+    
 };
