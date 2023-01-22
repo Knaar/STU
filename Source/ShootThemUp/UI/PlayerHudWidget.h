@@ -36,7 +36,7 @@ public:
 
     //Рамка получения урона
     
-    virtual bool Initialize() override;
+    virtual void NativeOnInitialized() override;
 
     void OnNewPawn(APawn* NewPawn);
 

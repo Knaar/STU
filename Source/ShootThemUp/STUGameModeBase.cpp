@@ -3,6 +3,7 @@
 #include "STUGameModeBase.h"
 #include "AIController.h"
 #include "EngineUtils.h"
+#include "STUGameInstance.h"
 #include "STUPlayerState.h"
 #include "Components/STURespawnComponentComponent.h"
 #include "Player/STUBaseCharacter.h"
@@ -34,6 +35,9 @@ void ASTUGameModeBase::SetMatchState(ESTUMatchState State)
 void ASTUGameModeBase::StartPlay()
 {
     Super::StartPlay();
+
+     
+    
     SpawnBots();
 
     //Ботов создали, теперь распределяем по командам

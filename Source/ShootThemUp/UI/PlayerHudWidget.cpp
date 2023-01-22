@@ -63,7 +63,7 @@ bool UPlayerHudWidget::IsPlayerSpectator()
     return Controller&&Controller->GetStateName()==NAME_Spectating;
 }
 
-bool UPlayerHudWidget::Initialize()
+void UPlayerHudWidget::NativeOnInitialized()
 {
     if(GetOwningPlayer())
     {
@@ -71,7 +71,7 @@ bool UPlayerHudWidget::Initialize()
         OnNewPawn(GetOwningPlayerPawn());
     }
     
-    return Super::Initialize();
+    Super::NativeOnInitialized();
 }
 
  void UPlayerHudWidget::OnNewPawn(APawn *NewPawn)
