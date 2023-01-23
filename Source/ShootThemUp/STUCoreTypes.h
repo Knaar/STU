@@ -1,5 +1,6 @@
 #pragma once
 #include "STUCoreTypes.generated.h"
+
 USTRUCT(BlueprintType)
 struct FGameData
 {
@@ -12,7 +13,7 @@ struct FGameData
     int32 RoundsNum = 4;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Game", meta = (ClampMin= "3", ClampMax= "300"))
-    int32 RoundTime = 3;//in seconds
+    int32 RoundTime = 3; //in seconds
 
     //дефолтный цвет, который будет, если забудем в блюпринтах указать 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
@@ -23,8 +24,9 @@ struct FGameData
     TArray<FLinearColor> TeamColors;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Game", meta = (ClampMin= "3", ClampMax= "20"))
-    int32 RespawnTime = 5;//in seconds
+    int32 RespawnTime = 5; //in seconds
 };
+
 UENUM(BlueprintType)
 enum class ESTUMatchState: uint8
 {
@@ -35,3 +37,20 @@ enum class ESTUMatchState: uint8
 };
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnMatchStateChangedSignature, ESTUMatchState);
+
+USTRUCT(BlueprintType)
+struct FLevelData
+{
+    GENERATED_USTRUCT_BODY()
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Game")
+    FName LevelName = NAME_None;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Game")
+    FName LevelDisplayName = NAME_None;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Game")
+    UTexture2D* LevelThumb;
+};
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnLevelSelectedSignature, const FLevelData&);

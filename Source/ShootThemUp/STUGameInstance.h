@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "STUCoreTypes.h"
 #include "Engine/GameInstance.h"
 #include "STUGameInstance.generated.h"
 
@@ -12,13 +13,21 @@ class SHOOTTHEMUP_API USTUGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 public:
-    FName GetStartupLevelName() const{return StartupLevelName;}
+    FLevelData GetStartupLevel() const{return StartupLevel;}
+    void SetStartupLevel(const FLevelData& Data){StartupLevel=Data;}
+
+    TArray<FLevelData> GetLevelsData() const {return LevelsData;}
+    
     FName GetMainMenuLevelName() const{return MainMenuLevelName;}
     
 protected:
-    UPROPERTY(EditDefaultsOnly,Category="Game")
-    FName StartupLevelName = NAME_None;
+    UPROPERTY(EditDefaultsOnly,Category="Game", meta = (ToolTip = "Level names must bu unique"))
+    TArray<FLevelData> LevelsData;
 
     UPROPERTY(EditDefaultsOnly,Category="Game")
     FName MainMenuLevelName = NAME_None;
+
+    
+private:
+    FLevelData StartupLevel;
 };
