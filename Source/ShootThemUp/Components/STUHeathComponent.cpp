@@ -15,6 +15,9 @@ void USTUHeathComponent::BeginPlay()
 {
     Super::BeginPlay();
 
+    //задаём количество ХП
+    SetHealth(MaxHealth);
+    
     //через GetOwner получаем доступ к Character
     AActor* ActorPTr=GetOwner();
 
@@ -23,9 +26,6 @@ void USTUHeathComponent::BeginPlay()
     {
         ActorPTr->OnTakeAnyDamage.AddDynamic(this,&ThisClass::OnTakeAnyDamage);
     }
-
-    //задаём количество ХП
-    SetHealth(MaxHealth);
 }
 
 void USTUHeathComponent::TickComponent(float DeltaTime, ELevelTick TickType,FActorComponentTickFunction *ThisTickFunction)
@@ -81,6 +81,7 @@ void USTUHeathComponent::OnTakeAnyDamage(AActor *DamagedActor, float Damage, con
     }
     else if(bAutoHealEnabled)
     {
+        
         GetWorld()->GetTimerManager().SetTimer(TimerHandle,this,&USTUHeathComponent::AutoHeal,HealUpdateTime,true,FirstHealDelay);
     }
     ShakeTheCameraOnDamage();
@@ -114,15 +115,3 @@ void USTUHeathComponent::Killed(AController *KillerController)
     GameMode->Killed(KillerController,VictimController);
 }
 
-/*Блок кода, для проверки на тип урона
-    if (DamageType)
-    {
-        if (DamageType->IsA<UFireDamageType>())
-        {
-            UE_LOG(LogTemp,Warning,TEXT("So Hot!"));
-        }
-        else if(DamageType->IsA<UColdDamageType>())
-        {
-            UE_LOG(LogTemp,Warning,TEXT("So Cold"));
-        }
-    }*/

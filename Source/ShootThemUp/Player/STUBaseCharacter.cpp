@@ -32,6 +32,8 @@ void ASTUBaseCharacter::BeginPlay()
     float Health=HealthComponent->GetHealth();
     
     HealthComponent->OnPlayerDeath.AddUObject(this,&ThisClass::OnPlayerDeath);
+    HealthComponent->OnPlayerDamaged.AddUObject(this, &ASTUBaseCharacter::OnHealthChange);
+    
     LandedDelegate.AddDynamic(this,&ASTUBaseCharacter::OnGroundLanded);
     OnButtonPressed.Broadcast();
     
