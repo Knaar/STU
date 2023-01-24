@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "STUBaseWidget.h"
 #include "GameFramework/HUD.h"
 #include "ShootThemUp/STUCoreTypes.h"
 #include "GameHUD.generated.h"
@@ -27,10 +28,10 @@ public:
     TSubclassOf<UUserWidget> GameOverWidgetClass;
 private:
     UPROPERTY()
-    TMap<ESTUMatchState, UUserWidget*> GameWidgets;
+    TMap<ESTUMatchState, USTUBaseWidget*> GameWidgets;
 
     UPROPERTY()
-    UUserWidget* CurrentWidget = nullptr;
+    USTUBaseWidget* CurrentWidget = nullptr;
     //Callback Функция
     void OnMatchStateChanged(ESTUMatchState State);
 };

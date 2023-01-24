@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "STUBaseWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "ShootThemUp/Weapon/STUBaseWeapon.h"
 #include "PlayerHudWidget.generated.h"
@@ -12,7 +13,7 @@ class USTUHeathComponent;
 class UProgressBar;
 
 UCLASS()
-class SHOOTTHEMUP_API UPlayerHudWidget : public UUserWidget
+class SHOOTTHEMUP_API UPlayerHudWidget : public USTUBaseWidget
 {
     GENERATED_BODY()
 public:
@@ -45,7 +46,7 @@ public:
     
     UFUNCTION(BlueprintImplementableEvent, Category="UI")
     void OnTakeDamage();
-
+    
     UFUNCTION(BlueprintCallable,Category="UI")
     int32 GetKillsNum() const;
 

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "ShootThemUp/UI/STUBaseWidget.h"
 #include "ShootThemUp/UI/STULevelItemWidget.h"
 #include "STUMenuWidget.generated.h"
 
@@ -12,7 +13,7 @@ class UButton;
 class UHorizontalBox;
 
 UCLASS()
-class SHOOTTHEMUP_API USTUMenuWidget : public UUserWidget
+class SHOOTTHEMUP_API USTUMenuWidget : public USTUBaseWidget
 {
 	GENERATED_BODY()
     

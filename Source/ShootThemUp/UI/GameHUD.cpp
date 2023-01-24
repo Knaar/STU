@@ -3,6 +3,7 @@
 
 #include "GameHUD.h"
 
+#include "STUBaseWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "Engine/Canvas.h"
 #include "Logging/LogMacros.h"
@@ -15,9 +16,9 @@ void AGameHUD::BeginPlay()
     Super::BeginPlay();
     
 
-    GameWidgets.Add(ESTUMatchState::InProgress,CreateWidget<UUserWidget>(GetWorld(),PlayerHUDWidgetClass));
-    GameWidgets.Add(ESTUMatchState::Pause, CreateWidget<UUserWidget>(GetWorld(),PauseWidgetClass));
-    GameWidgets.Add(ESTUMatchState::GameOver, CreateWidget<UUserWidget>(GetWorld(),GameOverWidgetClass));
+    GameWidgets.Add(ESTUMatchState::InProgress,CreateWidget<USTUBaseWidget>(GetWorld(),PlayerHUDWidgetClass));
+    GameWidgets.Add(ESTUMatchState::Pause, CreateWidget<USTUBaseWidget>(GetWorld(),PauseWidgetClass));
+    GameWidgets.Add(ESTUMatchState::GameOver, CreateWidget<USTUBaseWidget>(GetWorld(),GameOverWidgetClass));
 
     for(auto GameWidgetPair:GameWidgets)
     {
@@ -52,6 +53,7 @@ void AGameHUD::OnMatchStateChanged(ESTUMatchState State)
     if(CurrentWidget)
     {
         CurrentWidget->SetVisibility(ESlateVisibility::Visible);
+        CurrentWidget->Show();
     }
     UE_LOG(LogSTUGameHUD, Display, TEXT("Match state chsnged: %s"), *UEnum::GetValueAsString(State))
 }
