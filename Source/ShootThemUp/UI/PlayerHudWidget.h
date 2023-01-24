@@ -9,6 +9,7 @@
 
 class UWeaponComponent;
 class USTUHeathComponent;
+class UProgressBar;
 
 UCLASS()
 class SHOOTTHEMUP_API UPlayerHudWidget : public UUserWidget
@@ -41,8 +42,28 @@ public:
     void OnNewPawn(APawn* NewPawn);
 
     void OnHealthChanged(float Health,float DeltaHealth);
-
-
+    
     UFUNCTION(BlueprintImplementableEvent, Category="UI")
     void OnTakeDamage();
+
+    UFUNCTION(BlueprintCallable,Category="UI")
+    int32 GetKillsNum() const;
+
+    UFUNCTION(BlueprintCallable,Category="UI")
+    FString FormatBullets(int32 BulletsNum) const;
+protected:
+    UPROPERTY(meta=(BindWidget))
+    UProgressBar* HealthProgressBar;
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="UI")
+    float PercentColorThreshold = 0.3f;
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="UI")
+    FLinearColor GoodColor = FLinearColor::White;
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="UI")
+    FLinearColor BadColor = FLinearColor::Red;
+
+private:
+    void UpdateHealthBar();
 };

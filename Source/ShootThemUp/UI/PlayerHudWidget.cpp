@@ -3,6 +3,8 @@
 
 #include "PlayerHudWidget.h"
 
+#include "STUPlayerState.h"
+#include "Components/ProgressBar.h"
 #include "ShootThemUp/Components/STUHeathComponent.h"
 #include "ShootThemUp/Components/WeaponComponent.h"
 
@@ -87,7 +89,7 @@ void UPlayerHudWidget::NativeOnInitialized()
     {
         HealthComponent->OnPlayerDamaged.AddUObject(this,&UPlayerHudWidget::OnHealthChanged);
     }
-    
+    UpdateHealthBar();
  }
 
  void UPlayerHudWidget::OnHealthChanged(float Health,float DeltaHealth)
@@ -96,5 +98,37 @@ void UPlayerHudWidget::NativeOnInitialized()
     {
         OnTakeDamage();
     }
-    
+    UpdateHealthBar();
 }
+
+ int32 UPlayerHudWidget::GetKillsNum() const
+ {
+    const auto Controller = GetOwningPlayer();
+    if(!Controller) return 0;
+
+    const auto PlayerState = Cast<ASTUPlayerState>(Controller->PlayerState);
+    return PlayerState ? PlayerState->GetKillsNum() : 0;
+ }
+
+ FString UPlayerHudWidget::FormatBullets(int32 BulletsNum) const
+ {
+    const int32 MaxLen = 3;
+    const TCHAR PrefixSymbol = '0';
+
+    auto BulletSTR = FString::FromInt(BulletsNum);
+    const auto SymbolsNumToAdd = MaxLen - BulletSTR.Len();
+
+    if(SymbolsNumToAdd > 0)
+    {
+        BulletSTR = FString::ChrN(SymbolsNumToAdd,PrefixSymbol).Append(BulletSTR);
+    }
+    return BulletSTR;
+ }
+
+ void UPlayerHudWidget::UpdateHealthBar()
+ {
+    if(HealthProgressBar)
+    {
+        HealthProgressBar->SetFillColorAndOpacity(GetHealth()>PercentColorThreshold?GoodColor : BadColor);
+    }
+ }
