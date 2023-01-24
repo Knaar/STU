@@ -97,6 +97,10 @@ void UPlayerHudWidget::NativeOnInitialized()
     if(DeltaHealth<0)
     {
         OnTakeDamage();
+        if(!IsAnimationPlaying(DamageAnimation))
+        {
+            PlayAnimation(DamageAnimation);
+        }
     }
     UpdateHealthBar();
 }
