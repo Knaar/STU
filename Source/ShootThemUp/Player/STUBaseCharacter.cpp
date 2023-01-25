@@ -7,9 +7,10 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "ShootThemUp/Components/STUHeathComponent.h"
 #include "ShootThemUp/Components/WeaponComponent.h"
-
+#include "Sound/SoundCue.h"
 // Sets default values
 ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjInit) 
    // :Super(ObjInit.SetDefaultSubobjectClass<USTUC>())
@@ -57,6 +58,11 @@ void ASTUBaseCharacter::OnPlayerDeath()
     WeaponComponent->StopFire();
     GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
     GetMesh()->SetSimulatePhysics(true);
+
+    if(DeathSound)
+    {
+        UGameplayStatics::PlaySoundAtLocation(GetWorld(), DeathSound, GetActorLocation());
+    }
 }
 
 void ASTUBaseCharacter::MoveForward(float Amount)

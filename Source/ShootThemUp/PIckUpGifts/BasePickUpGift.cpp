@@ -1,7 +1,9 @@
 #include "BasePickUpGift.h"
 #include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "ShootThemUp/Components/STUHeathComponent.h"
 #include "ShootThemUp/Components/WeaponComponent.h"
+#include "Sound/SoundCue.h"
 
 ABasePickUpGift::ABasePickUpGift()
 {
@@ -48,6 +50,7 @@ bool ABasePickUpGift::GivePickUpTo(APawn *Pawn)
 
 void ABasePickUpGift::PickupWasTaken()
 {
+    UGameplayStatics::PlaySoundAtLocation(GetWorld(),PickUpSound,GetActorLocation());
     SphereComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
     GetRootComponent()->SetVisibility(false,true);
     //SphereComponent->SetVisibility(false,true);

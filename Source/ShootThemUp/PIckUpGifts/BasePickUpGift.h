@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "BasePickUpGift.generated.h"
 
+class USoundCue;
 class USphereComponent;
 class UStaticMeshComponent;
 UCLASS()
@@ -23,6 +24,9 @@ public:
 
     UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="PickUp")
     float RespawnTime = 5.0f;
+
+    UPROPERTY(EditDefaultsOnly,Category="Sounds")
+    USoundCue* PickUpSound;
     
     virtual void BeginPlay() override;	
     virtual void Tick(float DeltaTime) override;

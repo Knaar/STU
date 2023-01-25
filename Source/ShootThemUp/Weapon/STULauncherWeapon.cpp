@@ -6,6 +6,7 @@
 #include "STUProjectile.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 void ASTULauncherWeapon::StartFire()
 {
@@ -16,7 +17,11 @@ void ASTULauncherWeapon::MakeShot()
 {
     if (!GetWorld()||IsAmmoEmpty())
     {
-        StopFire();
+        //StopFire();
+        if(NoAmmoSound)
+        {
+            UGameplayStatics::PlaySoundAtLocation(GetWorld(),NoAmmoSound,GetActorLocation());
+        }
         return;
     }
     DecreaseAmmo();
@@ -72,9 +77,10 @@ void ASTULauncherWeapon::MakeShot()
         Projectile->SetShootDirection(Direction);
         Projectile->FinishSpawning(MuzzleTransformLocation);
     }
-    
-
-    
+    if(FireSound)
+    {
+        UGameplayStatics::SpawnSoundAttached(FireSound,WeaponMesh,MuzzleSocketName);
+    }
 }
 /*
  AController * ASTULauncherWeapon::GetController() const

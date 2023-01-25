@@ -6,6 +6,7 @@
 class UNiagaraComponent;
 class UNiagaraSystem;
 class UNiagaraFunctionLibrary;
+class USoundCue;
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnReloadEmptyClip, ASTUBaseWeapon*);
 
@@ -61,6 +62,9 @@ public:
     UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="My Settings")
     float FireAccuracy=1.5f;
 
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="UI")
+    USoundCue* FireSound;
+    
     //Shooting
     ASTUBaseWeapon();
     virtual void BeginPlay() override;

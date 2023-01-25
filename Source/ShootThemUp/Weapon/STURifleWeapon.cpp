@@ -3,7 +3,10 @@
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "STUWeaponFXComponent.h"
+#include "Components/AudioComponent.h"
 #include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 DEFINE_LOG_CATEGORY_STATIC(RifleWeaponLog, All, All);
 
@@ -21,7 +24,7 @@ void ASTURifleWeapon::BeginPlay()
 void ASTURifleWeapon::StartFire()
 {
     Super::StartFire();
-    InitMuzzleComponent();
+    InitFX();
     GetWorld()->GetTimerManager().SetTimer(ShootTimer, this, &ThisClass::MakeShot, FireRate, true,0.0f);
     
 }
@@ -29,7 +32,7 @@ void ASTURifleWeapon::StartFire()
 void ASTURifleWeapon::StopFire()
 {
     Super::StopFire();
-    SetVFXVisibility(false);
+    SetVFXActive(false);
     GetWorld()->GetTimerManager().ClearTimer(ShootTimer);
 }
 
@@ -109,21 +112,31 @@ void ASTURifleWeapon::MakeShot()
     */
 }
 
-void ASTURifleWeapon::InitMuzzleComponent()
+void ASTURifleWeapon::InitFX()
 {
     if(!MuzzleVFXComponent)
     {
         MuzzleVFXComponent=SpawnMuzzleVFX();
     }
-    SetVFXVisibility(true);
+    
+    if(!FireAudioComponent)
+    {
+        FireAudioComponent = UGameplayStatics::SpawnSoundAttached(FireSound,WeaponMesh,MuzzleSocketName);
+    }
+
+    SetVFXActive(true);
 }
 
-void ASTURifleWeapon::SetVFXVisibility(bool Visibility)
+void ASTURifleWeapon::SetVFXActive(bool IsActive)
 {
     if(MuzzleVFXComponent)
     {
-        MuzzleVFXComponent->SetPaused(!Visibility);
-        MuzzleVFXComponent->SetVisibility(Visibility);
+        MuzzleVFXComponent->SetPaused(!IsActive);
+        MuzzleVFXComponent->SetVisibility(IsActive);
+    }
+    if(FireAudioComponent)
+    {
+        IsActive? FireAudioComponent->Play() : FireAudioComponent->Stop();
     }
 }
 

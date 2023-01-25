@@ -8,6 +8,7 @@
 #include "STURifleWeapon.generated.h"
 
 class UNiagaraComponent;
+class UAudioComponent;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTURifleWeapon : public ASTUBaseWeapon
@@ -32,9 +33,12 @@ public:
     UPROPERTY()
     UNiagaraComponent* MuzzleVFXComponent;
 
-    void InitMuzzleComponent();
+    UPROPERTY()
+    UAudioComponent* FireAudioComponent;
 
-    void SetVFXVisibility(bool Visibility);
+    void InitFX();
+
+    void SetVFXActive(bool IsActive);
 
     //Trace VFX
 

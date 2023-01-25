@@ -11,6 +11,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnButtonPressed);
 class USTUHeathComponent;
 class ABaseWeapon;
 class UWeaponComponent;
+class USoundCue;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
@@ -43,6 +44,9 @@ protected:
     
     UPROPERTY(EditDefaultsOnly, Category="Damage")
     float LifeSpanOnDeath = 5.0f;
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="UI")
+    USoundCue* DeathSound;
 
 public:
     virtual void BeginPlay() override;
