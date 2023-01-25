@@ -8,6 +8,7 @@
 #include "ShootThemUp/UI/STULevelItemWidget.h"
 #include "STUMenuWidget.generated.h"
 
+class USoundCue;
 class USTUGameInstance;
 class UButton;
 class UHorizontalBox;
@@ -29,10 +30,17 @@ protected:
     UHorizontalBox* LevelItemsBox;
 
     UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="UI")
+    USoundCue* StartGameSound;
+
+    UPROPERTY(meta=(BindWidgetAnim),Transient)
+    UWidgetAnimation* LoadGameAnimation;
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="UI")
     TSubclassOf<UUserWidget> LevelItemWidgetClass;
     
     virtual void NativeOnInitialized() override;
 
+    virtual void OnAnimationFinished_Implementation(const UWidgetAnimation *Animation) override;
 private:
     UPROPERTY()
     TArray<USTULevelItemWidget*> LevelItemWidgets;

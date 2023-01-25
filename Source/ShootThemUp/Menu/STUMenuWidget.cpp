@@ -8,8 +8,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "Logging/LogMacros.h"
 #include "ShootThemUp/STUGameInstance.h"
+#include "Sound/SoundCue.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogSTUMenuWidget,All,All)
+DEFINE_LOG_CATEGORY_STATIC(LogSTUMenuWidget, All, All)
 
 void USTUMenuWidget::NativeOnInitialized()
 {
@@ -26,12 +27,22 @@ void USTUMenuWidget::NativeOnInitialized()
     InitLevelItems();
 }
 
-void USTUMenuWidget::OnStartGame()
+void USTUMenuWidget::OnAnimationFinished_Implementation(const UWidgetAnimation *Animation)
 {
+
+    Super::OnAnimationFinished_Implementation(Animation);
+    if(Animation!= LoadGameAnimation)return;
+
     const auto STUGameInstance = GetSTUGameInstance();
     if(!STUGameInstance) return;
 
     UGameplayStatics::OpenLevel(this, STUGameInstance->GetStartupLevel().LevelName);
+}
+
+void USTUMenuWidget::OnStartGame()
+{
+    PlayAnimation(LoadGameAnimation);
+    UGameplayStatics::PlaySound2D(GetWorld(),StartGameSound);
 }
 
 void USTUMenuWidget::OnQuitGame()
