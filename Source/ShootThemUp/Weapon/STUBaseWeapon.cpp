@@ -40,6 +40,7 @@ void ASTUBaseWeapon::DecreaseAmmo()
     {
         UE_LOG(BaseWeaponLog, Warning, TEXT("No Bullets"));
     }
+    
     CurrentAmmo.Bullets--;
     LogAmmo();
     if (IsClipEmpty() && !IsAmmoEmpty())

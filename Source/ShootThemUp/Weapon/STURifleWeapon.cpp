@@ -110,6 +110,10 @@ void ASTURifleWeapon::MakeShot()
     }
     Super::MakeShot();
     */
+    if(FireSound)
+    {
+        UGameplayStatics::PlaySoundAtLocation(GetWorld(),FireSound,GetActorLocation());//SpawnSoundAttached(FireSound,WeaponMesh,MuzzleSocketName);
+    }
 }
 
 void ASTURifleWeapon::InitFX()
@@ -118,12 +122,13 @@ void ASTURifleWeapon::InitFX()
     {
         MuzzleVFXComponent=SpawnMuzzleVFX();
     }
-   
+
+    /*
     if(!FireAudioComponent)
     {
         FireAudioComponent = UGameplayStatics::SpawnSoundAttached(FireSound,WeaponMesh,MuzzleSocketName);
     }
-
+    */
     SetVFXActive(true);
 }
 
@@ -134,11 +139,12 @@ void ASTURifleWeapon::SetVFXActive(bool IsActive)
         MuzzleVFXComponent->SetPaused(!IsActive);
         MuzzleVFXComponent->SetVisibility(IsActive);
     }
-    
+    /*
     if(FireAudioComponent)
     {
         IsActive? FireAudioComponent->Play() : FireAudioComponent->Stop();
     }
+    */
 }
 
 void ASTURifleWeapon::SpawnTraceVFX(const FVector &StartTrace, const FVector &EndTrace)
