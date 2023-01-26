@@ -6,6 +6,7 @@
 #include "STUWeaponFXComponent.generated.h"
 
 
+class USoundCue;
 class UNiagaraSystem;
 class UPhysicalMaterial;
 
@@ -37,6 +38,9 @@ struct FImpactData
 
     UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="VFX")
     FDecalData DecalData;
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="VFX")
+    USoundCue* ImpactSound;
 };
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))

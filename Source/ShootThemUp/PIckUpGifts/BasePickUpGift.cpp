@@ -51,6 +51,8 @@ bool ABasePickUpGift::GivePickUpTo(APawn *Pawn)
 void ABasePickUpGift::PickupWasTaken()
 {
     UGameplayStatics::PlaySoundAtLocation(GetWorld(),PickUpSound,GetActorLocation());
+
+    
     SphereComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
     GetRootComponent()->SetVisibility(false,true);
     //SphereComponent->SetVisibility(false,true);

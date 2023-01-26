@@ -2,6 +2,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Components/DecalComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 USTUWeaponFXComponent::USTUWeaponFXComponent()
 {
@@ -25,7 +26,11 @@ void USTUWeaponFXComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 
 void USTUWeaponFXComponent::PlayUNiagaraSystemReleased(const FHitResult & HitResult)
 {
+    
     auto ImpactData=DefaultImpactData;
+
+    
+    
     if(HitResult.PhysMaterial.IsValid())
     {
         auto Mat=HitResult.PhysMaterial.Get();
@@ -42,8 +47,11 @@ void USTUWeaponFXComponent::PlayUNiagaraSystemReleased(const FHitResult & HitRes
         HitResult.ImpactPoint,
         HitResult.ImpactNormal.Rotation());
 
+    const auto BulletHitLocation = HitResult.ImpactPoint;
     if(DecalComponent)
     {
         DecalComponent->SetFadeOut(ImpactData.DecalData.LifeTime,ImpactData.DecalData.FadeOutTime);
     }
+
+    UGameplayStatics::PlaySoundAtLocation(GetWorld(),ImpactData.ImpactSound,BulletHitLocation);
 }
