@@ -8,6 +8,7 @@
 #include "ShootThemUp/UI/STULevelItemWidget.h"
 #include "STUMenuWidget.generated.h"
 
+class UWidgetSwitcher;
 class USoundCue;
 class USTUGameInstance;
 class UButton;
@@ -27,7 +28,16 @@ protected:
     UButton* QuitGameButton;
 
     UPROPERTY(meta=(BindWidget))
+    UButton* SelectMapButton;
+
+    UPROPERTY(meta=(BindWidget))
+    UButton* SettingsButton;
+
+    UPROPERTY(meta=(BindWidget))
     UHorizontalBox* LevelItemsBox;
+
+    UPROPERTY(meta=(BindWidget))
+    UWidgetSwitcher* MenuWidgetSwitcher;
 
     UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="UI")
     USoundCue* StartGameSound;
@@ -37,6 +47,7 @@ protected:
 
     UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="UI")
     TSubclassOf<UUserWidget> LevelItemWidgetClass;
+
     
     virtual void NativeOnInitialized() override;
 
@@ -50,6 +61,12 @@ private:
     
     UFUNCTION()
     void OnQuitGame();
+
+    UFUNCTION()
+    void OnLevelSelect();
+
+    UFUNCTION()
+    void OnSettingsSelect();
 
     void InitLevelItems();
     void OnLevelSelected(const FLevelData& Data);

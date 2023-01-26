@@ -37,4 +37,6 @@ private:
 
     //Callback Функция срабатывающая при изменении State игры
     void OnMatchStateChanged(ESTUMatchState STate);
+
+    void OnMuteSound();
 };

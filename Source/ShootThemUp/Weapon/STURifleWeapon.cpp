@@ -118,7 +118,7 @@ void ASTURifleWeapon::InitFX()
     {
         MuzzleVFXComponent=SpawnMuzzleVFX();
     }
-    
+   
     if(!FireAudioComponent)
     {
         FireAudioComponent = UGameplayStatics::SpawnSoundAttached(FireSound,WeaponMesh,MuzzleSocketName);
@@ -134,6 +134,7 @@ void ASTURifleWeapon::SetVFXActive(bool IsActive)
         MuzzleVFXComponent->SetPaused(!IsActive);
         MuzzleVFXComponent->SetVisibility(IsActive);
     }
+    
     if(FireAudioComponent)
     {
         IsActive? FireAudioComponent->Play() : FireAudioComponent->Stop();

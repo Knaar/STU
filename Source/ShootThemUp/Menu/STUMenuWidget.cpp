@@ -5,6 +5,7 @@
 
 #include "Components/Button.h"
 #include "Components/HorizontalBox.h"
+#include "Components/WidgetSwitcher.h"
 #include "Kismet/GameplayStatics.h"
 #include "Logging/LogMacros.h"
 #include "ShootThemUp/STUGameInstance.h"
@@ -25,6 +26,14 @@ void USTUMenuWidget::NativeOnInitialized()
         QuitGameButton->OnClicked.AddDynamic(this, &ThisClass::USTUMenuWidget::OnQuitGame);
     }
     InitLevelItems();
+    if(SelectMapButton)
+    {
+        SelectMapButton->OnClicked.AddDynamic(this,&ThisClass::USTUMenuWidget::OnLevelSelect);
+    }
+    if(SettingsButton)
+    {
+        SettingsButton->OnClicked.AddDynamic(this,&ThisClass::USTUMenuWidget::OnSettingsSelect);
+    }
 }
 
 void USTUMenuWidget::OnAnimationFinished_Implementation(const UWidgetAnimation *Animation)
@@ -48,6 +57,18 @@ void USTUMenuWidget::OnStartGame()
 void USTUMenuWidget::OnQuitGame()
 {
     UKismetSystemLibrary::QuitGame(this,GetOwningPlayer(),EQuitPreference::Quit,true);
+}
+
+void USTUMenuWidget::OnLevelSelect()
+{
+    if(!MenuWidgetSwitcher)return;
+    MenuWidgetSwitcher->SetActiveWidgetIndex(0);
+}
+
+void USTUMenuWidget::OnSettingsSelect()
+{
+    if(!MenuWidgetSwitcher)return;
+    MenuWidgetSwitcher->SetActiveWidgetIndex(1);
 }
 
 void USTUMenuWidget::InitLevelItems()
