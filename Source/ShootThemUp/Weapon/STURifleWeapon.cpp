@@ -98,7 +98,14 @@ void ASTURifleWeapon::MakeShot()
         
         const auto Target= HitResult.GetActor();
         if(!Target)return;
-        Target->TakeDamage(BulletDamage,FDamageEvent{},GetController(),this);
+        //Target->TakeDamage(BulletDamage,FDamageEvent{},GetController(),this);
+        
+        //Хедшоты
+        FPointDamageEvent PointDamageEvent;
+        PointDamageEvent.HitInfo = HitResult;
+
+        Target->TakeDamage(BulletDamage,PointDamageEvent,GetController(),this);
+        
     }
 
     SpawnTraceVFX(SocketTransform.GetLocation(),EndTraceVfx);
