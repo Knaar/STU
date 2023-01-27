@@ -174,6 +174,7 @@ void ASTURifleWeapon::Zoom(bool Enabled)
     }
     
     const TInterval<float> FOV(50.0f, 90.0f);
+    //Controller->PlayerCameraManager->SetFOV(Enabled? FOV.Min : FOV.Max);//FOVZoomAngle : DefaultCameraFOV);
     Controller->PlayerCameraManager->SetFOV(Enabled? FOVZoomAngle : DefaultCameraFOV);
 
 }

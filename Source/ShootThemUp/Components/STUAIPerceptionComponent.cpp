@@ -7,6 +7,8 @@
 #include "AIController.h"
 #include "STUHeathComponent.h"
 #include "Perception/AISense_Sight.h"
+#include "Perception/AISense_Damage.h"
+
 #include "ShootThemUp/STUUtils.h"
 
 AActor * USTUAIPerceptionComponent::GetClosestEnemy() const
@@ -16,8 +18,15 @@ AActor * USTUAIPerceptionComponent::GetClosestEnemy() const
 
     //функция, которая заполнит наш массив, если НПС кого-либо увидит
     GetCurrentlyPerceivedActors(UAISense_Sight::StaticClass(),PercieveActors);
-    if(PercieveActors.Num()==0)return nullptr;
-
+    if(PercieveActors.Num()==0)
+    {
+        GetCurrentlyPerceivedActors(UAISense_Damage::StaticClass(),PercieveActors);
+        if(PercieveActors.Num()==0)
+        {
+            return nullptr;
+        }
+      
+    }
     //Кастимся к контроллеру через владельца
     const auto Controller=Cast<AAIController>(GetOwner());
     if(!Controller)return nullptr;

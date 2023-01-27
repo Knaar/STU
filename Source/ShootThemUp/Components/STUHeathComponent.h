@@ -99,4 +99,8 @@ public:
     void ApplyDamage(float  Damage, AController* InstigatedBy);
 
     float GetPointDamageModifier(AActor* DamageActor, const FName& BoneName);
+
+    //получение инфы об обидчике
+
+    void ReportDamageEvent(float Damage, AController* InstigatedBy);
 };

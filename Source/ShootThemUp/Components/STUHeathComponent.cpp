@@ -2,8 +2,7 @@
 
 #include "GameFramework/Character.h"
 #include "ShootThemUp/STUGameModeBase.h"
-#include "ShootThemUp/Dev/ColdDamageType.h"
-#include "ShootThemUp/Dev/FireDamageType.h"
+#include "Perception/AISense_Damage.h"
 
 
 USTUHeathComponent::USTUHeathComponent()
@@ -134,6 +133,7 @@ void USTUHeathComponent::ApplyDamage(float Damage, AController *InstigatedBy)
         GetWorld()->GetTimerManager().SetTimer(TimerHandle,this,&USTUHeathComponent::AutoHeal,HealUpdateTime,true,FirstHealDelay);
     }
     ShakeTheCameraOnDamage();
+    ReportDamageEvent(Damage,InstigatedBy);
 }
 
 float USTUHeathComponent::GetPointDamageModifier(AActor *DamageActor, const FName &BoneName)
@@ -148,5 +148,13 @@ float USTUHeathComponent::GetPointDamageModifier(AActor *DamageActor, const FNam
     if(!DamageModifiers.Contains(PhysMaterial)) return 1;
 
     return DamageModifiers[PhysMaterial];
+}
+
+void USTUHeathComponent::ReportDamageEvent(float Damage, AController *InstigatedBy)
+{
+    if(!InstigatedBy || !InstigatedBy->GetPawn() || !GetOwner()) return;
+    
+    UAISense_Damage::ReportDamageEvent(GetWorld(),GetOwner(),InstigatedBy->GetPawn(),
+        Damage,InstigatedBy->GetPawn()->GetActorLocation(),GetOwner()->GetActorLocation());
 }
 
