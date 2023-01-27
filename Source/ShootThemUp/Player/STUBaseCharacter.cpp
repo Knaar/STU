@@ -55,7 +55,8 @@ void ASTUBaseCharacter::OnPlayerDeath()
     SetLifeSpan(LifeSpanOnDeath);
 
     GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
-    WeaponComponent->StopFire();
+    WeaponComponent->StopFire();\
+    WeaponComponent->Zoom(false);
     GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
     GetMesh()->SetSimulatePhysics(true);
 

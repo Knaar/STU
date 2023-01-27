@@ -121,4 +121,8 @@ public:
 
 
     AController *GetController() const;
+
+    //Zoom
+
+    virtual void Zoom(bool Enabled){}
 };

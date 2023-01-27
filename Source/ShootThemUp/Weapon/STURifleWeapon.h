@@ -28,6 +28,9 @@ public:
 
     UPROPERTY(EditDefaultsOnly, Category="Settings")
     USTUWeaponFXComponent *WeaponFXComponent;
+
+    UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category="Weapon")
+    float FOVZoomAngle = 50.0f;
     
     //Muzzle VFX
     UPROPERTY()
@@ -52,4 +55,9 @@ public:
 
     //геттер на контроллер
     //AController* GetController()const;
+
+    //Zoom
+    virtual void Zoom(bool Enabled) override;
+
+    float DefaultCameraFOV = 90.0f;
 };

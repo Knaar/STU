@@ -73,6 +73,7 @@ void UWeaponComponent::EquipWeapon(int32 WeaponIndex)
     if (CurrentWeapon)
     {
         CurrentWeapon->StopFire();
+        CurrentWeapon->Zoom(false);
         AttachWeaponToMesh(CurrentWeapon, Character->GetMesh(), InventoryWeaponSocket);
     }
 
@@ -278,4 +279,16 @@ bool UWeaponComponent::NeedAmmo(TSubclassOf<ASTUBaseWeapon> Weapon)
 bool UWeaponComponent::IsAmmoFull()
 {
     return CurrentWeapon->IsAmmoFull();
+}
+
+void UWeaponComponent::NotZoom()
+{
+}
+
+void UWeaponComponent::Zoom(bool Enabled)
+{
+    if(CurrentWeapon)
+    {
+        CurrentWeapon->Zoom(Enabled);
+    }
 }

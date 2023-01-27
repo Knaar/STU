@@ -91,6 +91,10 @@ public:
     bool NeedAmmo( TSubclassOf<ASTUBaseWeapon>Weapon);
 
     bool IsAmmoFull();
+
+    //Zoom
+    void NotZoom();
+    void Zoom(bool Enabled);
 };
 
 
