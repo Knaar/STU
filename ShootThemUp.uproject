@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "5.0",
+	"EngineAssociation": "5.3",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -25,7 +25,7 @@
 		},
 		{
 			"Name": "GLTFImporter",
-			"Enabled": true
+			"Enabled": false
 		}
 	]
 }

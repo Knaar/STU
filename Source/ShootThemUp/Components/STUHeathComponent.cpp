@@ -26,7 +26,7 @@ void USTUHeathComponent::BeginPlay()
     {
         ActorPTr->OnTakeAnyDamage.AddDynamic(this,&ThisClass::OnTakeAnyDamage);
         ActorPTr->OnTakePointDamage.AddDynamic(this,&ThisClass::OnTakePointDamage);
-        ActorPTr->OnTakeRadialDamage.AddDynamic(this,&ThisClass::OnTakeRadialDamage);
+        //ActorPTr->OnTakeRadialDamage.AddDynamic(this,&ThisClass::OnTakeRadialDamage);
     }
 }
 
