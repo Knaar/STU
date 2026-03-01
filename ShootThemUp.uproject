@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "5.0",
+	"EngineAssociation": "{3385D729-4F15-6CB0-BC44-87A7C793A2DD}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -8,24 +8,14 @@
 			"Name": "ShootThemUp",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"Engine",
-				"UMG",
-				"AIModule"
-			]
+			"AdditionalDependencies": ["Engine", "UMG", "AIModule"]
 		}
 	],
 	"Plugins": [
 		{
 			"Name": "ModelingToolsEditorMode",
 			"Enabled": true,
-			"TargetAllowList": [
-				"Editor"
-			]
-		},
-		{
-			"Name": "GLTFImporter",
-			"Enabled": true
+			"TargetAllowList": ["Editor"]
 		}
 	]
 }
