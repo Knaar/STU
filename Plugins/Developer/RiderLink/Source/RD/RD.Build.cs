@@ -12,7 +12,7 @@ public class RD : ModuleRules
 		bEnforceIWYU = false;
 
 #if UE_4_22_OR_LATER
-		CppStandard = CppStandardVersion.Cpp17;
+		CppStandard = CppStandardVersion.Cpp20;
 #endif
 
 #if UE_4_22_OR_LATER
