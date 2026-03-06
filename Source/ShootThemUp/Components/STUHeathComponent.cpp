@@ -107,7 +107,7 @@ void USTUHeathComponent::OnTakePointDamage(AActor *DamagedActor, float Damage, A
 }
 
 void USTUHeathComponent::OnTakeRadialDamage(AActor *DamagedActor, float Damage, const UDamageType *DamageType,
-    FVector Origin, FHitResult HitInfo, AController *InstigatedBy, AActor *DamageCauser)
+    FVector Origin, const FHitResult& HitInfo, AController *InstigatedBy, AActor *DamageCauser)
 {
     ApplyDamage(Damage,InstigatedBy);
 }

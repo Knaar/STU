@@ -22,6 +22,21 @@ public class ShootThemUp : ModuleRules
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
 
+		if (Target.bBuildEditor)
+		{
+			PrivateDependencyModuleNames.AddRange(new string[]
+			{
+				"UnrealEd",
+				"EditorScriptingUtilities",
+				"LevelEditor",
+				"ToolMenus",
+				"Slate",
+				"SlateCore",
+				"StaticMeshEditor",
+				"Engine"
+			});
+		}
+
 		PublicIncludePaths.AddRange(new string[]
 		{
 			"ShootThemUp/Dev",
@@ -29,6 +44,7 @@ public class ShootThemUp : ModuleRules
 			"ShootThemUp/Animations",
 			"ShootThemUp/PIckUpGifts",
 			"ShootThemUp/Weapon",
+			"ShootThemUp/Editor",
 		});
 
 		// Uncomment if you are using Slate UI

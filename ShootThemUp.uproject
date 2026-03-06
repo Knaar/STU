@@ -8,14 +8,32 @@
 			"Name": "ShootThemUp",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"AdditionalDependencies": ["Engine", "UMG", "AIModule"]
+			"AdditionalDependencies": [
+				"Engine",
+				"UMG",
+				"AIModule"
+			]
 		}
 	],
 	"Plugins": [
 		{
 			"Name": "ModelingToolsEditorMode",
 			"Enabled": true,
-			"TargetAllowList": ["Editor"]
+			"TargetAllowList": [
+				"Editor"
+			]
+		},
+		{
+			"Name": "EditorScriptingUtilities",
+			"Enabled": true
+		},
+		{
+			"Name": "SequenceRecorder",
+			"Enabled": false
+		},
+		{
+			"Name": "MediaCompositing",
+			"Enabled": false
 		}
 	]
 }

@@ -4,6 +4,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "STUWeaponFXComponent.h"
 #include "Components/AudioComponent.h"
+#include "Engine/DamageEvents.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"

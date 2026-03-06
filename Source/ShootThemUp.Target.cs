@@ -9,6 +9,7 @@ public class ShootThemUpTarget : TargetRules
 	{
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
+		CppStandard = CppStandardVersion.Cpp20;
 
 		ExtraModuleNames.AddRange( new string[] { "ShootThemUp" } );
 	}

@@ -9,6 +9,8 @@ public class ShootThemUpEditorTarget : TargetRules
 	{
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
+		CppStandard = CppStandardVersion.Cpp20;
+		BuildEnvironment = TargetBuildEnvironment.Unique;
 
 		ExtraModuleNames.AddRange( new string[] { "ShootThemUp" } );
 	}
