@@ -17,5 +17,9 @@ protected:
     UPROPERTY(EditAnywhere,BlueprintReadWrite,Category="AI")
     FBlackboardKeySelector EnemyActorKey;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="AI", meta=(ClampMin="0.0", UIMin="0.0"))
+    float AimDelay = 1.0f;
+
+    virtual uint16 GetInstanceMemorySize() const override;
     virtual void TickNode(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory, float DeltaSeconds) override;
 };
